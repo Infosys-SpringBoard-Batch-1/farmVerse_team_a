@@ -59,16 +59,21 @@ function Register() {
 
     setLoading(true);
 
-    const response = await registerUser({
+    // Registration Payload
+    const payload = {
       username: formData.username,
+      email: formData.email,
       password: formData.password,
-    });
+    };
+
+    console.log("Registration Payload:", payload);
+
+    const response = await registerUser(payload);
 
     setLoading(false);
 
     if (response.status === "ok") {
       alert("User Registered Successfully");
-
       navigate("/login");
     } else {
       alert(response.message);
@@ -91,22 +96,18 @@ function Register() {
         </div>
 
         <h1 className="text-4xl font-bold text-center mt-6">
-
           Create Account
-
         </h1>
 
         <p className="text-center text-gray-500 mt-3">
-
           Register to continue
-
         </p>
 
         <form
           className="mt-10 space-y-6"
           onSubmit={handleSubmit}
         >
-                      {/* Username */}
+                    {/* Username */}
 
           <div>
 
@@ -152,7 +153,7 @@ function Register() {
               <input
                 type="email"
                 name="email"
-                placeholder="Enter email"
+                placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full p-4 outline-none"
@@ -162,7 +163,7 @@ function Register() {
 
             {!isEmailValid && formData.email !== "" && (
               <p className="text-red-500 text-sm mt-2">
-                Enter a valid email address.
+                Please enter a valid email address.
               </p>
             )}
 
@@ -199,8 +200,7 @@ function Register() {
             )}
 
           </div>
-
-          {/* Confirm Password */}
+                    {/* Confirm Password */}
 
           <div>
 
@@ -247,6 +247,8 @@ function Register() {
           </button>
 
         </form>
+
+        {/* Login Link */}
 
         <p className="text-center mt-8 text-gray-600">
 
