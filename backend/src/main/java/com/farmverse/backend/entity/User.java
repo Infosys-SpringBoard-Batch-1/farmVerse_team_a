@@ -19,6 +19,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -32,11 +35,11 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 }
