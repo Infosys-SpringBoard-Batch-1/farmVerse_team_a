@@ -13,7 +13,7 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL CHECK (role IN ('ADMIN','FARMER','AGRONOMIST')),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ==========================
@@ -63,6 +63,7 @@ CREATE TABLE crops (
     sowing_date DATE,
     expected_harvest_date DATE,
     crop_status VARCHAR(30),
+    crop_health VARCHAR(30),
 
     CONSTRAINT fk_crop_farm
     FOREIGN KEY (farm_id)
@@ -77,8 +78,12 @@ CREATE TABLE irrigation (
     irrigation_id SERIAL PRIMARY KEY,
     farm_id INTEGER NOT NULL,
     irrigation_type VARCHAR(50),
-    irrigation_date DATE NOT NULL,
+    irrigation_date DATE,
     water_quantity_liters DECIMAL(10,2),
+
+    water_level DECIMAL(5,2),
+    irrigation_status VARCHAR(30),
+    next_irrigation_date DATE,
 
     CONSTRAINT fk_irrigation_farm
     FOREIGN KEY (farm_id)
@@ -111,7 +116,11 @@ CREATE TABLE weather (
     temperature DECIMAL(5,2),
     humidity DECIMAL(5,2),
     rainfall DECIMAL(5,2),
-    weather_date DATE NOT NULL,
+
+    wind_speed DECIMAL(5,2),
+    weather_condition VARCHAR(50),
+
+    weather_date DATE,
 
     CONSTRAINT fk_weather_farm
     FOREIGN KEY (farm_id)
@@ -146,8 +155,57 @@ CREATE TABLE harvests (
     quantity_kg DECIMAL(10,2),
     quality_grade VARCHAR(20),
 
+    market_price DECIMAL(10,2),
+    total_revenue DECIMAL(12,2),
+
     CONSTRAINT fk_harvest_crop
     FOREIGN KEY (crop_id)
     REFERENCES crops(crop_id)
+    ON DELETE CASCADE
+);
+
+-- ==========================
+-- AI RECOMMENDATIONS
+-- ==========================
+CREATE TABLE ai_recommendations (
+    recommendation_id SERIAL PRIMARY KEY,
+
+    farm_id INTEGER NOT NULL,
+
+    recommended_crop VARCHAR(100),
+
+    fertilizer_recommendation TEXT,
+
+    irrigation_recommendation TEXT,
+
+    disease_prediction TEXT,
+
+    confidence_score DECIMAL(5,2),
+
+    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ai_farm
+    FOREIGN KEY (farm_id)
+    REFERENCES farms(farm_id)
+    ON DELETE CASCADE
+);
+
+-- ==========================
+-- ACTIVITY LOGS
+-- ==========================
+CREATE TABLE activity_logs (
+    activity_id SERIAL PRIMARY KEY,
+
+    user_id INTEGER NOT NULL,
+
+    activity VARCHAR(100),
+
+    description TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_activity_user
+    FOREIGN KEY (user_id)
+    REFERENCES users(user_id)
     ON DELETE CASCADE
 );
