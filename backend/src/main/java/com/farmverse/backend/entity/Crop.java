@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Crop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "crop_name", nullable = false)
     private String cropName;
