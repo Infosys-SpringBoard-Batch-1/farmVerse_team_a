@@ -48,8 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 }
 
-/*
-Quick Notes:
+/*Quick Notes:
 OncePerRequestFilter: Guarantees this runs exactly once per request, standard base class for this kind of filter
 ROLE_ prefix on the authority: Spring Security convention, when later write .hasRole("ADMIN") in security config, Spring automatically looks for ROLE_ADMIN.
 If no token or invalid token: The filter passes request as unauthenticated, then SecurityConfig will see if it needs authentication for response or not.

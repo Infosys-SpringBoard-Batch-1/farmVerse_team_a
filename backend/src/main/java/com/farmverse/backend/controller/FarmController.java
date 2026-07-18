@@ -3,13 +3,10 @@ import com.farmverse.backend.dto.*;
 import com.farmverse.backend.service.FarmService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.text.View;
 
 @RestController
 @RequestMapping("/farmverse/farms")
@@ -17,7 +14,7 @@ import javax.swing.text.View;
 public class FarmController {
     private final FarmService farmService;
 
-    @PostMapping("/addFarms")
+    @PostMapping("/addFarm")
     public ResponseEntity<ApiResponse> addFarm(@Valid @RequestBody FarmRequest request, Authentication authentication){
         try{
             ApiResponse response = farmService.addFarm(request, authentication.getName());
