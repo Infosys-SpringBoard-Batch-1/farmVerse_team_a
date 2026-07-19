@@ -1,10 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
-import Dashboard from "../pages/Dashboard/Dashboard";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
+
 import Farm from "../pages/Farm/Farm";
 import Weather from "../pages/Weather/Weather";
 import Analytics from "../pages/Analytics/Analytics";
@@ -12,6 +14,21 @@ import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 import Irrigation from "../pages/Irrigation/Irrigation";
 import Profile from "../pages/Profile/Profile";
 import Settings from "../pages/Settings/Settings";
+
+function ProtectedRoute({ children, allowedRole }) {
+  const token = localStorage.getItem("jwtToken");
+  const role = localStorage.getItem("role");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (role !== allowedRole) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
 
 function AppRoutes() {
   return (
@@ -21,40 +38,99 @@ function AppRoutes() {
         {/* Public Routes */}
 
         <Route path="/" element={<Home />} />
-
         <Route path="/login" element={<Login />} />
-
         <Route path="/register" element={<Register />} />
 
-        {/* Dashboard Routes */}
+        {/* Admin Routes */}
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/farm" element={<Farm />} />
+        {/* Farmer Routes */}
 
-        <Route path="/weather" element={<Weather />} />
+        <Route
+          path="/farmer/dashboard"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <FarmerDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/analytics" element={<Analytics />} />
+        {/* Shared Protected Routes */}
+
+        <Route
+          path="/farm"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Farm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/weather"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Weather />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/recommendation"
-          element={<AIRecommendation />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <AIRecommendation />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/irrigation"
-          element={<Irrigation />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Irrigation />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/profile"
-          element={<Profile />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Profile />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/settings"
-          element={<Settings />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Settings />
+            </ProtectedRoute>
+          }
         />
+
+        {/* Default */}
+
+        <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
     </BrowserRouter>

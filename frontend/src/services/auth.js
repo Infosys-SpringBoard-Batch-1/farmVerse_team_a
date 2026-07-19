@@ -1,46 +1,53 @@
 // src/services/auth.js
 
+import api from "./api";
+
 export async function registerUser(data) {
-  console.log("========== REGISTER REQUEST ==========");
-  console.log("Payload:", {
-    username: data.username,
-    email: data.email,
-    password: data.password,
-  });
+  try {
+    const response = await api.post("/auth/register", data);
 
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  return {
-    status: "ok",
-    statusCode: 200,
-    message: "User registered successfully",
-  };
+    return {
+      status: "ok",
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message:
+        error.response?.data ||
+        "Registration failed",
+    };
+  }
 }
 
 export async function loginUser(data) {
-  console.log("========== LOGIN REQUEST ==========");
-  console.log("Payload:", {
-    email: data.email,
-    password: data.password,
-  });
+  try {
+    const response = await api.post("/auth/login", data);
 
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    const user = response.data;
 
-  // Fake JWT Token for frontend testing
-  const fakeToken = "fake-jwt-token";
+    localStorage.setItem("jwtToken", user.token);
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("email", user.email);
 
-  localStorage.setItem("jwtToken", fakeToken);
-
-  return {
-    status: "ok",
-    statusCode: 200,
-    message: "Login successful",
-    jwtToken: fakeToken,
-  };
+    return {
+      status: "ok",
+      data: user,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message:
+        error.response?.data ||
+        "Invalid username or password",
+    };
+  }
 }
 
 export function logoutUser() {
   localStorage.removeItem("jwtToken");
+  localStorage.removeItem("role");
+  localStorage.removeItem("username");
+  localStorage.removeItem("email");
 }
