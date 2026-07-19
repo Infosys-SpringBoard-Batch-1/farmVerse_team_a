@@ -1,47 +1,39 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import Home from "../pages/Home/Home";
+// Protected Route
+import ProtectedRoute from "../components/Common/ProtectedRoute";
+
+// Authentication
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
+// Admin Pages
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import Farmers from "../pages/Admin/Farmers";
+import Farms from "../pages/Admin/Farms";
+import Crops from "../pages/Admin/Crops";
+
+// Farmer Pages
 import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
-
-import Farm from "../pages/Farm/Farm";
-import Weather from "../pages/Weather/Weather";
-import Analytics from "../pages/Analytics/Analytics";
-import AIRecommendation from "../pages/Recommendations/AIRecommendation";
-import Irrigation from "../pages/Irrigation/Irrigation";
-import Profile from "../pages/Profile/Profile";
-import Settings from "../pages/Settings/Settings";
-
-function ProtectedRoute({ children, allowedRole }) {
-  const token = localStorage.getItem("jwtToken");
-  const role = localStorage.getItem("role");
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (role !== allowedRole) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-}
+import Farm from "../pages/Farmer/Farm";
+import Weather from "../pages/Farmer/Weather";
+import Analytics from "../pages/Farmer/Analytics";
+import AIRecommendation from "../pages/Farmer/AIRecommendation";
+import Profile from "../pages/Farmer/Profile";
+import Settings from "../pages/Farmer/Settings";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Redirect Root */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Public Routes */}
-
-        <Route path="/" element={<Home />} />
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Admin Routes */}
+        {/* ================= ADMIN ROUTES ================= */}
 
         <Route
           path="/admin/dashboard"
@@ -52,7 +44,34 @@ function AppRoutes() {
           }
         />
 
-        {/* Farmer Routes */}
+        <Route
+          path="/admin/farmers"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <Farmers />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/farms"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <Farms />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/crops"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <Crops />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ================= FARMER ROUTES ================= */}
 
         <Route
           path="/farmer/dashboard"
@@ -62,8 +81,6 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
-        {/* Shared Protected Routes */}
 
         <Route
           path="/farm"
@@ -102,15 +119,6 @@ function AppRoutes() {
         />
 
         <Route
-          path="/irrigation"
-          element={
-            <ProtectedRoute allowedRole="FARMER">
-              <Irrigation />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
           path="/profile"
           element={
             <ProtectedRoute allowedRole="FARMER">
@@ -128,10 +136,23 @@ function AppRoutes() {
           }
         />
 
-        {/* Default */}
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-
+        {/* 404 Page */}
+        <Route
+          path="*"
+          element={
+            <div className="flex items-center justify-center h-screen bg-gray-100">
+              <div className="text-center">
+                <h1 className="text-7xl font-bold text-red-600">404</h1>
+                <p className="mt-4 text-2xl text-gray-700">
+                  Page Not Found
+                </p>
+                <p className="mt-2 text-gray-500">
+                  The page you're looking for doesn't exist.
+                </p>
+            </div>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

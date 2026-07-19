@@ -1,147 +1,134 @@
+import { NavLink, useNavigate } from "react-router-dom";
 import {
+  FaTachometerAlt,
+  FaUsers,
   FaSeedling,
-  FaChartPie,
-  FaTractor,
+  FaLeaf,
   FaCloudSun,
-  FaChartLine,
+  FaChartBar,
   FaRobot,
-  FaTint,
   FaUserCircle,
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
 
-import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/auth";
 
 function Sidebar() {
   const navigate = useNavigate();
+
+  const role = localStorage.getItem("role");
+
+  const adminMenu = [
+    {
+      name: "Dashboard",
+      icon: <FaTachometerAlt />,
+      path: "/admin/dashboard",
+    },
+    {
+      name: "Farmers",
+      icon: <FaUsers />,
+      path: "/admin/farmers",
+    },
+    {
+      name: "Farms",
+      icon: <FaSeedling />,
+      path: "/admin/farms",
+    },
+    {
+      name: "Crops",
+      icon: <FaLeaf />,
+      path: "/admin/crops",
+    },
+  ];
+
+  const farmerMenu = [
+    {
+      name: "Dashboard",
+      icon: <FaTachometerAlt />,
+      path: "/farmer/dashboard",
+    },
+    {
+      name: "My Farms",
+      icon: <FaSeedling />,
+      path: "/farm",
+    },
+    {
+      name: "Weather",
+      icon: <FaCloudSun />,
+      path: "/weather",
+    },
+    {
+      name: "Analytics",
+      icon: <FaChartBar />,
+      path: "/analytics",
+    },
+    {
+      name: "AI Recommendation",
+      icon: <FaRobot />,
+      path: "/recommendation",
+    },
+    {
+      name: "Profile",
+      icon: <FaUserCircle />,
+      path: "/profile",
+    },
+    {
+      name: "Settings",
+      icon: <FaCog />,
+      path: "/settings",
+    },
+  ];
+
+  const menu = role === "ADMIN" ? adminMenu : farmerMenu;
 
   const handleLogout = () => {
     logoutUser();
     navigate("/login");
   };
 
-  const menuItems = [
-    {
-      title: "Dashboard",
-      path: "/dashboard",
-      icon: <FaChartPie />,
-    },
-    {
-      title: "Farm Management",
-      path: "/farm",
-      icon: <FaTractor />,
-    },
-    {
-      title: "Weather",
-      path: "/weather",
-      icon: <FaCloudSun />,
-    },
-    {
-      title: "Analytics",
-      path: "/analytics",
-      icon: <FaChartLine />,
-    },
-    {
-      title: "AI Recommendation",
-      path: "/recommendation",
-      icon: <FaRobot />,
-    },
-    {
-      title: "Irrigation",
-      path: "/irrigation",
-      icon: <FaTint />,
-    },
-    {
-      title: "Profile",
-      path: "/profile",
-      icon: <FaUserCircle />,
-    },
-    {
-      title: "Settings",
-      path: "/settings",
-      icon: <FaCog />,
-    },
-  ];
-
   return (
-    <aside className="w-72 h-screen bg-slate-900 text-white flex flex-col shadow-2xl">
+    <aside className="w-64 min-h-screen bg-green-700 text-white flex flex-col">
 
       {/* Logo */}
+      <div className="p-6 border-b border-green-600">
+        <h1 className="text-3xl font-bold">
+          🌿 FarmVerse
+        </h1>
 
-      <div className="h-24 flex items-center justify-center border-b border-slate-700">
-
-        <div className="flex items-center gap-3">
-
-          <div className="bg-green-600 p-3 rounded-xl">
-
-            <FaSeedling size={28} />
-
-          </div>
-
-          <div>
-
-            <h1 className="text-2xl font-bold">
-              FarmVerse
-            </h1>
-
-            <p className="text-sm text-slate-400">
-              Precision Agriculture
-            </p>
-
-          </div>
-
-        </div>
-
+        <p className="text-sm mt-2 text-green-100">
+          Smart Agriculture Platform
+        </p>
       </div>
 
       {/* Navigation */}
-
-      <nav className="flex-1 mt-8 px-4">
-
-        {menuItems.map((item) => (
+      <nav className="flex-1 mt-6">
+        {menu.map((item) => (
           <NavLink
-            key={item.path}
+            key={item.name}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-4 px-5 py-4 rounded-xl mb-3 transition-all duration-300 ${
+              `flex items-center gap-4 px-6 py-4 transition ${
                 isActive
-                  ? "bg-green-600 text-white"
-                  : "hover:bg-slate-800 text-slate-300"
+                  ? "bg-white text-green-700 font-semibold"
+                  : "hover:bg-green-600"
               }`
             }
           >
-            <span className="text-xl">
-              {item.icon}
-            </span>
-
-            <span className="font-medium">
-              {item.title}
-            </span>
-
+            <span className="text-xl">{item.icon}</span>
+            <span>{item.name}</span>
           </NavLink>
         ))}
-
       </nav>
 
       {/* Logout */}
-
-      <div className="p-5 border-t border-slate-700">
-
-        <button
-          onClick={handleLogout}
-          className="flex items-center justify-center gap-3 w-full px-5 py-4 rounded-xl bg-red-600 hover:bg-red-700 transition-all duration-300"
-        >
-
-          <FaSignOutAlt />
-
-          Logout
-
-        </button>
-
-      </div>
-
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-4 px-6 py-5 hover:bg-red-600 transition"
+      >
+        <FaSignOutAlt />
+        Logout
+      </button>
     </aside>
   );
 }

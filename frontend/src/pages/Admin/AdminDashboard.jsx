@@ -1,143 +1,178 @@
-import { FaUsers, FaSeedling, FaLeaf, FaSignOutAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../../services/auth";
+import { useEffect, useState } from "react";
+import {
+  FaUsers,
+  FaSeedling,
+  FaLeaf,
+} from "react-icons/fa";
+
+import DashboardLayout from "../../components/Layout/DashboardLayout";
+import { getAdminDashboard } from "../../services/dashboard";
 
 function AdminDashboard() {
-  const navigate = useNavigate();
 
-  const username = localStorage.getItem("username") || "Admin";
+  const [dashboard, setDashboard] = useState({
+    status: "",
+    statusCode: "",
+    message: "",
+    totalFarmers: 0,
+    totalFarms: 0,
+    totalCrops: 0,
+  });
 
-  const handleLogout = () => {
-    logoutUser();
-    navigate("/login");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    setLoading(true);
+
+    const response = await getAdminDashboard();
+
+    if (response.status === "ok") {
+      setDashboard(response.data);
+    } else {
+      alert(response.message);
+    }
+
+    setLoading(false);
   };
 
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex justify-center items-center h-[80vh]">
+          <h1 className="text-2xl font-bold">
+            Loading Dashboard...
+          </h1>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <DashboardLayout>
 
-      {/* Sidebar */}
+      {/* Page Heading */}
 
-      <aside className="w-64 bg-green-700 text-white flex flex-col">
+      <div className="mb-8">
 
-        <div className="text-3xl font-bold p-6 border-b border-green-600">
-          🌿 FarmVerse
-        </div>
+        <h1 className="text-4xl font-bold text-gray-800">
+          Admin Dashboard
+        </h1>
 
-        <nav className="flex-1 mt-6">
+        <p className="text-gray-500 mt-2">
+          Monitor and manage the FarmVerse platform.
+        </p>
 
-          <button className="w-full text-left px-6 py-4 hover:bg-green-600">
-            Dashboard
-          </button>
+      </div>
 
-          <button className="w-full text-left px-6 py-4 hover:bg-green-600">
-            Farmers
-          </button>
+      {/* Statistics Cards */}
 
-          <button className="w-full text-left px-6 py-4 hover:bg-green-600">
-            Farms
-          </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-          <button className="w-full text-left px-6 py-4 hover:bg-green-600">
-            Crops
-          </button>
+        {/* Total Farmers */}
 
-        </nav>
+        <div className="bg-white rounded-2xl shadow-md p-6">
 
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 p-6 hover:bg-red-600"
-        >
-          <FaSignOutAlt />
-          Logout
-        </button>
+          <div className="flex justify-between items-center">
 
-      </aside>
+            <div>
 
-      {/* Main */}
+              <p className="text-gray-500">
+                Total Farmers
+              </p>
 
-      <main className="flex-1 p-10">
+              <h2 className="text-4xl font-bold mt-3">
+                {dashboard.totalFarmers}
+              </h2>
 
-        <div className="flex justify-between items-center">
-
-          <div>
-
-            <h1 className="text-4xl font-bold">
-              Admin Dashboard
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Welcome back, {username}
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* Cards */}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+            </div>
 
             <FaUsers className="text-5xl text-blue-600" />
 
-            <h2 className="text-xl font-semibold mt-4">
-              Total Farmers
-            </h2>
-
-            <p className="text-4xl font-bold mt-4">
-              0
-            </p>
-
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+        </div>
+
+        {/* Total Farms */}
+
+        <div className="bg-white rounded-2xl shadow-md p-6">
+
+          <div className="flex justify-between items-center">
+
+            <div>
+
+              <p className="text-gray-500">
+                Total Farms
+              </p>
+
+              <h2 className="text-4xl font-bold mt-3">
+                {dashboard.totalFarms}
+              </h2>
+
+            </div>
 
             <FaSeedling className="text-5xl text-green-600" />
-
-            <h2 className="text-xl font-semibold mt-4">
-              Total Farms
-            </h2>
-
-            <p className="text-4xl font-bold mt-4">
-              0
-            </p>
-
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-
-            <FaLeaf className="text-5xl text-yellow-500" />
-
-            <h2 className="text-xl font-semibold mt-4">
-              Total Crops
-            </h2>
-
-            <p className="text-4xl font-bold mt-4">
-              0
-            </p>
 
           </div>
 
         </div>
 
-        {/* Recent Activity */}
+        {/* Total Crops */}
 
-        <div className="bg-white rounded-2xl shadow-lg mt-10 p-8">
+        <div className="bg-white rounded-2xl shadow-md p-6">
 
-          <h2 className="text-2xl font-bold mb-6">
-            Recent Activity
-          </h2>
+          <div className="flex justify-between items-center">
 
-          <p className="text-gray-500">
-            No recent activity available.
+            <div>
+
+              <p className="text-gray-500">
+                Total Crops
+              </p>
+
+              <h2 className="text-4xl font-bold mt-3">
+                {dashboard.totalCrops}
+              </h2>
+
+            </div>
+
+            <FaLeaf className="text-5xl text-yellow-500" />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* System Status */}
+
+      <div className="bg-white rounded-2xl shadow-md mt-10 p-8">
+
+        <h2 className="text-2xl font-bold mb-5">
+          System Status
+        </h2>
+
+        <div className="space-y-3">
+
+          <p>
+            <strong>Status :</strong> {dashboard.status}
+          </p>
+
+          <p>
+            <strong>Status Code :</strong> {dashboard.statusCode}
+          </p>
+
+          <p>
+            <strong>Message :</strong> {dashboard.message}
           </p>
 
         </div>
 
-      </main>
+      </div>
 
-    </div>
+    </DashboardLayout>
   );
 }
 
