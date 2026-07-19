@@ -7,6 +7,7 @@ import java.util.Optional;
 @Repository
 public interface CropRepository extends JpaRepository<Crop, Long> {
     Optional<Crop> findByIdAndFarm_Farmer_Id(Long cropId, Long farmerId);
+    long countByFarm_Farmer_Id(Long farmerId);
 }
 
 

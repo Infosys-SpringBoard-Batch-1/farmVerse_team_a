@@ -11,4 +11,5 @@ public interface FarmRepository extends JpaRepository<Farm, Long> {
 
     List<Farm> findByFarmerId(Long farmerId);
     Optional<Farm> findByIdAndFarmerId(Long id, Long farmerId);
+    long countByFarmerId(Long farmerId);
 }
