@@ -68,16 +68,25 @@ function Register() {
       role: formData.role,
     };
 
-    const response = await registerUser(payload);
+   try {
+  const response = await registerUser(payload);
 
-    setLoading(false);
+  setLoading(false);
 
-    if (response.status === "ok") {
-      alert("Registration Successful!");
-      navigate("/login");
-    } else {
-      alert(response.message);
-    }
+  alert("Registration Successful!");
+
+  console.log(response);
+
+  navigate("/login");
+
+} catch (error) {
+  setLoading(false);
+
+  alert(
+    error.response?.data?.message ||
+    "Registration failed!"
+  );
+}
   };
 
   return (

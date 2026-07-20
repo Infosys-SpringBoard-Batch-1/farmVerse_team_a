@@ -38,24 +38,30 @@ function Login() {
 
     setLoading(true);
 
-    const response = await loginUser({
-      username: formData.username,
-      password: formData.password,
-      role: formData.role,
-    });
+    try {
+      const response = await loginUser({
+        username: formData.username,
+        password: formData.password,
+        role: formData.role,
+      });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (response.status === "ok") {
-      alert("Login Successful");
+      alert("Login Successful!");
 
-      if (response.data.role === "ADMIN") {
+      if (response.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else {
         navigate("/farmer/dashboard");
       }
-    } else {
-      alert(response.message);
+
+    } catch (error) {
+      setLoading(false);
+
+      alert(
+        error.response?.data?.message ||
+        "Invalid username or password!"
+      );
     }
   };
 
@@ -83,7 +89,6 @@ function Login() {
         >
 
           {/* Username */}
-
           <div>
             <label className="font-medium">
               Username
@@ -111,7 +116,6 @@ function Login() {
           </div>
 
           {/* Password */}
-
           <div>
             <label className="font-medium">
               Password
@@ -139,7 +143,6 @@ function Login() {
           </div>
 
           {/* Role */}
-
           <div>
             <label className="font-medium">
               Login As
@@ -162,7 +165,6 @@ function Login() {
           </div>
 
           {/* Remember Me */}
-
           <div className="flex justify-between items-center">
             <label className="flex items-center gap-2 text-gray-600">
               <input type="checkbox" />
@@ -178,7 +180,6 @@ function Login() {
           </div>
 
           {/* Login Button */}
-
           <button
             type="submit"
             disabled={!isFormValid || loading}
@@ -190,6 +191,7 @@ function Login() {
           >
             {loading ? "Logging In..." : "Login"}
           </button>
+
         </form>
 
         <p className="text-center mt-8 text-gray-600">

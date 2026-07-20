@@ -10,17 +10,18 @@ import Register from "../pages/Register/Register";
 // Admin Pages
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import Farmers from "../pages/Admin/Farmers";
-import Farms from "../pages/Admin/Farms";
 import Crops from "../pages/Admin/Crops";
 
 // Farmer Pages
 import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
-import Farm from "../pages/Farmer/Farm";
-import Weather from "../pages/Farmer/Weather";
-import Analytics from "../pages/Farmer/Analytics";
-import AIRecommendation from "../pages/Farmer/AIRecommendation";
-import Profile from "../pages/Farmer/Profile";
-import Settings from "../pages/Farmer/Settings";
+import Farm from "../pages/Farm/Farm";
+import Analytics from "../pages/Analytics/Analytics";
+import Weather from "../pages/Weather/Weather";
+import Profile from "../pages/Profile/Profile";
+import Settings from "../pages/Settings/Settings";
+import AIRecommendation from "../pages/Recommendations/AIRecommendation";
+
+import AddFarm from "../pages/Farm/AddFarm";
 
 function AppRoutes() {
   return (
@@ -53,14 +54,7 @@ function AppRoutes() {
           }
         />
 
-        <Route
-          path="/admin/farms"
-          element={
-            <ProtectedRoute allowedRole="ADMIN">
-              <Farms />
-            </ProtectedRoute>
-          }
-        />
+        
 
         <Route
           path="/admin/crops"
@@ -90,6 +84,15 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/farm/add"
+  element={
+    <ProtectedRoute allowedRole="FARMER">
+      <AddFarm />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/weather"

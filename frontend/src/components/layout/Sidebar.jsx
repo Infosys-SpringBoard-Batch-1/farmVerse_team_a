@@ -54,6 +54,11 @@ function Sidebar() {
       path: "/farm",
     },
     {
+      name: "Add Farm",
+      icon: <FaSeedling />,
+      path: "/farm/add",
+    },
+    {
       name: "Weather",
       icon: <FaCloudSun />,
       path: "/weather",
@@ -89,12 +94,9 @@ function Sidebar() {
 
   return (
     <aside className="w-64 min-h-screen bg-green-700 text-white flex flex-col">
-
       {/* Logo */}
       <div className="p-6 border-b border-green-600">
-        <h1 className="text-3xl font-bold">
-          🌿 FarmVerse
-        </h1>
+        <h1 className="text-3xl font-bold">🌿 FarmVerse</h1>
 
         <p className="text-sm mt-2 text-green-100">
           Smart Agriculture Platform

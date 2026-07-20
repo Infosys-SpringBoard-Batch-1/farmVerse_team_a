@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import {
   FaPlus,
@@ -8,15 +9,15 @@ import {
 } from "react-icons/fa";
 
 function Farm() {
+  const navigate = useNavigate();
+
   return (
     <DashboardLayout>
 
       {/* Header */}
-
       <div className="flex justify-between items-center mb-8">
 
         <div>
-
           <h1 className="text-4xl font-bold text-slate-800">
             Farm Management
           </h1>
@@ -24,25 +25,22 @@ function Farm() {
           <p className="text-gray-500 mt-2">
             Manage all your farms from one place.
           </p>
-
         </div>
 
-        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg">
-
+        <button
+          onClick={() => navigate("/farm/add")}
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg transition"
+        >
           <FaPlus />
-
           Add Farm
-
         </button>
 
       </div>
 
       {/* Farm Summary */}
-
       <div className="grid md:grid-cols-3 gap-6 mb-10">
 
         <div className="bg-white rounded-2xl shadow-md p-6">
-
           <h2 className="text-gray-500">
             Total Farms
           </h2>
@@ -50,11 +48,9 @@ function Farm() {
           <h1 className="text-4xl font-bold mt-4 text-green-700">
             12
           </h1>
-
         </div>
 
         <div className="bg-white rounded-2xl shadow-md p-6">
-
           <h2 className="text-gray-500">
             Total Area
           </h2>
@@ -62,11 +58,9 @@ function Farm() {
           <h1 className="text-4xl font-bold mt-4 text-blue-600">
             95 Acres
           </h1>
-
         </div>
 
         <div className="bg-white rounded-2xl shadow-md p-6">
-
           <h2 className="text-gray-500">
             Healthy Crops
           </h2>
@@ -74,17 +68,14 @@ function Farm() {
           <h1 className="text-4xl font-bold mt-4 text-green-600">
             96%
           </h1>
-
         </div>
 
       </div>
 
       {/* Farm Cards */}
-
       <div className="grid lg:grid-cols-2 gap-8">
 
         {/* Card 1 */}
-
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition">
 
           <img
@@ -119,32 +110,22 @@ function Farm() {
                 Rice
               </p>
 
-              <p>
-                Area : 12 Acres
-              </p>
+              <p>Area : 12 Acres</p>
 
-              <p>
-                Soil : Clay
-              </p>
+              <p>Soil : Clay</p>
 
             </div>
 
             <div className="flex gap-4 mt-6">
 
               <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl flex justify-center items-center gap-2">
-
                 <FaEdit />
-
                 Edit
-
               </button>
 
               <button className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl flex justify-center items-center gap-2">
-
                 <FaTrash />
-
                 Delete
-
               </button>
 
             </div>
@@ -154,7 +135,6 @@ function Farm() {
         </div>
 
         {/* Card 2 */}
-
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition">
 
           <img
@@ -189,32 +169,22 @@ function Farm() {
                 Wheat
               </p>
 
-              <p>
-                Area : 18 Acres
-              </p>
+              <p>Area : 18 Acres</p>
 
-              <p>
-                Soil : Loamy
-              </p>
+              <p>Soil : Loamy</p>
 
             </div>
 
             <div className="flex gap-4 mt-6">
 
               <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl flex justify-center items-center gap-2">
-
                 <FaEdit />
-
                 Edit
-
               </button>
 
               <button className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl flex justify-center items-center gap-2">
-
                 <FaTrash />
-
                 Delete
-
               </button>
 
             </div>
