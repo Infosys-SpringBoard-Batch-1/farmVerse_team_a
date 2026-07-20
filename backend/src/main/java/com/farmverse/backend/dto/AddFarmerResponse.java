@@ -12,3 +12,19 @@ public class AddFarmerResponse {
     private String message;
     private Long id;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

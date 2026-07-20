@@ -1,61 +1,161 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import Home from "../pages/Home/Home";
+// Protected Route
+import ProtectedRoute from "../components/Common/ProtectedRoute";
+
+// Authentication
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
-import Dashboard from "../pages/Dashboard/Dashboard";
+// Admin Pages
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import Farmers from "../pages/Admin/Farmers";
+import Crops from "../pages/Admin/Crops";
+
+// Farmer Pages
+import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
 import Farm from "../pages/Farm/Farm";
-import Weather from "../pages/Weather/Weather";
 import Analytics from "../pages/Analytics/Analytics";
-import AIRecommendation from "../pages/Recommendations/AIRecommendation";
-import Irrigation from "../pages/Irrigation/Irrigation";
+import Weather from "../pages/Weather/Weather";
 import Profile from "../pages/Profile/Profile";
 import Settings from "../pages/Settings/Settings";
+import AIRecommendation from "../pages/Recommendations/AIRecommendation";
+
+import AddFarm from "../pages/Farm/AddFarm";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Redirect Root */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Public Routes */}
-
-        <Route path="/" element={<Home />} />
-
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
-
         <Route path="/register" element={<Register />} />
 
-        {/* Dashboard Routes */}
-
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route path="/farm" element={<Farm />} />
-
-        <Route path="/weather" element={<Weather />} />
-
-        <Route path="/analytics" element={<Analytics />} />
+        {/* ================= ADMIN ROUTES ================= */}
 
         <Route
-          path="/recommendation"
-          element={<AIRecommendation />}
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
         />
 
         <Route
-          path="/irrigation"
-          element={<Irrigation />}
+          path="/admin/farmers"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <Farmers />
+            </ProtectedRoute>
+          }
+        />
+
+        
+
+        <Route
+          path="/admin/crops"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <Crops />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ================= FARMER ROUTES ================= */}
+
+        <Route
+          path="/farmer/dashboard"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <FarmerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/farm"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Farm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+  path="/farm/add"
+  element={
+    <ProtectedRoute allowedRole="FARMER">
+      <AddFarm />
+    </ProtectedRoute>
+  }
+/>
+
+        <Route
+          path="/weather"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Weather />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/recommendation"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <AIRecommendation />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/profile"
-          element={<Profile />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Profile />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/settings"
-          element={<Settings />}
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <Settings />
+            </ProtectedRoute>
+          }
         />
 
+        {/* 404 Page */}
+        <Route
+          path="*"
+          element={
+            <div className="flex items-center justify-center h-screen bg-gray-100">
+              <div className="text-center">
+                <h1 className="text-7xl font-bold text-red-600">404</h1>
+                <p className="mt-4 text-2xl text-gray-700">
+                  Page Not Found
+                </p>
+                <p className="mt-2 text-gray-500">
+                  The page you're looking for doesn't exist.
+                </p>
+            </div>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

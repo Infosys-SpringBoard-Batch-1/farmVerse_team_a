@@ -1,46 +1,45 @@
-// src/services/auth.js
+import axios from "axios";
 
-export async function registerUser(data) {
-  console.log("========== REGISTER REQUEST ==========");
-  console.log("Payload:", {
-    username: data.username,
-    email: data.email,
-    password: data.password,
-  });
+const API_BASE_URL = "http://localhost:8080/api/auth";
 
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+// Register User
+export const registerUser = async (userData) => {
+  const response = await axios.post(`${API_BASE_URL}/register`, userData);
+  return response.data;
+};
 
-  return {
-    status: "ok",
-    statusCode: 200,
-    message: "User registered successfully",
-  };
-}
+// Login User
+export const loginUser = async (loginData) => {
+  const response = await axios.post(`${API_BASE_URL}/login`, loginData);
 
-export async function loginUser(data) {
-  console.log("========== LOGIN REQUEST ==========");
-  console.log("Payload:", {
-    email: data.email,
-    password: data.password,
-  });
+  // Save token and user details
+  localStorage.setItem("token", response.data.token);
+  localStorage.setItem("username", response.data.username);
+  localStorage.setItem("email", response.data.email);
+  localStorage.setItem("role", response.data.role);
 
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return response.data;
+};
 
-  // Fake JWT Token for frontend testing
-  const fakeToken = "fake-jwt-token";
+// Logout User
+export const logoutUser = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+  localStorage.removeItem("email");
+  localStorage.removeItem("role");
+};
 
-  localStorage.setItem("jwtToken", fakeToken);
+// Check if logged in
+export const isAuthenticated = () => {
+  return !!localStorage.getItem("token");
+};
 
-  return {
-    status: "ok",
-    statusCode: 200,
-    message: "Login successful",
-    jwtToken: fakeToken,
-  };
-}
+// Get JWT Token
+export const getToken = () => {
+  return localStorage.getItem("token");
+};
 
-export function logoutUser() {
-  localStorage.removeItem("jwtToken");
-}
+// Get User Role
+export const getRole = () => {
+  return localStorage.getItem("role");
+};

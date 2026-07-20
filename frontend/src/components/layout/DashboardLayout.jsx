@@ -1,28 +1,26 @@
 import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
+import Navbar from "./Navbar";
 
 function DashboardLayout({ children }) {
   return (
-    <div className="flex bg-slate-100 min-h-screen">
+    <div className="min-h-screen flex bg-gray-100">
 
       {/* Sidebar */}
 
       <Sidebar />
 
-      {/* Right Side */}
+      {/* Main Section */}
 
       <div className="flex-1 flex flex-col">
 
-        {/* Topbar */}
+        {/* Navbar */}
 
-        <Topbar />
+        <Navbar />
 
-        {/* Main Content */}
+        {/* Page Content */}
 
-        <main className="flex-1 p-8 overflow-y-auto">
-
+        <main className="flex-1 p-8 overflow-auto">
           {children}
-
         </main>
 
       </div>

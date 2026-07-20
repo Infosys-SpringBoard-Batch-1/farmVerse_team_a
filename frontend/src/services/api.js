@@ -5,21 +5,16 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000,
 });
 
-// Automatically attach JWT token if available
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("jwtToken");
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("jwtToken");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  return config;
+});
 
 export default api;

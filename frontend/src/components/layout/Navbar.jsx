@@ -1,100 +1,71 @@
-import { Link } from "react-router-dom";
-import { FaSeedling, FaBars } from "react-icons/fa";
+import {
+  FaBell,
+  FaUserCircle,
+} from "react-icons/fa";
 
 function Navbar() {
+  const username = localStorage.getItem("username") || "User";
+  const role = localStorage.getItem("role") || "FARMER";
+
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-lg shadow-md">
+    <header className="bg-white shadow-md px-8 py-5 flex items-center justify-between">
 
-      <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+      {/* Left */}
 
-        {/* Logo */}
+      <div>
 
-        <Link
-          to="/"
-          className="flex items-center gap-3"
-        >
+        <h1 className="text-2xl font-bold text-gray-800">
+          Welcome, {username} 👋
+        </h1>
 
-          <div className="bg-green-600 p-3 rounded-xl shadow-lg">
+        <p className="text-gray-500 mt-1">
+          {today}
+        </p>
 
-            <FaSeedling className="text-white text-2xl" />
+      </div>
 
-          </div>
+      {/* Right */}
+
+      <div className="flex items-center gap-6">
+
+        {/* Notification */}
+
+        <button className="relative">
+
+          <FaBell className="text-2xl text-gray-600 hover:text-green-700 transition" />
+
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-2">
+            0
+          </span>
+
+        </button>
+
+        {/* User */}
+
+        <div className="flex items-center gap-3">
+
+          <FaUserCircle className="text-4xl text-green-700" />
 
           <div>
 
-            <h1 className="text-2xl font-bold text-slate-800">
-              FarmVerse
-            </h1>
-
-            <p className="text-xs text-gray-500">
-              Precision Agriculture Platform
+            <p className="font-semibold">
+              {username}
             </p>
+
+            <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+              {role}
+            </span>
 
           </div>
 
-        </Link>
-
-        {/* Desktop Menu */}
-
-        <nav className="hidden lg:flex items-center gap-10">
-
-          <a
-            href="#"
-            className="font-medium text-slate-700 hover:text-green-600 transition"
-          >
-            Home
-          </a>
-
-          <a
-            href="#features"
-            className="font-medium text-slate-700 hover:text-green-600 transition"
-          >
-            Features
-          </a>
-
-          <a
-            href="#"
-            className="font-medium text-slate-700 hover:text-green-600 transition"
-          >
-            About
-          </a>
-
-          <a
-            href="#"
-            className="font-medium text-slate-700 hover:text-green-600 transition"
-          >
-            Contact
-          </a>
-
-        </nav>
-
-        {/* Buttons */}
-
-        <div className="hidden lg:flex items-center gap-4">
-
-          <Link
-            to="/login"
-            className="border border-green-600 text-green-700 px-6 py-3 rounded-xl hover:bg-green-50 transition"
-          >
-            Login
-          </Link>
-
-          <Link
-            to="/register"
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl transition shadow-lg"
-          >
-            Register
-          </Link>
-
         </div>
-
-        {/* Mobile Menu Icon */}
-
-        <button className="lg:hidden text-2xl text-slate-700">
-
-          <FaBars />
-
-        </button>
 
       </div>
 

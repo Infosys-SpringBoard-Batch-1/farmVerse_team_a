@@ -20,10 +20,12 @@ function Register() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    fullName: "",
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
+    role: "FARMER",
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,18 +37,17 @@ function Register() {
     });
   };
 
+  const isFullNameValid = formData.fullName.trim().length >= 3;
   const isUsernameValid = validateUsername(formData.username);
-
   const isEmailValid = validateEmail(formData.email);
-
   const isPasswordValid = validatePassword(formData.password);
-
   const isConfirmPasswordValid = passwordsMatch(
     formData.password,
     formData.confirmPassword
   );
 
   const isFormValid =
+    isFullNameValid &&
     isUsernameValid &&
     isEmailValid &&
     isPasswordValid &&
@@ -59,40 +60,43 @@ function Register() {
 
     setLoading(true);
 
-    // Registration Payload
     const payload = {
+      fullName: formData.fullName,
       username: formData.username,
       email: formData.email,
       password: formData.password,
+      role: formData.role,
     };
 
-    console.log("Registration Payload:", payload);
+   try {
+  const response = await registerUser(payload);
 
-    const response = await registerUser(payload);
+  setLoading(false);
 
-    setLoading(false);
+  alert("Registration Successful!");
 
-    if (response.status === "ok") {
-      alert("User Registered Successfully");
-      navigate("/login");
-    } else {
-      alert(response.message);
-    }
+  console.log(response);
+
+  navigate("/login");
+
+} catch (error) {
+  setLoading(false);
+
+  alert(
+    error.response?.data?.message ||
+    "Registration failed!"
+  );
+}
   };
 
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center items-center p-8">
-
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-10">
 
         <div className="flex justify-center">
-
           <div className="bg-green-600 p-4 rounded-full">
-
             <FaSeedling className="text-white text-3xl" />
-
           </div>
-
         </div>
 
         <h1 className="text-4xl font-bold text-center mt-6">
@@ -103,20 +107,44 @@ function Register() {
           Register to continue
         </p>
 
-        <form
-          className="mt-10 space-y-6"
-          onSubmit={handleSubmit}
-        >
-                    {/* Username */}
+        <form className="mt-10 space-y-6" onSubmit={handleSubmit}>
+
+          {/* Full Name */}
 
           <div>
+            <label className="font-medium">
+              Full Name
+            </label>
 
+            <div className="flex items-center border rounded-xl mt-2 px-4">
+              <FaUser className="text-gray-400" />
+
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                className="w-full p-4 outline-none"
+              />
+            </div>
+
+            {!isFullNameValid &&
+              formData.fullName !== "" && (
+                <p className="text-red-500 text-sm mt-2">
+                  Full name must be at least 3 characters.
+                </p>
+              )}
+          </div>
+
+          {/* Username */}
+
+          <div>
             <label className="font-medium">
               Username
             </label>
 
             <div className="flex items-center border rounded-xl mt-2 px-4">
-
               <FaUser className="text-gray-400" />
 
               <input
@@ -127,27 +155,24 @@ function Register() {
                 onChange={handleChange}
                 className="w-full p-4 outline-none"
               />
-
             </div>
 
-            {!isUsernameValid && formData.username !== "" && (
-              <p className="text-red-500 text-sm mt-2">
-                Username must contain at least 3 characters.
-              </p>
-            )}
-
+            {!isUsernameValid &&
+              formData.username !== "" && (
+                <p className="text-red-500 text-sm mt-2">
+                  Username must contain at least 3 characters.
+                </p>
+              )}
           </div>
 
           {/* Email */}
 
           <div>
-
             <label className="font-medium">
               Email
             </label>
 
             <div className="flex items-center border rounded-xl mt-2 px-4">
-
               <FaEnvelope className="text-gray-400" />
 
               <input
@@ -158,27 +183,24 @@ function Register() {
                 onChange={handleChange}
                 className="w-full p-4 outline-none"
               />
-
             </div>
 
-            {!isEmailValid && formData.email !== "" && (
-              <p className="text-red-500 text-sm mt-2">
-                Please enter a valid email address.
-              </p>
-            )}
-
+            {!isEmailValid &&
+              formData.email !== "" && (
+                <p className="text-red-500 text-sm mt-2">
+                  Please enter a valid email address.
+                </p>
+              )}
           </div>
 
           {/* Password */}
 
           <div>
-
             <label className="font-medium">
               Password
             </label>
 
             <div className="flex items-center border rounded-xl mt-2 px-4">
-
               <FaLock className="text-gray-400" />
 
               <input
@@ -189,27 +211,24 @@ function Register() {
                 onChange={handleChange}
                 className="w-full p-4 outline-none"
               />
-
             </div>
 
-            {!isPasswordValid && formData.password !== "" && (
-              <p className="text-red-500 text-sm mt-2">
-                Password must be at least 8 characters and include uppercase,
-                lowercase, a number, and a special character.
-              </p>
-            )}
-
+            {!isPasswordValid &&
+              formData.password !== "" && (
+                <p className="text-red-500 text-sm mt-2">
+                  Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.
+                </p>
+              )}
           </div>
-                    {/* Confirm Password */}
+
+          {/* Confirm Password */}
 
           <div>
-
             <label className="font-medium">
               Confirm Password
             </label>
 
             <div className="flex items-center border rounded-xl mt-2 px-4">
-
               <FaLock className="text-gray-400" />
 
               <input
@@ -220,7 +239,6 @@ function Register() {
                 onChange={handleChange}
                 className="w-full p-4 outline-none"
               />
-
             </div>
 
             {!isConfirmPasswordValid &&
@@ -229,10 +247,30 @@ function Register() {
                   Passwords do not match.
                 </p>
               )}
-
           </div>
 
-          {/* Register Button */}
+          {/* Role */}
+
+          <div>
+            <label className="font-medium">
+              Register As
+            </label>
+
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full mt-2 p-4 border rounded-xl outline-none"
+            >
+              <option value="FARMER">
+                Farmer
+              </option>
+
+              <option value="ADMIN">
+                Admin
+              </option>
+            </select>
+          </div>
 
           <button
             type="submit"
@@ -248,10 +286,7 @@ function Register() {
 
         </form>
 
-        {/* Login Link */}
-
         <p className="text-center mt-8 text-gray-600">
-
           Already have an account?
 
           <Link
@@ -260,11 +295,9 @@ function Register() {
           >
             Login
           </Link>
-
         </p>
 
       </div>
-
     </div>
   );
 }
