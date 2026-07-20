@@ -19,7 +19,7 @@ public class FarmerService {
     public FarmerDashboardResponse getDashboard(String username) {
 
         User farmer = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Farmer not found"));
 
         return new FarmerDashboardResponse(
                 "ok",

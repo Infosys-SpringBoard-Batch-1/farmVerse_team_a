@@ -9,5 +9,5 @@ public class FarmerResponse {
 
     private String fullName;
     private String username;
-    private String email;
+    private long farmCount;
 }
