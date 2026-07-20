@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Protected Route
-import ProtectedRoute from "../components/Common/ProtectedRoute";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
 // Authentication
 import Login from "../pages/Login/Login";
@@ -15,18 +15,18 @@ import Crops from "../pages/Admin/Crops";
 // Farmer Pages
 import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
 import Farm from "../pages/Farm/Farm";
+import AddFarm from "../pages/Farm/AddFarm";
 import Analytics from "../pages/Analytics/Analytics";
 import Weather from "../pages/Weather/Weather";
 import Profile from "../pages/Profile/Profile";
 import Settings from "../pages/Settings/Settings";
 import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 
-import AddFarm from "../pages/Farm/AddFarm";
-
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* Redirect Root */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
@@ -53,8 +53,6 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
-        
 
         <Route
           path="/admin/crops"
@@ -86,13 +84,13 @@ function AppRoutes() {
         />
 
         <Route
-  path="/farm/add"
-  element={
-    <ProtectedRoute allowedRole="FARMER">
-      <AddFarm />
-    </ProtectedRoute>
-  }
-/>
+          path="/farm/add"
+          element={
+            <ProtectedRoute allowedRole="FARMER">
+              <AddFarm />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/weather"
@@ -139,7 +137,7 @@ function AppRoutes() {
           }
         />
 
-        {/* 404 Page */}
+        {/* 404 */}
         <Route
           path="*"
           element={
@@ -152,10 +150,11 @@ function AppRoutes() {
                 <p className="mt-2 text-gray-500">
                   The page you're looking for doesn't exist.
                 </p>
-            </div>
+              </div>
             </div>
           }
         />
+
       </Routes>
     </BrowserRouter>
   );
