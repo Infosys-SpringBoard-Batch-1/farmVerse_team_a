@@ -1,5 +1,5 @@
 
-# Project Planning Documentation
+# FarmVerse Project Planning Documentation
 
 **Team Name:** Team-A
 
