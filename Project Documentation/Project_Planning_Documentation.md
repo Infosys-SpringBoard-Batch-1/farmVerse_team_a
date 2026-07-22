@@ -95,6 +95,7 @@ The Farm Management System will provide a centralized platform for managing farm
 3) AI-based crop recommendations
 4) Online marketplace for farm products
 5) SMS and Email notifications
+   
 6)Multi-user access with role-based permissions
 
 ## 10. Conclusion:-
