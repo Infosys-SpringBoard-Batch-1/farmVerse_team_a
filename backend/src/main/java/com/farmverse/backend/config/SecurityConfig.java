@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.farmverse.backend.security.JwtAuthenticationFilter;
+import com.farmverse.backend.security.OAuth2LoginSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,15 +68,48 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
+
+                // OAuth2 requires a temporary session
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/farmverse/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/farmverse/farmer/**").hasRole("FARMER")
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/oauth2/**",
+                                "/login/**",
+                                "/error"
+                        ).permitAll()
+
+                        .requestMatchers("/farmverse/admin/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/farmverse/farmer/**")
+                        .hasRole("FARMER")
+
+                        .anyRequest()
+                        .authenticated()
                 )
+
+                .oauth2Login(oauth -> oauth
+    .authorizationEndpoint(auth -> auth.baseUri("/oauth2/authorization"))
+    .redirectionEndpoint(redir -> redir.baseUri("/login/oauth2/code/*"))
+
+    .successHandler(oAuth2LoginSuccessHandler)
+
+    .failureHandler((request, response, exception) -> {
+
+        exception.printStackTrace();
+
+        response.sendRedirect(
+                "http://localhost:5173/login?googleError=true"
+        );
+    })
+)
+        
+
+
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class

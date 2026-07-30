@@ -45,7 +45,7 @@ public class AdminService {
                 .map(user -> new FarmerResponse(
                         user.getFullName(),
                         user.getUsername(),
-                        user.getEmail()
+                        farmRepository.countByFarmerId(user.getId())
                 ))
                 .collect(Collectors.toList());
     }
@@ -74,7 +74,7 @@ public class AdminService {
                 "ok",
                 "200",
                 "Farmer added successfully",
-                savedUser.getId()
+                String.valueOf(savedUser.getId())
         );
     }
 
@@ -113,7 +113,7 @@ public class AdminService {
                 "ok",
                 "200",
                 "Farmer updated successfully",
-                updatedUser.getId()
+                String.valueOf(updatedUser.getId())
         );
     }
 
@@ -138,7 +138,7 @@ public class AdminService {
                 "ok",
                 "200",
                 "Farmer deleted successfully",
-                id
+                String.valueOf(id)
         );
     }
 }

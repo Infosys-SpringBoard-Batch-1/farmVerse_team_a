@@ -10,21 +10,5 @@ public class AddFarmerResponse {
     private String status;
     private String statusCode;
     private String message;
-    private Long id;
+    private String id;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.farmverse.backend.dto.ApiResponse;
-import com.farmverse.backend.dto.CropSummary;
+import com.farmverse.backend.dto.CropDetail;
 import com.farmverse.backend.dto.FarmDetail;
 import com.farmverse.backend.dto.FarmRequest;
 import com.farmverse.backend.dto.FarmSummary;
@@ -63,25 +63,43 @@ public class FarmService {
         return ApiResponse.ok("Farm & its crops deleted successfully", farmId.toString());
     }
 
-    public ViewFarmRespose viewFarm(Long farmId, String username){
-        User farmer = getCurrentFarmer(username);
-        Farm farm = farmRepository.findByIdAndFarmerId(farmId, farmer.getId()).orElseThrow(() -> new IllegalArgumentException("Farm not found"));
-        List<CropSummary> cropSummaries = farm.getCrops().stream()
-                .map(crop -> new CropSummary(crop.getId(), crop.getCropName()))
-                .toList();
+    public ViewFarmRespose viewFarm(Long farmId, String username) {
 
-        FarmDetail detail = new FarmDetail(
-                farm.getId(),
-                farm.getFarmName(),
-                farm.getFarmType(),
-                farm.getAreaSqMt(),
-                farm.getSoilType(),
-                farm.getLocation(),
-                cropSummaries
-        );
-        return new ViewFarmRespose("ok","200","Farm details fetched successfully",detail);
-    }
+    User farmer = getCurrentFarmer(username);
 
+    Farm farm = farmRepository
+            .findByIdAndFarmerId(farmId, farmer.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Farm not found"));
+
+    List<CropDetail> cropDetails = farm.getCrops().stream()
+            .map(crop -> new CropDetail(
+                    crop.getId(),
+                    crop.getCropName(),
+                    crop.getCropType(),
+                    crop.getQuantity(),
+                    crop.getSowingDate(),
+                    crop.getHarvestDate(),
+                    farm.getFarmName()
+            ))
+            .toList();
+
+    FarmDetail detail = new FarmDetail(
+            farm.getId(),
+            farm.getFarmName(),
+            farm.getFarmType(),
+            farm.getAreaSqMt(),
+            farm.getSoilType(),
+            farm.getLocation(),
+            cropDetails
+    );
+
+    return new ViewFarmRespose(
+            "ok",
+            "200",
+            "Farm details fetched successfully",
+            detail
+    );
+}
     public ListFarmsResponse listAllFarms(String username){
         User farmer = getCurrentFarmer(username);
         List<Farm> farms = farmRepository.findByFarmerId(farmer.getId());
