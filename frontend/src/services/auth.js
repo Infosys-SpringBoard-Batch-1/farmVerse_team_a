@@ -1,45 +1,82 @@
-import axios from "axios";
+import api from "./api";
 
-const API_BASE_URL = "http://localhost:8080/api/auth";
-
-// Register User
-export const registerUser = async (userData) => {
-  const response = await axios.post(`${API_BASE_URL}/register`, userData);
+/**
+ * Register Farmer
+ */
+export const registerFarmer = async (userData) => {
+  const response = await api.post("/api/auth/register", userData);
   return response.data;
 };
 
-// Login User
+/**
+ * Login Farmer/Admin
+ */
 export const loginUser = async (loginData) => {
-  const response = await axios.post(`${API_BASE_URL}/login`, loginData);
+  const response = await api.post("/api/auth/login", loginData);
 
-  // Save token and user details
-  localStorage.setItem("token", response.data.token);
-  localStorage.setItem("username", response.data.username);
-  localStorage.setItem("email", response.data.email);
-  localStorage.setItem("role", response.data.role);
+  const { token, username, email, role } = response.data;
+
+  // Save JWT
+  localStorage.setItem("jwtToken", token);
+
+  // Save user details
+  localStorage.setItem(
+    "user",
+    JSON.stringify({
+      username,
+      email,
+      role,
+    })
+  );
 
   return response.data;
 };
 
-// Logout User
-export const logoutUser = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("username");
-  localStorage.removeItem("email");
-  localStorage.removeItem("role");
+/**
+ * Logout
+ */
+export const logout = () => {
+  localStorage.removeItem("jwtToken");
+  localStorage.removeItem("user");
 };
 
-// Check if logged in
-export const isAuthenticated = () => {
-  return !!localStorage.getItem("token");
+/**
+ * Get Logged-in User
+ */
+export const getCurrentUser = () => {
+  const user = localStorage.getItem("user");
+
+  if (!user) return null;
+
+  return JSON.parse(user);
 };
 
-// Get JWT Token
+/**
+ * Get JWT Token
+ */
 export const getToken = () => {
-  return localStorage.getItem("token");
+  return localStorage.getItem("jwtToken");
 };
 
-// Get User Role
-export const getRole = () => {
-  return localStorage.getItem("role");
+/**
+ * Check Login
+ */
+export const isAuthenticated = () => {
+  return !!localStorage.getItem("jwtToken");
+};
+
+/**
+ * Check Farmer
+ */
+export const isFarmer = () => {
+  const user = getCurrentUser();
+  return user?.role === "FARMER";
+};
+
+/**
+ * Check Admin
+ */
+export const isAdmin = () => {
+  const user = getCurrentUser();
+  return user?.role === "ADMIN";
 };

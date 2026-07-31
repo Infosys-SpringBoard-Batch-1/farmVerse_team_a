@@ -1,38 +1,64 @@
 package com.farmverse.backend.controller;
-import com.farmverse.backend.dto.AuthResponse;
-import com.farmverse.backend.dto.LoginRequest;
-import com.farmverse.backend.dto.RegisterRequest;
-import com.farmverse.backend.service.AuthService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.farmverse.backend.dto.AuthResponse;
+import com.farmverse.backend.dto.ForgotPasswordRequest;
+import com.farmverse.backend.dto.LoginRequest;
+import com.farmverse.backend.dto.RegisterRequest;
+import com.farmverse.backend.dto.ResetPasswordRequest;
+import com.farmverse.backend.service.AuthService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Register
+     */
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        try {
-            AuthResponse response = authService.register(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<AuthResponse> register(
+            @Valid @RequestBody RegisterRequest request) {
+
+        return ResponseEntity.ok(authService.register(request));
     }
 
+    /**
+     * Login
+     */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request){
-        try{
-            AuthResponse response = authService.login(request);
-            return ResponseEntity.ok(response);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+    public ResponseEntity<AuthResponse> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        return ResponseEntity.ok(authService.login(request));
     }
+
+    /**
+     * Forgot Password - Send OTP
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request) {
+
+        return ResponseEntity.ok(authService.forgotPassword(request));
+    }
+
+    /**
+     * Reset Password using OTP
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request) {
+
+        return ResponseEntity.ok(authService.resetPassword(request));
+    }
+
 }
