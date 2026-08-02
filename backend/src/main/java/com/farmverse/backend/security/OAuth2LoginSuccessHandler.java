@@ -47,12 +47,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             User user;
 
+            String selectedRole =
+                    CustomAuthorizationRequestRepository.getSelectedRole(request);
+
+            System.out.println("Selected Role : " + selectedRole);
+
+            // Existing user
             if (optionalUser.isPresent()) {
 
                 user = optionalUser.get();
+
                 System.out.println("Existing user found");
 
-            } else {
+            }
+            // New user
+            else {
 
                 System.out.println("Creating new user...");
 
@@ -70,14 +79,30 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
                 user.setUsername(username);
 
-                // Random password for OAuth users
+                // Random password
                 user.setPassword(UUID.randomUUID().toString());
 
+                // Google users are FARMER by default
                 user.setRole(Role.FARMER);
 
                 user = userRepository.save(user);
 
                 System.out.println("New user created");
+            }
+
+            // Check selected role AFTER user has been assigned
+            if (selectedRole != null &&
+                    !selectedRole.equalsIgnoreCase(user.getRole().name())) {
+
+                System.out.println("Role mismatch!");
+
+                CustomAuthorizationRequestRepository.clearRole(request);
+
+                response.sendRedirect(
+                        "http://localhost:5173/login?roleMismatch=true"
+                );
+
+                return;
             }
 
             System.out.println("Generating JWT...");
@@ -87,30 +112,22 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                     user.getRole().name()
             );
 
-            System.out.println("JWT Generated Successfully");
-            System.out.println(token);
-
             String redirectUrl =
-                    "http://localhost:5173/oauth-success?token=" + token;
+                    "http://localhost:5173/oauth-success"
+                            + "?token=" + token
+                            + "&role=" + user.getRole().name();
 
-            System.out.println("Redirect URL:");
-            System.out.println(redirectUrl);
+            CustomAuthorizationRequestRepository.clearRole(request);
 
             response.sendRedirect(redirectUrl);
 
         } catch (Exception ex) {
 
-            System.out.println("\n========== GOOGLE LOGIN FAILED ==========");
             ex.printStackTrace();
 
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.setContentType("text/plain");
-
-            response.getWriter().println("GOOGLE LOGIN FAILED");
-            response.getWriter().println("--------------------------------");
-            ex.printStackTrace(response.getWriter());
-
-            response.getWriter().flush();
+            response.sendRedirect(
+                    "http://localhost:5173/login?googleError=true"
+            );
         }
     }
 }

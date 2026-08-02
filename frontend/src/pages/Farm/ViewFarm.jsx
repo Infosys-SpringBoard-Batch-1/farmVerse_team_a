@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getFarmById } from "../../services/farm";
-import { FaArrowLeft, FaPlus } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaList
+} from "react-icons/fa";
+import { deleteCrop } from "../../services/crop";
 
 export default function ViewFarm() {
   const { id } = useParams();
@@ -29,6 +37,25 @@ export default function ViewFarm() {
       setLoading(false);
     }
   };
+
+  const handleDeleteCrop = async (cropId) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this crop?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await deleteCrop(cropId);
+
+    alert("Crop deleted successfully.");
+
+    loadFarm(); // Refresh the crop list
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete crop.");
+  }
+};
 
   if (loading) {
     return (
@@ -89,18 +116,28 @@ export default function ViewFarm() {
 
         {/* Crop Header */}
         <div className="flex justify-between items-center mt-10">
-          <h2 className="text-3xl font-semibold">
-            Crops
-          </h2>
+  <h2 className="text-3xl font-semibold">
+    Crops
+  </h2>
 
-          <button
-            onClick={() => navigate(`/farm/${farm.farmId}/crop/add`)}
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
-          >
-            <FaPlus />
-            Add Crop
-          </button>
-        </div>
+  <div className="flex gap-3">
+    <button
+      onClick={() => navigate("/crops")}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+    >
+      <FaList />
+      View All
+    </button>
+
+    <button
+      onClick={() => navigate(`/farm/${farm.farmId}/crop/add`)}
+      className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+    >
+      <FaPlus />
+      Add Crop
+    </button>
+  </div>
+</div>
 
         {/* Crop List */}
         {(farm.crops ?? []).length === 0 ? (
@@ -143,6 +180,35 @@ export default function ViewFarm() {
                   <p>
                     <strong>Harvest:</strong> {crop.harvestDate}
                   </p>
+
+                  <div className="flex justify-between mt-5 gap-2">
+
+  <button
+    onClick={() => navigate(`/crop/${crop.cropId}`)}
+    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center gap-2"
+  >
+    <FaEye />
+    View
+  </button>
+
+  <button
+    onClick={() => navigate(`/crop/edit/${crop.cropId}`)}
+    className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg flex items-center justify-center gap-2"
+  >
+    <FaEdit />
+    Edit
+  </button>
+
+ <button
+  onClick={() => handleDeleteCrop(crop.cropId)}
+    className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg flex items-center justify-center gap-2"
+  >
+    <FaTrash />
+    Delete
+  </button>
+
+</div>
+
                 </div>
               </div>
             ))}

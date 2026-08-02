@@ -1,11 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import OAuthSuccess from "../pages/OAuthSuccess";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 // Protected Route
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 // Authentication
+import Landing from "../pages/Landing";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "../pages/ForgotPassword/ResetPassword";
+import OAuthSuccess from "../pages/OAuthSuccess";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
 // Admin Pages
@@ -17,39 +21,59 @@ import Crops from "../pages/Admin/Crops";
 import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
 import Farm from "../pages/Farm/Farm";
 import AddFarm from "../pages/Farm/AddFarm";
+import EditFarm from "../pages/Farm/EditFarm";
+import ViewFarm from "../pages/Farm/ViewFarm";
+import AddCrop from "../pages/Crop/AddCrop";
+import Weather from "../pages/Weather/Weather";
 import Analytics from "../pages/Analytics/Analytics";
+import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 
+// Profile
 import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/Profile/EditProfile";
 import Settings from "../pages/Settings/Settings";
-import AIRecommendation from "../pages/Recommendations/AIRecommendation";
-import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
-import ResetPassword from "../pages/ForgotPassword/ResetPassword";
-import AddCrop from "../pages/Crop/AddCrop";
-import ViewFarm from "../pages/Farm/ViewFarm";
-import Weather from "../pages/Weather/Weather";
-import EditFarm from "../pages/Farm/EditFarm";
+import ViewCrop from "../pages/Crop/ViewCrop";
+import EditCrop from "../pages/Crop/EditCrop";
+
+import ViewAllCrops from "../pages/Crop/ViewAllCrops";
+import CreateAdmin from "../pages/admin/CreateAdmin";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Root */}
-        <Route
-          path="/"
-          element={<Navigate to="/login" replace />}
-        />
+        {/* ================= LANDING ================= */}
 
-        {/* Authentication */}
+        <Route path="/" element={<Landing />} />
+
+        {/* ================= AUTH ================= */}
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
-<Route path="/reset-password" element={<ResetPassword />} />
-<Route path="/oauth-success" element={<OAuthSuccess />} />
+
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
+
         <Route path="/unauthorized" element={<Unauthorized />} />
+
+        {/* ================= FARM VIEW ================= */}
+
         <Route path="/farm/:id" element={<ViewFarm />} />
-        
+
+        <Route
+  path="/admin/create-admin"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <CreateAdmin />
+    </ProtectedRoute>
+  }
+/>
+
 
         {/* ================= ADMIN ================= */}
 
@@ -62,20 +86,6 @@ function AppRoutes() {
           }
         />
 
-          <Route
-  path="/weather"
-  element={
-    <ProtectedRoute allowedRoles={["FARMER"]}>
-      <Weather />
-    </ProtectedRoute>
-  }
-/>
-
-        <Route
-    path="/farm/:id/crop/add"
-    element={<AddCrop />}
-/>
-
         <Route
           path="/admin/farmers"
           element={
@@ -84,8 +94,6 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
-        
 
         <Route
           path="/admin/crops"
@@ -126,6 +134,51 @@ function AppRoutes() {
         />
 
         <Route
+          path="/farm/edit/:id"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <EditFarm />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/farm/:id/crop/add"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <AddCrop />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+  path="/crop/:id"
+  element={
+    <ProtectedRoute allowedRoles={["FARMER"]}>
+      <ViewCrop />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/crop/edit/:id"
+  element={
+    <ProtectedRoute allowedRoles={["FARMER"]}>
+      <EditCrop />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+    path="/crops"
+    element={
+        <ProtectedRoute allowedRoles={["FARMER"]}>
+            <ViewAllCrops />
+        </ProtectedRoute>
+    }
+/>
+
+        <Route
           path="/weather"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
@@ -152,7 +205,6 @@ function AppRoutes() {
           }
         />
 
-        {/* Profile */}
         <Route
           path="/profile"
           element={
@@ -162,7 +214,6 @@ function AppRoutes() {
           }
         />
 
-        {/* Edit Profile */}
         <Route
           path="/profile/edit"
           element={
@@ -172,7 +223,6 @@ function AppRoutes() {
           }
         />
 
-        {/* Settings */}
         <Route
           path="/settings"
           element={
@@ -182,30 +232,20 @@ function AppRoutes() {
           }
         />
 
-        <Route
-  path="/farm/edit/:id"
-  element={
-    <ProtectedRoute allowedRoles={["FARMER"]}>
-      <EditFarm />
-    </ProtectedRoute>
-  }
-/>
+        {/* ================= 404 ================= */}
 
-        {/* 404 */}
         <Route
           path="*"
           element={
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
               <div className="text-center">
-                <h1 className="text-7xl font-bold text-red-600">
-                  404
-                </h1>
+                <h1 className="text-7xl font-bold text-red-600">404</h1>
 
                 <p className="mt-4 text-2xl">
                   Page Not Found
                 </p>
 
-                <p className="text-gray-500 mt-2">
+                <p className="mt-2 text-gray-500">
                   The page you are looking for does not exist.
                 </p>
               </div>

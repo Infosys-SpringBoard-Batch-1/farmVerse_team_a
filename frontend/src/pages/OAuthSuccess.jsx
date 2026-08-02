@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 function parseJwt(token) {
   try {
@@ -17,36 +16,21 @@ function parseJwt(token) {
 }
 
 export default function OAuthSuccess() {
-  const navigate = useNavigate();
-
   const hasRun = useRef(false);
 
   useEffect(() => {
-    // Prevent React StrictMode from running twice
     if (hasRun.current) return;
     hasRun.current = true;
-
-    console.log("========== OAUTH SUCCESS ==========");
-
-    // If token already exists, don't process again
-    if (localStorage.getItem("jwtToken")) {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (user.role === "ADMIN") {
-        window.location.replace("/admin/dashboard");
-      } else {
-        window.location.replace("/farmer/dashboard");
-      }
-
-      return;
-    }
 
     const params = new URLSearchParams(window.location.search);
 
     const token = params.get("token");
+    const role = params.get("role");
+
+    const selectedRole = localStorage.getItem("selectedRole");
 
     if (!token) {
-      console.error("No token in URL");
+      alert("Google login failed.");
       window.location.replace("/login");
       return;
     }
@@ -54,7 +38,23 @@ export default function OAuthSuccess() {
     const payload = parseJwt(token);
 
     if (!payload) {
-      console.error("Invalid JWT");
+      alert("Invalid token.");
+      window.location.replace("/login");
+      return;
+    }
+
+    // Role mismatch
+    if (
+      selectedRole &&
+      role &&
+      selectedRole !== role
+    ) {
+      localStorage.removeItem("selectedRole");
+
+      alert(
+        `This Google account belongs to a ${role}. Please select the correct role.`
+      );
+
       window.location.replace("/login");
       return;
     }
@@ -62,21 +62,21 @@ export default function OAuthSuccess() {
     const user = {
       username: payload.sub,
       email: payload.email || "",
-      role: payload.role,
+      role: role || payload.role,
     };
 
     localStorage.setItem("jwtToken", token);
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("username", user.username);
 
-    console.log("JWT Saved");
-    console.log(user);
+    localStorage.removeItem("selectedRole");
 
     if (user.role === "ADMIN") {
       window.location.replace("/admin/dashboard");
     } else {
       window.location.replace("/farmer/dashboard");
     }
+
   }, []);
 
   return (
