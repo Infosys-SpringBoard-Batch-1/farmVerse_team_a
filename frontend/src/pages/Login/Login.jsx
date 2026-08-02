@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import {
   FaUser,
@@ -34,6 +35,21 @@ function Login() {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("roleMismatch") === "true") {
+    alert(
+      "This Google account is registered as a different role. Please select the correct role."
+    );
+  }
+
+  if (params.get("googleError") === "true") {
+    alert("Google login failed. Please try again.");
+  }
+}, []);
+
     const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -68,8 +84,11 @@ function Login() {
   };
 
 const handleGoogleLogin = () => {
- window.location.href =
-    "http://localhost:8080/oauth2/authorization/google?prompt=select_account";
+
+    localStorage.setItem("selectedRole", selectedRole);
+
+    window.location.href =
+        `http://localhost:8080/oauth2/authorization/google?prompt=select_account&role=${selectedRole}`;
 };
 
     const handleSubmit = async (e) => {
@@ -99,11 +118,17 @@ const handleGoogleLogin = () => {
         navigate("/farmer/dashboard");
       }
     } catch (error) {
-      alert(
-        error.response?.data ||
-        "Invalid username or password."
-      );
-    } finally {
+  const message =
+    error.response?.data?.message ||
+    error.response?.data?.error ||
+    (typeof error.response?.data === "string"
+      ? error.response.data
+      : null) ||
+    error.message ||
+    "Invalid username or password.";
+
+  alert(message);
+} finally {
       setLoading(false);
     }
   };
