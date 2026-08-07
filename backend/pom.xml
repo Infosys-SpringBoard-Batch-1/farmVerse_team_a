@@ -43,6 +43,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Gemini SDK dependency for Chatbot -->
+        <dependency>
+            <groupId>com.google.genai</groupId>
+            <artifactId>google-genai</artifactId>
+            <version>1.18.0</version>
+        </dependency>
+
         <!-- Spring Security OAuth2 Client -->
 <dependency>
     <groupId>org.springframework.boot</groupId>

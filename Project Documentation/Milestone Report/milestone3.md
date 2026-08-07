@@ -1,6 +1,6 @@
 # FarmVerse: Precision Agriculture Management Platform
 ## Milestone 3 Progress Report
-**Duration:** 2 weeks | **Status:**  In Progress
+**Duration:** 2 weeks | **Status:**  Completed
 
 ---
 
@@ -8,7 +8,7 @@
 
 Milestone 3 focuses on full-stack implementation and integration. The team is actively building CRUD endpoints for core resources, implementing role-based access control for different user personas, testing APIs comprehensively, integrating frontend with backend, establishing AI integration patterns, and creating delivery artifacts. This milestone transitions FarmVerse from specification to a working application with multiple user roles and AI-ready architecture.
 
-**Team Velocity:** 9 objectives | **Completed:** 6 | **In Progress:** 3
+**Team Velocity:** 9 objectives | 
 
 ---
 
@@ -91,16 +91,8 @@ Comprehensive testing of all implemented endpoints using Postman. Created organi
 │   ├── Get Crop Detail
 │   ├── Update Crop
 │   └── Delete Crop
-├── User Profile
-│   ├── Get Profile
-│   ├── Update Profile
-│   └── Change Password
-└── Admin Operations
-    ├── Get All Users
-    ├── Get User Detail
-    ├── Update User Status
-    ├── Delete User
-    └── Get Dashboard
+└── User Profile
+  └── Change Password
 ```
 ---
 
@@ -197,25 +189,6 @@ Created professional presentation for stakeholders showcasing FarmVerse function
 | **Shaik Kousar Bee** | AI/ML Specialist | AI strategy, Implementation docs, Chatbot design |
 | **Arfa** | Database | Database design, Schema management, Presentation |
 
-
-
-### 8. Admin & Guest Profiles (Frontend)
-**Owner:** Ananya  
-**Status:**  In Progress
-
-**Details:**
-
-Building admin dashboard and guest interface with role-specific features.
-
----
-
-### 9. Guest API Endpoints
-**Owners:** Arindam Pal, Bhagyesh  
-**Status:** In Progress
-
-**Details:**
-
-Creating read-only endpoints for unauthenticated guest users to explore FarmVerse data.
 
 ---
 
