@@ -73,17 +73,30 @@ public class ChatbotService {
 
         log.info("Generated Prompt:\n{}", prompt);
 
-        String geminiResponse = askGemini(prompt);
+        try {
 
-        // Save after Gemini responds
-        saveMessage(user, "USER", request.getMessage());
-        saveMessage(user, "ASSISTANT", geminiResponse);
+            String geminiResponse = askGemini(prompt);
 
-        return ChatResponse.builder()
-                .response(geminiResponse)
-                .timestamp(LocalDateTime.now())
-                .success(true)
-                .build();
+            saveMessage(user, "USER", request.getMessage());
+            saveMessage(user, "ASSISTANT", geminiResponse);
+
+            return ChatResponse.builder()
+                    .response(geminiResponse)
+                    .timestamp(LocalDateTime.now())
+                    .success(true)
+                    .build();
+
+        } catch (Exception e) {
+
+            log.error("Error while communicating with Gemini", e);
+
+            return ChatResponse.builder()
+                    .response("I'm currently unable to process your request. Please try again in a few moments.")
+                    .timestamp(LocalDateTime.now())
+                    .success(false)
+                    .error(e.getMessage())
+                    .build();
+        }
     }
 
     //Gemini Method
