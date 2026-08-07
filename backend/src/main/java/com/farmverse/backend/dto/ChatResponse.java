@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ChatResponse {
     private String response;
-    private Long userId;
     private LocalDateTime timestamp;
+    private boolean success;
     private String error;
 }
