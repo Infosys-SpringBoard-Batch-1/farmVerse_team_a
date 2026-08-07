@@ -7,6 +7,7 @@ import com.farmverse.backend.entity.User;
 import com.farmverse.backend.repository.ConversationMessageRepository;
 import com.farmverse.backend.repository.FarmRepository;
 import com.farmverse.backend.repository.UserRepository;
+import com.google.genai.types.GenerateContentConfig;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,12 @@ public class ChatbotService {
 
     @Value("${gemini.model}")
     private String geminiModel;
+
+    @Value("${gemini.temperature}")
+    private Float geminiTemperature;
+
+    @Value("${gemini.max-output-tokens}")
+    private Integer geminiMaxOutputTokens;
 
     private User getCurrentUser(){
         String email = SecurityContextHolder
@@ -100,16 +107,24 @@ public class ChatbotService {
     }
 
     //Gemini Method
-    private String askGemini(String prompt){
+    private String askGemini(String prompt) {
+
         Client client = Client.builder()
                 .apiKey(geminiApiKey)
                 .build();
+
+        GenerateContentConfig config = GenerateContentConfig.builder()
+                .temperature(geminiTemperature)
+                .maxOutputTokens(geminiMaxOutputTokens)
+                .build();
+
         GenerateContentResponse response =
                 client.models.generateContent(
                         geminiModel,
                         prompt,
-                        null
+                        config
                 );
+
         return response.text();
     }
 
@@ -119,20 +134,20 @@ public class ChatbotService {
                                ChatRequest request){
         StringBuilder prompt = new StringBuilder();
         prompt.append("""
-                You are FarmVerse AI, an intelligent agricultural professional who helps Indian farmers.
+                You are Krishi AI, an intelligent agricultural professional developed for the FarmVerse platform to assist Indian farmers.
                 
-                Always answer politely.
+                Be polite and natural. Greet only at the beginning of a new conversation or when appropriate.
                 Always provide agricultural guidance using simple language.
-                Keep responses between 4 and 8 lines.
+                Keep responses between 4 and 5 lines maximum.
                 
                 If information is insufficient, ask follow-up questions.
                 
                 Prioritize advice for crops currently registered by the farmer. If the user asks about another crop, answer it but clearly mention that it is not currently registered on their FarmVerse account.
                 
                 When appropriate:
-                - Use bullet points.
-                - Mention precautions.
-                - End with one recommendation or simply thanking user and asking if they could be helped again
+                - Use bullet points, keep the responses as brief as possible unless asked to elaborate.
+                - Mention precautions only when they are relevant to the user's question. Do not force a precaution into every response.
+                - End with a practical recommendation or a relevant follow-up question or simply a thank you for using message, but only when it feels natural. Avoid repeating the same closing in every response.
                 
                 Do not answer unrelated questions.
                 Do not provide political, diplomatic, or non-agricultural opinions.
