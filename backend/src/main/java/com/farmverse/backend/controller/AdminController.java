@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -28,10 +29,12 @@ public class AdminController {
     }
 
     @PostMapping("/addFarmer")
-    public ResponseEntity<AddFarmerResponse> addFarmer(
-            @Valid @RequestBody AddFarmerRequest request) {
+    public ResponseEntity addFarmer(
+            @Valid @RequestBody AddFarmerRequest request,
+            Authentication authentication) {
 
-        AddFarmerResponse response = adminService.addFarmer(request);
+        AddFarmerResponse response =
+                adminService.addFarmer(request, authentication.getName());
 
         if ("400".equals(response.getStatusCode())) {
             return ResponseEntity.badRequest().body(response);
@@ -43,9 +46,15 @@ public class AdminController {
     @PutMapping("/editFarmer/{username}")
     public ResponseEntity<EditFarmerResponse> editFarmer(
             @PathVariable String username,
-            @Valid @RequestBody EditFarmerRequest request) {
+            @Valid @RequestBody EditFarmerRequest request,
+            Authentication authentication) {
 
-        EditFarmerResponse response = adminService.editFarmer(username, request);
+        EditFarmerResponse response =
+                adminService.editFarmer(
+                        username,
+                        request,
+                        authentication.getName()
+                );
 
         if ("400".equals(response.getStatusCode())) {
             return ResponseEntity.badRequest().body(response);
@@ -60,9 +69,14 @@ public class AdminController {
 
     @DeleteMapping("/deleteFarmer/{username}")
     public ResponseEntity<DeleteFarmerResponse> deleteFarmer(
-            @PathVariable String username) {
+            @PathVariable String username,
+            Authentication authentication) {
 
-        DeleteFarmerResponse response = adminService.deleteFarmer(username);
+        DeleteFarmerResponse response =
+                adminService.deleteFarmer(
+                        username,
+                        authentication.getName()
+                );
 
         if ("404".equals(response.getStatusCode())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

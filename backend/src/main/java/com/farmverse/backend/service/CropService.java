@@ -25,6 +25,7 @@ public class CropService {
     private final CropRepository cropRepository;
     private final FarmRepository farmRepository;
     private final UserRepository userRepository;
+    private final ApplicationHistoryService applicationHistoryService;
 
     private User getCurrentFarmer(String username) {
         return userRepository.findByUsername(username)
@@ -51,7 +52,13 @@ public class CropService {
         crop.setFarm(farm);
 
         Crop saved = cropRepository.save(crop);
-
+        applicationHistoryService.log(
+                username,
+                "ADD_CROP",
+                "CROP",
+                saved.getId().toString(),
+                "Added crop " + saved.getCropName()
+        );
         return ApiResponse.ok(
                 "Crop added successfully",
                 saved.getId().toString()
@@ -78,6 +85,13 @@ public class CropService {
         crop.setHarvestDate(request.getHarvestDate());
 
         cropRepository.save(crop);
+        applicationHistoryService.log(
+                username,
+                "EDIT_CROP",
+                "CROP",
+                crop.getId().toString(),
+                "Updated crop " + crop.getCropName()
+        );
 
         return ApiResponse.ok(
                 "Crop updated successfully",
@@ -98,6 +112,13 @@ public class CropService {
                         new IllegalArgumentException("Crop not found"));
 
         cropRepository.delete(crop);
+        applicationHistoryService.log(
+                username,
+                "DELETE_CROP",
+                "CROP",
+                cropId.toString(),
+                "Crop deleted successfully"
+        );
 
         return ApiResponse.ok(
                 "Crop deleted successfully",

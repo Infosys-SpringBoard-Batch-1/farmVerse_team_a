@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class FarmService {
     private final FarmRepository farmRepository;
     private final UserRepository userRepository;
+    private final ApplicationHistoryService applicationHistoryService;
 
     private User getCurrentFarmer(String username){
         return userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -38,6 +39,13 @@ public class FarmService {
         farm.setFarmer(farmer);
 
         Farm saved = farmRepository.save(farm);
+        applicationHistoryService.log(
+                username,
+                "ADD_FARM",
+                "FARM",
+                saved.getId().toString(),
+                "Added farm " + saved.getFarmName()
+        );
         return ApiResponse.ok("Farm added successfully", saved.getId().toString());
     }
 
@@ -53,14 +61,39 @@ public class FarmService {
 
 
         farmRepository.save(farm);
+        applicationHistoryService.log(
+                username,
+                "EDIT_FARM",
+                "FARM",
+                farm.getId().toString(),
+                "Updated farm " + farm.getFarmName()
+        );
         return ApiResponse.ok("Farm updated successfully", farm.getId().toString());
     }
 
-    public ApiResponse deleteFarm(Long farmId, String username){
+    public ApiResponse deleteFarm(Long farmId, String username) {
+
         User farmer = getCurrentFarmer(username);
-        Farm farm = farmRepository.findByIdAndFarmerId(farmId, farmer.getId()).orElseThrow(() -> new IllegalArgumentException("Farm not found"));
+
+        Farm farm = farmRepository
+                .findByIdAndFarmerId(farmId, farmer.getId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Farm not found"));
+
         farmRepository.delete(farm);
-        return ApiResponse.ok("Farm & its crops deleted successfully", farmId.toString());
+
+        applicationHistoryService.log(
+                username,
+                "DELETE_FARM",
+                "FARM",
+                farmId.toString(),
+                "Farm deleted successfully"
+        );
+
+        return ApiResponse.ok(
+                "Farm & its crops deleted successfully",
+                farmId.toString()
+        );
     }
 
     public ViewFarmRespose viewFarm(Long farmId, String username) {

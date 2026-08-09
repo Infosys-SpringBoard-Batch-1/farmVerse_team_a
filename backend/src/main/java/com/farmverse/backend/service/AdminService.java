@@ -21,6 +21,7 @@ public class AdminService {
     private final FarmRepository farmRepository;
     private final CropRepository cropRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationHistoryService applicationHistoryService;
 
     public AdminDashboardResponse getDashboard() {
 
@@ -50,7 +51,9 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    public AddFarmerResponse addFarmer(AddFarmerRequest request) {
+    public AddFarmerResponse addFarmer(
+            AddFarmerRequest request,
+            String adminUsername) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             return new AddFarmerResponse(
@@ -70,6 +73,14 @@ public class AdminService {
 
         User savedUser = userRepository.save(user);
 
+        applicationHistoryService.log(
+                adminUsername,
+                "ADD_FARMER",
+                "FARMER",
+                String.valueOf(savedUser.getId()),
+                "Added farmer " + savedUser.getFullName()
+        );
+
         return new AddFarmerResponse(
                 "ok",
                 "200",
@@ -78,7 +89,10 @@ public class AdminService {
         );
     }
 
-    public EditFarmerResponse editFarmer(String username, EditFarmerRequest request) {
+    public EditFarmerResponse editFarmer(
+            String username,
+            EditFarmerRequest request,
+            String adminUsername) {
 
         User user = userRepository.findByUsername(username).orElse(null);
 
@@ -108,6 +122,13 @@ public class AdminService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User updatedUser = userRepository.save(user);
+        applicationHistoryService.log(
+                adminUsername,
+                "EDIT_FARMER",
+                "FARMER",
+                String.valueOf(updatedUser.getId()),
+                "Updated farmer " + updatedUser.getFullName()
+        );
 
         return new EditFarmerResponse(
                 "ok",
@@ -117,7 +138,9 @@ public class AdminService {
         );
     }
 
-    public DeleteFarmerResponse deleteFarmer(String username) {
+    public DeleteFarmerResponse deleteFarmer(
+            String username,
+            String adminUsername) {
 
         User user = userRepository.findByUsername(username).orElse(null);
 
@@ -133,6 +156,13 @@ public class AdminService {
         Long id = user.getId();
 
         userRepository.delete(user);
+        applicationHistoryService.log(
+                adminUsername,
+                "DELETE_FARMER",
+                "FARMER",
+                String.valueOf(id),
+                "Deleted farmer " + user.getFullName()
+        );
 
         return new DeleteFarmerResponse(
                 "ok",
