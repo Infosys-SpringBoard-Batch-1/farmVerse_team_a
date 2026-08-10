@@ -48,9 +48,6 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
             Monitor farm productivity and business insights.
           </p>
         </div>
-        <button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1">
-          Export Report
-        </button>
       </div>
 
       {/* Statistics */}
