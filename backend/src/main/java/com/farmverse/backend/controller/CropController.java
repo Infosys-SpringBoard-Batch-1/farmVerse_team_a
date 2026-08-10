@@ -17,6 +17,7 @@ import com.farmverse.backend.dto.ApiResponse;
 import com.farmverse.backend.dto.CropRequest;
 import com.farmverse.backend.dto.ViewCropResponse;
 import com.farmverse.backend.service.CropService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
