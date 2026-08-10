@@ -1,6 +1,7 @@
 # FarmVerse: Precision Agriculture Management Platform
 ## Milestone 3 Progress Report
 **Duration:** 2 weeks | **Status:**  Completed
+| Version 1.0.0
 
 ---
 

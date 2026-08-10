@@ -40,6 +40,7 @@ import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/Profile/EditProfile";
 import Settings from "../pages/Settings/Settings";
+import History from "../pages/History/History";
 
 function AppRoutes() {
   return (
@@ -124,6 +125,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <CreateAdmin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/history"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <History />
             </ProtectedRoute>
           }
         />
@@ -291,6 +301,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <History />
             </ProtectedRoute>
           }
         />

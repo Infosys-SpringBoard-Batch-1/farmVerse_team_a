@@ -32,9 +32,98 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
         <div className="flex justify-center items-center h-full pt-20">
           <h2 className="text-2xl font-semibold text-red-500">Failed to load analytics data.</h2>
         </div>
-      </DashboardLayout> ); } const { totalProduction, totalRevenue, cropProduction, monthlyProduction, monthlyReport } = analyticsData; const cropLabels = Object.keys(cropProduction || {}); const cropData = Object.values(cropProduction || {}); const monthLabels = Object.keys(monthlyProduction || {}); const monthData = Object.values(monthlyProduction || {}); const lineData = { labels: monthLabels.length > 0 ? monthLabels : ["No Data"], datasets: [ { label: "Crop Yield (Tons)", data: monthData.length > 0 ? monthData : [0], borderColor: "#16A34A", backgroundColor: "#16A34A", tension: 0.4, }, ], }; const barData = { labels: cropLabels.length > 0 ? cropLabels : ["No Data"], datasets: [ { label: "Production (Tons)", data: cropData.length > 0 ? cropData : [0], backgroundColor: colors.slice(0, cropLabels.length || 1), }, ], }; const pieData = { labels: cropLabels.length > 0 ? cropLabels : ["No Data"], datasets: [ { data: cropData.length > 0 ? cropData : [100], backgroundColor: cropLabels.length > 0 ? colors.slice(0, cropLabels.length) : ["#D1D5DB"],
+      </DashboardLayout>
+    );
+  }
+
+  const {
+    totalProduction,
+    totalRevenue,
+    cropProduction,
+    monthlyProduction,
+    monthlyReport,
+    activeFarms,
+    totalCrops
+  } = analyticsData;
+
+  const cropLabels = Object.keys(cropProduction || {});
+  const cropData = Object.values(cropProduction || {});
+  const monthLabels = Object.keys(monthlyProduction || {});
+  const monthData = Object.values(monthlyProduction || {});
+
+  const lineData = {
+    labels: monthLabels.length > 0 ? monthLabels : ["No Data"],
+    datasets: [
+      {
+        label: "Crop Yield (Tons)",
+        data: monthData.length > 0 ? monthData : [0],
+        borderColor: "#16A34A",
+        backgroundColor: "#16A34A",
+        tension: 0.4,
       },
     ],
+  };
+
+  const barData = {
+    labels: cropLabels.length > 0 ? cropLabels : ["No Data"],
+    datasets: [
+      {
+        label: "Production (Tons)",
+        data: cropData.length > 0 ? cropData : [0],
+        backgroundColor: colors.slice(0, cropLabels.length || 1),
+      },
+    ],
+  };
+
+  const pieData = {
+    labels: cropLabels.length > 0 ? cropLabels : ["No Data"],
+    datasets: [
+      {
+        data: cropData.length > 0 ? cropData : [100],
+        backgroundColor: cropLabels.length > 0 ? colors.slice(0, cropLabels.length) : ["#D1D5DB"],
+      },
+    ],
+  };
+
+  const handleExportReport = () => {
+    if (!analyticsData) return;
+
+    let csvContent = "";
+    
+    // Title & Metadata
+    csvContent += "FarmVerse - Analytics Report\n";
+    csvContent += `Generated on,${new Date().toLocaleDateString()}\n\n`;
+
+    // Overview Stats
+    csvContent += "--- OVERVIEW ---\n";
+    csvContent += `Total Production,${totalProduction || 0} Tons\n`;
+    csvContent += `Total Revenue,₹${totalRevenue || 0}\n`;
+    csvContent += `Active Farms,${activeFarms || 0}\n`;
+    csvContent += `Total Crops,${totalCrops || 0}\n\n`;
+
+    // Crop Production Table
+    csvContent += "--- CROP PRODUCTION ---\n";
+    csvContent += "Crop Name,Production (Tons)\n";
+    Object.entries(cropProduction || {}).forEach(([crop, qty]) => {
+      csvContent += `"${crop}",${qty}\n`;
+    });
+    csvContent += "\n";
+
+    // Monthly Report Table
+    csvContent += "--- MONTHLY TRENDS ---\n";
+    csvContent += "Month,Production (Tons),Revenue (INR),Status\n";
+    (monthlyReport || []).forEach((entry) => {
+      csvContent += `"${entry.month}",${entry.production},${entry.revenue},"${entry.status}"\n`;
+    });
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `farmverse_analytics_report_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -48,7 +137,10 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
             Monitor farm productivity and business insights.
           </p>
         </div>
-        <button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1">
+        <button
+          onClick={handleExportReport}
+          className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1"
+        >
           Export Report
         </button>
       </div>
@@ -68,15 +160,15 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
           </h1>
         </div>
         <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Water Saved</p>
+          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Active Farms</p>
           <h1 className="text-4xl font-extrabold mt-2 text-cyan-600 ">
-            24%
+            {activeFarms || 0}
           </h1>
         </div>
         <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">AI Accuracy</p>
+          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Crops</p>
           <h1 className="text-4xl font-extrabold mt-2 text-purple-600 ">
-            96%
+            {totalCrops || 0}
           </h1>
         </div>
       </div>
@@ -105,7 +197,7 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
           </div>
           {(!monthlyReport || monthlyReport.length === 0) ? (
             <div className="text-gray-500 text-center py-12 border border-dashed border-gray-200 rounded-2xl">
-              No data yet — add crop harvests to see monthly trends.
+              No data yet - add crop harvests to see monthly trends.
             </div>
           ) : (
             <div className="overflow-x-auto">

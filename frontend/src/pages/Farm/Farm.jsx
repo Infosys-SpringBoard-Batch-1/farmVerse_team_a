@@ -1,4 +1,35 @@
-import { useEffect, useState } from "react"; import { useNavigate } from "react-router-dom"; import DashboardLayout from "../../components/layout/DashboardLayout"; import { FaPlus, FaMapMarkerAlt, FaSeedling, FaEdit, FaTrash, FaEye, } from "react-icons/fa"; import { getAllFarms, deleteFarm, } from "../../services/farm"; const DEFAULT_FARM_IMAGE = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000"; function Farm() { const navigate = useNavigate(); const [farms, setFarms] = useState([]); const [loading, setLoading] = useState(true); useEffect(() => { loadFarms(); }, []); const loadFarms = async () => { try { setLoading(true); const response = await getAllFarms(); setFarms(response.farms || []); } catch (error) { console.error(error); alert("Failed to load farms."); } finally { setLoading(false); } }; const handleDelete = async (id) => {
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import { MapPin, Sprout, Ruler, Globe, Wheat } from "lucide-react";
+import { getAllFarms, deleteFarm } from "../../services/farm";
+
+const DEFAULT_FARM_IMAGE = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000";
+
+function Farm() {
+  const navigate = useNavigate();
+  const [farms, setFarms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadFarms();
+  }, []);
+
+  const loadFarms = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllFarms();
+      setFarms(response.farms || []);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load farms.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
     if (!window.confirm("Delete this farm?")) return;
 
     try {
@@ -79,19 +110,19 @@ import { useEffect, useState } from "react"; import { useNavigate } from "react-
 
                 <div className="space-y-4 mt-6 text-gray-600 text-sm font-medium">
                   <p className="flex items-center gap-3">
-                    <span className="text-xl">📍</span> {farm.location}
+                    <MapPin className="w-4 h-4 text-emerald-600" /> {farm.location}
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="text-xl">🌱</span> {farm.farmType}
+                    <Sprout className="w-4 h-4 text-emerald-600" /> {farm.farmType}
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="text-xl">📐</span> {farm.areaSqMt} sq.m
+                    <Ruler className="w-4 h-4 text-emerald-600" /> {farm.areaSqMt} sq.m
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="text-xl">🌍</span> {farm.soilType}
+                    <Globe className="w-4 h-4 text-emerald-600" /> {farm.soilType}
                   </p>
                   <p className="flex items-center gap-3">
-                    <span className="text-xl">🌾</span> {farm.cropCount} Crops
+                    <Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops
                   </p>
                 </div>
 

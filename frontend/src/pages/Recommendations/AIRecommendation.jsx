@@ -108,7 +108,7 @@ const SEASONS = ["Kharif (June–Oct)", "Rabi (Oct–Mar)", "Zaid (Mar–Jun)"];
             ))}
           </select>
 
-          {/* Temperature — auto-filled by weather */}
+          {/* Temperature - auto-filled by weather */}
           <div className="relative">
             <input type="number" name="temperature" value={form.temperature} onChange={handleChange} placeholder="Temperature (°C)" className={`w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all ${weatherFetched ? "ring-2 ring-blue-500/30 border-blue-400 " : ""}`} />
             {weatherFetched && (
@@ -116,7 +116,7 @@ const SEASONS = ["Kharif (June–Oct)", "Rabi (Oct–Mar)", "Zaid (Mar–Jun)"];
             )}
           </div>
 
-          {/* Humidity — auto-filled */}
+          {/* Humidity - auto-filled */}
           <div className="relative">
             <input type="number" name="humidity" value={form.humidity} onChange={handleChange} placeholder="Humidity (%)" className={`w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all ${weatherFetched ? "ring-2 ring-blue-500/30 border-blue-400 " : ""}`} />
             {weatherFetched && (
@@ -124,7 +124,7 @@ const SEASONS = ["Kharif (June–Oct)", "Rabi (Oct–Mar)", "Zaid (Mar–Jun)"];
             )}
           </div>
 
-          {/* Rainfall — auto-filled */}
+          {/* Rainfall - auto-filled */}
           <div className="relative">
             <input type="number" name="rainfall" value={form.rainfall} onChange={handleChange} placeholder="Rainfall (mm)" className={`w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all ${weatherFetched ? "ring-2 ring-blue-500/30 border-blue-400 " : ""}`} />
             {weatherFetched && (
@@ -279,7 +279,7 @@ const SEASONS = ["Kharif (June–Oct)", "Rabi (Oct–Mar)", "Zaid (Mar–Jun)"];
         </div>
       )}
 
-      {/* Default state — no result yet */}
+      {/* Default state - no result yet */}
       {!result && !loading && !error && (
         <div className="mt-10 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200 p-16 text-center text-gray-400">
           <div className="w-24 h-24 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6">

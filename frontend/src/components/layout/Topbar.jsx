@@ -18,7 +18,7 @@ function Topbar() {
         </h1>
 
         <p className="text-gray-500">
-          Welcome back, Ananya 👋
+          Welcome back, Ananya
         </p>
 
       </div>

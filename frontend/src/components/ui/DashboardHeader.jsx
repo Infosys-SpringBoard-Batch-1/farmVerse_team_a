@@ -23,7 +23,7 @@ return(
 
 <h1 className="text-4xl font-bold">
 
-Good Morning 👋
+Good Morning
 
 </h1>
 

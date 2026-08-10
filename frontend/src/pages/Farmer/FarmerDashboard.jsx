@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSeedling, FaLeaf, FaCloudSun, FaPlus, } from "react-icons/fa";
+import { MapPin, Sprout, Wheat, Ruler } from "lucide-react";
 import DashboardLayout from "../../components/Layout/DashboardLayout";
 import { getAllFarms } from "../../services/farm";
 
@@ -149,10 +150,10 @@ function FarmerDashboard() {
                   {farm.farmName}
                 </h3>
                 <div className="mt-4 space-y-2 text-sm text-gray-600 font-medium">
-                  <p className="flex items-center gap-2"><span className="text-lg">📍</span> {farm.location}</p>
-                  <p className="flex items-center gap-2"><span className="text-lg">🌱</span> {farm.farmType}</p>
-                  <p className="flex items-center gap-2"><span className="text-lg">🌾</span> {farm.cropCount} Crops</p>
-                  <p className="flex items-center gap-2"><span className="text-lg">📐</span> {farm.areaSqMt} sq.m</p>
+                  <p className="flex items-center gap-2"><MapPin className="w-4 h-4 text-emerald-600" /> {farm.location}</p>
+                  <p className="flex items-center gap-2"><Sprout className="w-4 h-4 text-emerald-600" /> {farm.farmType}</p>
+                  <p className="flex items-center gap-2"><Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops</p>
+                  <p className="flex items-center gap-2"><Ruler className="w-4 h-4 text-emerald-600" /> {farm.areaSqMt} sq.m</p>
                 </div>
                 <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="mt-6 w-full bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 font-bold px-4 py-3 rounded-xl transition-colors shadow-sm" >
                   View Farm

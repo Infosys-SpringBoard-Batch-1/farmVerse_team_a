@@ -128,12 +128,12 @@ function Login() {
 
     return (
 
-    <div className="h-screen bg-slate-50 flex items-center justify-center p-4 overflow-hidden">
-      <div className="w-full max-w-6xl h-full max-h-[95vh] bg-white rounded-3xl shadow-xl overflow-hidden grid lg:grid-cols-2">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 md:p-8 overflow-y-auto">
+      <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden grid lg:grid-cols-2 my-auto">
         {/* LEFT SIDE */}
-        <div className="hidden lg:flex relative flex-col justify-between p-12 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-emerald-600 to-teal-800 z-0"></div>
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay z-0"></div>
+        <div className="hidden lg:flex relative flex-col justify-between p-12 overflow-hidden text-white group">
+          <div className="absolute inset-0 bg-[url('/leafy_bg.jpg')] bg-cover bg-center z-0 transition-transform duration-700 group-hover:scale-105"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/90 to-teal-950/90 z-0"></div>
 
           <div className="relative z-10 flex flex-col h-full justify-center items-center text-center">
             <div className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center shadow-2xl mb-8 border border-white/20">
@@ -148,7 +148,7 @@ function Login() {
             </p>
 
             <p className="text-lg leading-relaxed max-w-md text-emerald-50 bg-black/10 p-6 rounded-2xl backdrop-blur-sm border border-white/10">
-              Grow smarter with AI-powered insights, real-time weather updates, and intelligent farm management—all in one place.
+              Grow smarter with AI-powered insights, real-time weather updates, and intelligent farm management, all in one place.
             </p>
           </div>
         </div>
@@ -157,7 +157,7 @@ function Login() {
           <div className="w-full max-w-md">
             <div className="mb-10 text-center lg:text-left">
               <h2 className="text-4xl font-bold text-gray-800 tracking-tight">
-                Welcome Back 👋
+                Welcome Back
               </h2>
               <p className="text-gray-500 mt-3 text-lg">
                 Sign in to continue to FarmVerse
@@ -274,13 +274,18 @@ function Login() {
               </div>
             </form>
 
-            <div className="text-center mt-10">
+            <div className="text-center mt-10 space-y-3">
               <p className="text-gray-600 font-medium">
                 Don't have an account?
                 <Link to="/register" className="text-emerald-600 font-bold ml-2 hover:text-emerald-700 hover:underline" >
                   Create one now
                 </Link>
               </p>
+              <div>
+                <Link to="/" className="text-sm text-gray-500 hover:text-emerald-600 font-semibold transition-colors" >
+                  Back to Home
+                </Link>
+              </div>
             </div>
           </div>
         </div>
