@@ -16,10 +16,7 @@ function Unauthorized() {
         You don't have permission to access this page.
       </p>
 
-      <Link
-        to="/login"
-        className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl"
-      >
+      <Link to="/login" className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl" >
         Back to Login
       </Link>
 

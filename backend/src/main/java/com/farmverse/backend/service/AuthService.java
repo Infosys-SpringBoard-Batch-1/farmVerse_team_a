@@ -11,6 +11,7 @@ import com.farmverse.backend.dto.ForgotPasswordRequest;
 import com.farmverse.backend.dto.LoginRequest;
 import com.farmverse.backend.dto.RegisterRequest;
 import com.farmverse.backend.dto.ResetPasswordRequest;
+import com.farmverse.backend.dto.ChangePasswordRequest;
 
 import com.farmverse.backend.entity.User;
 import com.farmverse.backend.enums.Role;
@@ -27,8 +28,11 @@ import com.farmverse.backend.entity.PasswordResetToken;
 import com.farmverse.backend.repository.PasswordResetOtpRepository;
 
 
+import lombok.Getter;
+
 @Service
 @RequiredArgsConstructor
+@Getter
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -171,5 +175,19 @@ public String resetPassword(ResetPasswordRequest request) {
 
     return "Password reset successful.";
 }
+
+    public String changePassword(String username, ChangePasswordRequest request) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        return "Password changed successfully.";
+    }
 
 }

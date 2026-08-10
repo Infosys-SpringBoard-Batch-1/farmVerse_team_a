@@ -49,10 +49,7 @@ Welcome to FarmVerse Dashboard
 
 <FaSearch className="absolute left-4 top-4 text-gray-400"/>
 
-<input
-placeholder="Search..."
-className="pl-12 pr-4 py-3 border rounded-xl outline-none w-72"
-/>
+<input placeholder="Search..." className="pl-12 pr-4 py-3 border rounded-xl outline-none w-72" />
 
 </div>
 

@@ -81,64 +81,43 @@ function Sidebar() {
     },
     {
       name: "Settings",
-      icon: <FaCog />,
-      path: "/settings",
-    },
-  ];
-
-  const menu = role === "ADMIN" ? adminMenu : farmerMenu;
-
-  const handleLogout = () => {
+      icon: <FaCog />, path: "/settings", }, ]; const menu = role === "ADMIN" ? adminMenu : farmerMenu; const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-green-700 text-white flex flex-col shadow-lg">
+    <aside className="w-64 h-full bg-gradient-to-b from-green-800 to-green-950 text-white flex flex-col shadow-2xl z-20 overflow-y-auto custom-scrollbar">
       {/* Logo */}
-      <div className="p-6 border-b border-green-600">
-        <h1 className="text-3xl font-bold">🌿 FarmVerse</h1>
-        <p className="text-sm mt-2 text-green-100">
-          Smart Agriculture Platform
+      <div className="p-6 border-b border-green-700/50">
+        <h1 className="text-3xl font-bold tracking-tight">🌿 FarmVerse</h1>
+        <p className="text-xs mt-2 text-green-200/80 uppercase tracking-wider font-semibold">
+          Smart Agriculture
         </p>
       </div>
 
       {/* User */}
-      <div className="px-6 py-4 border-b border-green-600">
-        <p className="text-sm text-green-200">Welcome</p>
-        <h3 className="font-semibold text-lg">
+      <div className="px-6 py-5 border-b border-green-700/50 bg-green-900/20">
+        <p className="text-xs text-green-300 uppercase tracking-wider font-semibold mb-1">Welcome Back</p>
+        <h3 className="font-bold text-lg text-white">
           {user?.username || "Guest"}
         </h3>
-        <p className="text-xs text-green-100">{role}</p>
+        <span className="inline-block mt-1 px-2 py-0.5 bg-green-700 rounded text-xs font-semibold">{role}</span>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 mt-4">
-        {menu.map((item) => (
-          <NavLink
-            key={item.name}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-4 px-6 py-4 transition-all duration-200 ${
-                isActive
-                  ? "bg-white text-green-700 font-semibold"
-                  : "hover:bg-green-600"
-              }`
-            }
-          >
-            <span className="text-xl">{item.icon}</span>
-            <span>{item.name}</span>
+      <nav className="flex-1 mt-4 px-4 space-y-2"> {menu.map((item) => (
+          <NavLink key={item.name} to={item.path} className={({ isActive }) => `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${ isActive ? "bg-white text-green-800 font-bold shadow-lg shadow-black/10 scale-105" : "text-green-50 hover:bg-white/10 hover:translate-x-1 font-medium" }` } >
+            <span className={`text-xl flex items-center justify-center w-8 transition-transform duration-300`}>{item.icon}</span>
+            <span className="flex-1 tracking-wide">{item.name}</span>
           </NavLink>
         ))}
       </nav>
 
       {/* Logout */}
-      <button
-        onClick={handleLogout}
-        className="flex items-center gap-4 px-6 py-5 bg-green-800 hover:bg-red-600 transition-all duration-200"
-      >
+      <button onClick={handleLogout} className="flex items-center justify-center gap-3 m-4 py-3 bg-red-500/10 text-red-100 hover:bg-red-500 hover:text-white rounded-xl transition-all duration-300 border border-red-500/20 hover:shadow-lg" >
         <FaSignOutAlt />
-        Logout
+        <span className="font-semibold">Logout</span>
       </button>
     </aside>
   );

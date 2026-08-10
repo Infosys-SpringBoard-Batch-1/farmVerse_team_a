@@ -88,33 +88,25 @@ function Dashboard() {
           title="Weather"
           value="29°C"
           subtitle="Sunny"
-          icon={<FaCloudSun />}
-          color="yellow"
-        />
+          icon={<FaCloudSun />} color="yellow" />
 
         <StatCard
           title="Crop Health"
           value="98%"
           subtitle="Healthy"
-          icon={<FaLeaf />}
-          color="green"
-        />
+          icon={<FaLeaf />} color="green" />
 
         <StatCard
           title="Water Tank"
           value="82%"
           subtitle="Tank Level"
-          icon={<FaTint />}
-          color="blue"
-        />
+          icon={<FaTint />} color="blue" />
 
         <StatCard
           title="Active Farms"
           value="12"
           subtitle="Registered"
-          icon={<FaTractor />}
-          color="orange"
-        />
+          icon={<FaTractor />} color="orange" />
 
       </div>
 
@@ -126,10 +118,7 @@ function Dashboard() {
 
           <ChartCard title="Crop Yield Analytics">
 
-            <Bar
-              data={data}
-              options={options}
-            />
+            <Bar data={data} options={options} />
 
           </ChartCard>
 

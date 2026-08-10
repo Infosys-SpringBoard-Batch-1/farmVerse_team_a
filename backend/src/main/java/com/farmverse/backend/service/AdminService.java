@@ -2,6 +2,8 @@ package com.farmverse.backend.service;
 
 import com.farmverse.backend.dto.*;
 import com.farmverse.backend.entity.User;
+import com.farmverse.backend.entity.Farm;
+import com.farmverse.backend.entity.Crop;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.farmverse.backend.enums.Role;
 import com.farmverse.backend.repository.CropRepository;
@@ -40,12 +42,49 @@ public class AdminService {
 
     public List<FarmerResponse> getAllFarmers() {
 
-        return userRepository.findByRole(Role.FARMER)
+        return userRepository.findAll()
                 .stream()
                 .map(user -> new FarmerResponse(
-                        user.getFullName(),
+                        user.getFullName() + (user.getRole() == Role.ADMIN ? " (Admin)" : ""),
                         user.getUsername(),
                         farmRepository.countByFarmerId(user.getId())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<AdminFarmResponse> getAllFarms() {
+        return farmRepository.findAll()
+                .stream()
+                .map(farm -> new AdminFarmResponse(
+                        farm.getId(),
+                        farm.getFarmName(),
+                        farm.getFarmType(),
+                        farm.getAreaSqMt(),
+                        farm.getLocation(),
+                        farm.getSoilType(),
+                        farm.getCreatedAt(),
+                        farm.getFarmer().getUsername(),
+                        farm.getFarmer().getFullName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<AdminCropResponse> getAllCrops() {
+        return cropRepository.findAll()
+                .stream()
+                .map(crop -> new AdminCropResponse(
+                        crop.getId(),
+                        crop.getCropName(),
+                        crop.getCropType(),
+                        crop.getQuantity(),
+                        crop.getRevenue(),
+                        crop.getSowingDate(),
+                        crop.getHarvestDate(),
+                        crop.getCreatedAt(),
+                        crop.getFarm().getId(),
+                        crop.getFarm().getFarmName(),
+                        crop.getFarm().getFarmer().getUsername(),
+                        crop.getFarm().getFarmer().getFullName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -74,6 +113,34 @@ public class AdminService {
                 "ok",
                 "200",
                 "Farmer added successfully",
+                String.valueOf(savedUser.getId())
+        );
+    }
+
+    public AddFarmerResponse addAdmin(AddFarmerRequest request) {
+
+        if (userRepository.existsByUsername(request.getUsername())) {
+            return new AddFarmerResponse(
+                    "error",
+                    "400",
+                    "Username already taken",
+                    null
+            );
+        }
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.ADMIN);
+
+        User savedUser = userRepository.save(user);
+
+        return new AddFarmerResponse(
+                "ok",
+                "200",
+                "Admin added successfully",
                 String.valueOf(savedUser.getId())
         );
     }

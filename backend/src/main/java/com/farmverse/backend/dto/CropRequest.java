@@ -19,4 +19,6 @@ public class CropRequest {
     private LocalDate sowingDate;
     @NotNull(message = "Harvest date is required")
     private LocalDate harvestDate;
+    
+    private Double revenue;
 }

@@ -35,6 +35,7 @@ public class CropService {
         crop.setQuantity(request.getQuantity());
         crop.setSowingDate(request.getSowingDate());
         crop.setHarvestDate(request.getHarvestDate());
+        crop.setRevenue(request.getRevenue());
         crop.setFarm(farm);
 
         Crop saved = cropRepository.save(crop);
@@ -53,6 +54,7 @@ public class CropService {
         crop.setQuantity(request.getQuantity());
         crop.setSowingDate(request.getSowingDate());
         crop.setHarvestDate(request.getHarvestDate());
+        crop.setRevenue(request.getRevenue());
 
         cropRepository.save(crop);
 
@@ -83,7 +85,8 @@ public class CropService {
                 crop.getQuantity(),
                 crop.getSowingDate(),
                 crop.getHarvestDate(),
-                crop.getFarm().getFarmName()
+                crop.getFarm().getFarmName(),
+                crop.getRevenue()
         );
 
         return new ViewCropResponse("ok", "200", "Crop details fetched successfully", detail);

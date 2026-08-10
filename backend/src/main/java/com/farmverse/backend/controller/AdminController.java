@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/farmverse/admin")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class AdminController {
 
     private final AdminService adminService;
@@ -27,11 +28,34 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllFarmers());
     }
 
+    @GetMapping("/viewFarms")
+    public ResponseEntity<List<AdminFarmResponse>> viewFarms() {
+        return ResponseEntity.ok(adminService.getAllFarms());
+    }
+
+    @GetMapping("/viewCrops")
+    public ResponseEntity<List<AdminCropResponse>> viewCrops() {
+        return ResponseEntity.ok(adminService.getAllCrops());
+    }
+
     @PostMapping("/addFarmer")
     public ResponseEntity<AddFarmerResponse> addFarmer(
             @Valid @RequestBody AddFarmerRequest request) {
 
         AddFarmerResponse response = adminService.addFarmer(request);
+
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/addAdmin")
+    public ResponseEntity<AddFarmerResponse> addAdmin(
+            @Valid @RequestBody AddFarmerRequest request) {
+
+        AddFarmerResponse response = adminService.addAdmin(request);
 
         if ("400".equals(response.getStatusCode())) {
             return ResponseEntity.badRequest().body(response);

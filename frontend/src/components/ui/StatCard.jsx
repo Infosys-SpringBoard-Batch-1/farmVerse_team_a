@@ -35,9 +35,7 @@ function StatCard({
 
         </div>
 
-        <div
-          className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${colorClasses[color]}`}
-        >
+        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${colorClasses[color]}`} >
           {icon}
         </div>
 

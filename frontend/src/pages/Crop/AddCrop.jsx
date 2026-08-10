@@ -2,28 +2,19 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { addCrop } from "../../services/crop";
+import { useNotifications } from "../../hooks/useNotifications";
 
 export default function AddCrop() {
   const { id } = useParams(); // Farm ID from URL
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
-    cropName: "",
-    cropType: "",
-    quantity: "",
-    sowingDate: "",
-    harvestDate: "",
-  });
-
+  const { addNotification } = useNotifications();
+  const [form, setForm] = useState({ cropName: "", cropType: "", quantity: "", sowingDate: "", harvestDate: "", revenue: "", });
   const [loading, setLoading] = useState(false);
-
+  
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value, });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,8 +28,10 @@ export default function AddCrop() {
         quantity: Number(form.quantity),
         sowingDate: form.sowingDate,
         harvestDate: form.harvestDate,
+        revenue: Number(form.revenue),
       });
 
+      addNotification(`Successfully added ${form.cropName} to your farm.`, 'success');
       alert("Crop added successfully!");
 
       navigate(`/farm/${id}`);
@@ -56,112 +49,66 @@ export default function AddCrop() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white shadow-lg rounded-2xl p-8">
-
-          <h1 className="text-3xl font-bold text-green-700 mb-8">
+      <div className="max-w-3xl mx-auto mt-6">
+        <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-10">
+          <h1 className="text-3xl font-bold text-gray-800 mb-8">
             Add Crop
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
             <div>
-              <label className="block mb-2 font-medium">
+              <label className="block mb-2 font-semibold text-gray-700 ">
                 Crop Name
               </label>
-
-              <input
-                type="text"
-                name="cropName"
-                value={form.cropName}
-                onChange={handleChange}
-                placeholder="Enter crop name"
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
+              <input type="text" name="cropName" value={form.cropName} onChange={handleChange} placeholder="Enter crop name" className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">
+              <label className="block mb-2 font-semibold text-gray-700 ">
                 Crop Type
               </label>
-
-              <input
-                type="text"
-                name="cropType"
-                value={form.cropType}
-                onChange={handleChange}
-                placeholder="e.g. Kharif, Rabi, Organic"
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
+              <input type="text" name="cropType" value={form.cropType} onChange={handleChange} placeholder="e.g. Kharif, Rabi, Organic" className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">
+              <label className="block mb-2 font-semibold text-gray-700 ">
                 Quantity
               </label>
+              <input type="number" name="quantity" value={form.quantity} onChange={handleChange} placeholder="Enter quantity" min="1" className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
+            </div>
 
-              <input
-                type="number"
-                name="quantity"
-                value={form.quantity}
-                onChange={handleChange}
-                placeholder="Enter quantity"
-                min="1"
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
+            <div className="grid md:grid-cols-2 gap-5">
+              <div>
+                <label className="block mb-2 font-semibold text-gray-700 ">
+                  Sowing Date
+                </label>
+                <input type="date" name="sowingDate" value={form.sowingDate} onChange={handleChange} className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-gray-700 ">
+                  Harvest Date
+                </label>
+                <input type="date" name="harvestDate" value={form.harvestDate} onChange={handleChange} className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
+              </div>
             </div>
 
             <div>
-              <label className="block mb-2 font-medium">
-                Sowing Date
+              <label className="block mb-2 font-semibold text-gray-700 ">
+                Revenue (₹)
               </label>
-
-              <input
-                type="date"
-                name="sowingDate"
-                value={form.sowingDate}
-                onChange={handleChange}
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
+              <input type="number" step="0.01" name="revenue" value={form.revenue} onChange={handleChange} placeholder="Enter total revenue in exact ₹ (e.g. 260000)" className="w-full border border-gray-200 rounded-xl p-4 bg-gray-50 text-gray-800 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all" required />
             </div>
 
-            <div>
-              <label className="block mb-2 font-medium">
-                Harvest Date
-              </label>
-
-              <input
-                type="date"
-                name="harvestDate"
-                value={form.harvestDate}
-                onChange={handleChange}
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-
-            <div className="flex gap-4 pt-4">
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg disabled:bg-gray-400"
-              >
+            <div className="flex gap-4 pt-6">
+              <button type="submit" disabled={loading} className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0" >
                 {loading ? "Saving..." : "Save Crop"}
               </button>
 
-              <button
-                type="button"
-                onClick={() => navigate(`/farm/${id}`)}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg"
-              >
+              <button type="button" onClick={() => navigate(`/farm/${id}`)} className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold px-6 py-4 rounded-xl transition-all" >
                 Cancel
               </button>
-
             </div>
 
           </form>

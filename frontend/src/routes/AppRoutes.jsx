@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import OAuthSuccess from "../pages/OAuthSuccess";
+import Home from "../pages/Home/Home";
 // Protected Route
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
@@ -11,6 +12,7 @@ import Unauthorized from "../pages/Unauthorized/Unauthorized";
 // Admin Pages
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import Farmers from "../pages/Admin/Farmers";
+import Farms from "../pages/Admin/Farms";
 import Crops from "../pages/Admin/Crops";
 
 // Farmer Pages
@@ -26,6 +28,7 @@ import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
 import AddCrop from "../pages/Crop/AddCrop";
+import EditCrop from "../pages/Crop/EditCrop";
 import ViewFarm from "../pages/Farm/ViewFarm";
 import Weather from "../pages/Weather/Weather";
 import EditFarm from "../pages/Farm/EditFarm";
@@ -38,8 +41,7 @@ function AppRoutes() {
         {/* Root */}
         <Route
           path="/"
-          element={<Navigate to="/login" replace />}
-        />
+          element={<Home />} />
 
         {/* Authentication */}
         <Route path="/login" element={<Login />} />
@@ -58,43 +60,42 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
           <Route
   path="/weather"
   element={
     <ProtectedRoute allowedRoles={["FARMER"]}>
       <Weather />
-    </ProtectedRoute>
-  }
-/>
+    </ProtectedRoute> } />
 
         <Route
     path="/farm/:id/crop/add"
-    element={<AddCrop />}
-/>
+    element={<AddCrop />} />
+        <Route
+    path="/farm/:farmId/crop/edit/:cropId"
+    element={<EditCrop />} />
 
         <Route
           path="/admin/farmers"
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <Farmers />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
-        
+        <Route
+          path="/admin/farms"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <Farms />
+            </ProtectedRoute> } />
 
         <Route
           path="/admin/crops"
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <Crops />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         {/* ================= FARMER ================= */}
 
@@ -103,54 +104,42 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <FarmerDashboard />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
           path="/farm"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Farm />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
           path="/farm/add"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <AddFarm />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
           path="/weather"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Weather />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
           path="/analytics"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Analytics />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
           path="/recommendation"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <AIRecommendation />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         {/* Profile */}
         <Route
@@ -158,9 +147,7 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Profile />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         {/* Edit Profile */}
         <Route
@@ -168,9 +155,7 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <EditProfile />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         {/* Settings */}
         <Route
@@ -178,18 +163,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
               <Settings />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route
   path="/farm/edit/:id"
   element={
     <ProtectedRoute allowedRoles={["FARMER"]}>
       <EditFarm />
-    </ProtectedRoute>
-  }
-/>
+    </ProtectedRoute> } />
 
         {/* 404 */}
         <Route
@@ -209,9 +190,7 @@ function AppRoutes() {
                   The page you are looking for does not exist.
                 </p>
               </div>
-            </div>
-          }
-        />
+            </div> } />
 
       </Routes>
     </BrowserRouter>
