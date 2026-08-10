@@ -16,8 +16,11 @@ public class CropRequest {
     @Positive(message = "Quantity must be greater than 0")
     private Integer quantity;
     @NotNull(message = "Sowing date is required")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate sowingDate;
+    
     @NotNull(message = "Harvest date is required")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate harvestDate;
     
     private Double revenue;

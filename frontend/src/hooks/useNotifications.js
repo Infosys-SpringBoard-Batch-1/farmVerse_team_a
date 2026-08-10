@@ -13,5 +13,9 @@ export const useNotifications = () => {
     setNotifications([]);
   };
 
-  return { notifications, unreadCount, markAllAsRead, clearAll };
+  const addNotification = (message, type) => {
+    setNotifications([...notifications, { message, type, read: false }]);
+  };
+
+  return { notifications, unreadCount, markAllAsRead, clearAll, addNotification };
 };

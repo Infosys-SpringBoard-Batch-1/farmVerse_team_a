@@ -94,4 +94,39 @@ public class AdminController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/addFarm")
+    public ResponseEntity<ApiResponse> addFarm(@Valid @RequestBody AdminAddFarmRequest request) {
+        ApiResponse response = adminService.addFarm(request);
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/editFarm/{farmId}")
+    public ResponseEntity<ApiResponse> editFarm(
+            @PathVariable Long farmId,
+            @Valid @RequestBody AdminEditFarmRequest request) {
+        ApiResponse response = adminService.editFarm(farmId, request);
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteFarm/{farmId}")
+    public ResponseEntity<ApiResponse> deleteFarm(@PathVariable Long farmId) {
+        ApiResponse response = adminService.deleteFarm(farmId);
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
 }

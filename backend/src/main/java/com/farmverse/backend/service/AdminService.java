@@ -208,4 +208,54 @@ public class AdminService {
                 String.valueOf(id)
         );
     }
+
+    public ApiResponse addFarm(AdminAddFarmRequest request) {
+        User farmer = userRepository.findByUsername(request.getFarmerUsername()).orElse(null);
+        if (farmer == null) {
+            return ApiResponse.error("404", "Farmer not found");
+        }
+
+        Farm farm = new Farm();
+        farm.setFarmName(request.getFarmName());
+        farm.setFarmType(request.getFarmType());
+        farm.setAreaSqMt(request.getAreaSqMt());
+        farm.setLocation(request.getLocation());
+        farm.setSoilType(request.getSoilType());
+        farm.setFarmer(farmer);
+
+        farmRepository.save(farm);
+        return ApiResponse.ok("Farm added successfully", null);
+    }
+
+    public ApiResponse editFarm(Long farmId, AdminEditFarmRequest request) {
+        Farm farm = farmRepository.findById(farmId).orElse(null);
+        if (farm == null) {
+            return ApiResponse.error("404", "Farm not found");
+        }
+
+        User farmer = userRepository.findByUsername(request.getFarmerUsername()).orElse(null);
+        if (farmer == null) {
+            return ApiResponse.error("404", "Farmer not found");
+        }
+
+        farm.setFarmName(request.getFarmName());
+        farm.setFarmType(request.getFarmType());
+        farm.setAreaSqMt(request.getAreaSqMt());
+        farm.setLocation(request.getLocation());
+        farm.setSoilType(request.getSoilType());
+        farm.setFarmer(farmer);
+
+        farmRepository.save(farm);
+        return ApiResponse.ok("Farm updated successfully", null);
+    }
+
+    public ApiResponse deleteFarm(Long farmId) {
+        Farm farm = farmRepository.findById(farmId).orElse(null);
+        if (farm == null) {
+            return ApiResponse.error("404", "Farm not found");
+        }
+
+        farmRepository.delete(farm);
+        return ApiResponse.ok("Farm deleted successfully", null);
+    }
 }
