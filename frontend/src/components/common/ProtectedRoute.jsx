@@ -1,19 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
-import {
-  isAuthenticated,
-  getCurrentUser,
-} from "../../services/auth";
-
-function ProtectedRoute({ children, allowedRoles }) {
-
-  const location = useLocation();
-
-  console.log("Current Route:", location.pathname);
-  console.log("Authenticated:", isAuthenticated());
-  console.log("User:", getCurrentUser());
-
-  if (!isAuthenticated()) {
-    console.log("Redirect -> Login");
+import { Navigate, useLocation } from "react-router-dom"; import { isAuthenticated, getCurrentUser, } from "../../services/auth"; function ProtectedRoute({ children, allowedRoles }) { const location = useLocation(); console.log("Current Route:", location.pathname); console.log("Authenticated:", isAuthenticated()); console.log("User:", getCurrentUser()); if (!isAuthenticated()) { console.log("Redirect -> Login");
     return <Navigate to="/login" replace />;
   }
 

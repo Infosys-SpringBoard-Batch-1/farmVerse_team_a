@@ -1,181 +1,127 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  WiDaySunny,
-  WiHumidity,
-  WiStrongWind,
-  WiCloud,
-} from "react-icons/wi";
-
-
-const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-
-export default function Weather() {
-  const [city, setCity] = useState("Bengaluru");
-  const [weather, setWeather] = useState(null);
-  const [forecast, setForecast] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchWeather = async (cityName) => {
-    try {
-      setLoading(true);
-
-      const current = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
-      );
-
-      const next = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${API_KEY}`
-      );
-
-      setWeather(current.data);
-
-      const daily = next.data.list.filter((item) =>
-        item.dt_txt.includes("12:00:00")
-      );
-
-      setForecast(daily);
-    } catch (err) {
-      alert("Unable to fetch weather.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
+import { useEffect, useState } from "react"; import axios from "axios"; import { WiDaySunny, WiHumidity, WiStrongWind, WiCloud, } from "react-icons/wi"; import DashboardLayout from "../../components/layout/DashboardLayout"; const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "b2cf1d2569d8676de02b88f8e7b98ec2"; export default function Weather() { const [city, setCity] = useState("Bengaluru"); const [weather, setWeather] = useState(null); const [forecast, setForecast] = useState([]); const [loading, setLoading] = useState(false); const fetchWeather = async (cityName) => { try { setLoading(true); const current = await axios.get( `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}` ); const next = await axios.get( `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${API_KEY}` ); setWeather(current.data); const daily = next.data.list.filter((item) => item.dt_txt.includes("12:00:00") ); setForecast(daily); } catch (err) { alert("Unable to fetch weather."); console.error(err); } finally { setLoading(false); } }; useEffect(() => {
     fetchWeather(city);
   }, []);
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <DashboardLayout>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-800 ">
+            🌦 Weather Dashboard
+          </h1>
+          <p className="text-gray-500 mt-2 text-lg">
+            Real-time weather insights and 5-day forecast.
+          </p>
+        </div>
 
-      <h1 className="text-3xl font-bold text-green-700 mb-6">
-        🌦 Weather Dashboard
-      </h1>
+        <div className="flex gap-3">
+          <input className="border border-gray-200 rounded-xl p-3 w-80 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Search City" />
 
-      <div className="flex gap-3 mb-8">
-        <input
-          className="border rounded-lg p-3 w-80"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="Search City"
-        />
-
-        <button
-          onClick={() => fetchWeather(city)}
-          className="bg-green-600 text-white px-6 rounded-lg hover:bg-green-700"
-        >
-          Search
-        </button>
+          <button onClick={() => fetchWeather(city)} className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-1" >
+            Search
+          </button>
+        </div>
       </div>
 
       {loading && (
-        <h2 className="text-lg font-semibold">Loading...</h2>
+        <div className="flex justify-center py-20">
+          <h2 className="text-xl font-semibold text-gray-500 animate-pulse">Fetching Weather Data...</h2>
+        </div>
       )}
 
       {weather && (
         <>
-          <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="bg-white rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-10">
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-8">
 
               <div>
-                <h2 className="text-4xl font-bold">
+                <h2 className="text-6xl font-bold text-gray-800 ">
                   {weather.main.temp}°C
                 </h2>
 
-                <p className="text-xl capitalize">
+                <p className="text-2xl capitalize text-gray-600 mt-2 font-medium">
                   {weather.weather[0].description}
                 </p>
 
-                <p className="text-gray-500">
-                  📍 {weather.name}
+                <p className="text-gray-500 mt-3 text-lg font-medium flex items-center gap-2">
+                  <span className="text-red-500 text-xl">📍</span> {weather.name}
                 </p>
               </div>
 
-              <WiDaySunny className="text-yellow-500 text-8xl" />
+              <WiDaySunny className="text-yellow-500 text-9xl drop-shadow-lg" />
 
             </div>
 
-            <div className="grid grid-cols-4 gap-6 mt-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
 
-              <div className="bg-gray-50 rounded-lg p-5 text-center">
-                <WiHumidity className="text-5xl mx-auto text-blue-600" />
-                <h3 className="font-semibold mt-2">Humidity</h3>
-                <p>{weather.main.humidity}%</p>
+              <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 ">
+                <WiHumidity className="text-6xl mx-auto text-blue-500 " />
+                <h3 className="font-semibold mt-3 text-gray-700 ">Humidity</h3>
+                <p className="text-xl font-bold text-gray-800 mt-1">{weather.main.humidity}%</p>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-5 text-center">
-                <WiStrongWind className="text-5xl mx-auto text-green-600" />
-                <h3 className="font-semibold mt-2">Wind</h3>
-                <p>{weather.wind.speed} m/s</p>
+              <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 ">
+                <WiStrongWind className="text-6xl mx-auto text-emerald-500 " />
+                <h3 className="font-semibold mt-3 text-gray-700 ">Wind</h3>
+                <p className="text-xl font-bold text-gray-800 mt-1">{weather.wind.speed} m/s</p>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-5 text-center">
-                <WiCloud className="text-5xl mx-auto text-gray-500" />
-                <h3 className="font-semibold mt-2">Clouds</h3>
-                <p>{weather.clouds.all}%</p>
+              <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 ">
+                <WiCloud className="text-6xl mx-auto text-gray-400 " />
+                <h3 className="font-semibold mt-3 text-gray-700 ">Clouds</h3>
+                <p className="text-xl font-bold text-gray-800 mt-1">{weather.clouds.all}%</p>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-5 text-center">
-                <h3 className="font-semibold">Pressure</h3>
-                <p className="text-3xl mt-3">
-                  {weather.main.pressure}
+              <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 ">
+                <div className="text-4xl mt-3 mb-4 mx-auto text-purple-500 ">⏱</div>
+                <h3 className="font-semibold text-gray-700 ">Pressure</h3>
+                <p className="text-xl font-bold text-gray-800 mt-1">
+                  {weather.main.pressure} hPa
                 </p>
-                <p>hPa</p>
               </div>
 
             </div>
 
           </div>
 
-          <h2 className="text-2xl font-bold mt-10 mb-5">
+          <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-800 ">
             5-Day Forecast
           </h2>
 
-          <div className="grid grid-cols-5 gap-5">
-
-            {forecast.map((day) => (
-              <div
-                key={day.dt}
-                className="bg-white rounded-xl shadow-md p-5 text-center"
-              >
-                <h3 className="font-bold">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6"> {forecast.map((day) => (
+              <div key={day.dt} className="bg-white h-52 flex flex-col justify-center rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 text-center hover:-translate-y-1 transition-all duration-300" >
+                <h3 className="font-bold text-gray-800 text-lg">
                   {new Date(day.dt_txt).toLocaleDateString("en-IN", {
                     weekday: "short",
                   })}
                 </h3>
 
-                <WiDaySunny className="text-yellow-500 text-6xl mx-auto" />
+                <WiDaySunny className="text-yellow-500 text-7xl mx-auto my-2 drop-shadow-md" />
 
-                <p className="text-2xl font-bold mt-3">
+                <p className="text-3xl font-bold text-gray-800 ">
                   {Math.round(day.main.temp)}°
                 </p>
 
-                <p className="capitalize text-gray-500">
+                <p className="capitalize text-gray-500 mt-2 font-medium">
                   {day.weather[0].description}
                 </p>
               </div>
             ))}
-
           </div>
 
-          <div className="bg-green-50 border-l-4 border-green-600 rounded-lg p-6 mt-10">
+          <div className="bg-emerald-50 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm p-8 mt-12">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">🌾</span>
+              <h2 className="text-2xl font-bold text-emerald-800 ">
+                Smart Farming Recommendation
+              </h2>
+            </div>
 
-            <h2 className="text-2xl font-bold text-green-700">
-              🌾 Smart Farming Recommendation
-            </h2>
-
-            <ul className="list-disc ml-6 mt-4 space-y-2">
-
-              {weather.main.humidity > 80 ? (
+            <ul className="list-disc ml-8 space-y-3 text-emerald-900/80 text-lg"> {weather.main.humidity > 80 ? (
                 <li>High humidity. Monitor crops for fungal diseases.</li>
               ) : (
-                <li>Humidity is suitable for healthy crop growth.</li>
-              )}
-
-              {weather.wind.speed > 8 ? (
+                <li>Humidity is suitable for healthy crop growth.</li> )} {weather.wind.speed > 8 ? (
                 <li>Avoid pesticide spraying due to strong winds.</li>
               ) : (
                 <li>Wind conditions are favorable for spraying.</li>
@@ -186,12 +132,10 @@ export default function Weather() {
               ) : (
                 <li>No significant rain expected. Irrigation can continue if required.</li>
               )}
-
             </ul>
-
           </div>
         </>
       )}
-    </div>
+    </DashboardLayout>
   );
 }

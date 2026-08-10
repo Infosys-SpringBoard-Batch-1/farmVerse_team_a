@@ -112,7 +112,8 @@ public class FarmService {
                     crop.getQuantity(),
                     crop.getSowingDate(),
                     crop.getHarvestDate(),
-                    farm.getFarmName()
+                    farm.getFarmName(),
+                    crop.getRevenue()
             ))
             .toList();
 

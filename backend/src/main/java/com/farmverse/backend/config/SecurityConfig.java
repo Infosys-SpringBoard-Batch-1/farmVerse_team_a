@@ -41,7 +41,7 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
 
         configuration.setAllowedMethods(Arrays.asList(
                 "GET",
@@ -74,6 +74,10 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
+                
+                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> 
+                        response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())
+                ))
 
               .authorizeHttpRequests(auth -> auth
 

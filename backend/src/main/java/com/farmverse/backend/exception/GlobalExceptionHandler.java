@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<com.farmverse.backend.dto.ApiResponse> handleValidationException(MethodArgumentNotValidException ex) {
 
         String error = ex.getBindingResult()
                 .getFieldError()
@@ -18,6 +18,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(error);
+                .body(com.farmverse.backend.dto.ApiResponse.error("400", error));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<com.farmverse.backend.dto.ApiResponse> handleAllExceptions(Exception ex) {
+        ex.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(com.farmverse.backend.dto.ApiResponse.error("500", ex.getMessage() != null ? ex.getMessage() : ex.getClass().getName()));
     }
 }

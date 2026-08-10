@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/farmverse/admin")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class AdminController {
 
     private final AdminService adminService;
@@ -28,6 +29,16 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllFarmers());
     }
 
+    @GetMapping("/viewFarms")
+    public ResponseEntity<List<AdminFarmResponse>> viewFarms() {
+        return ResponseEntity.ok(adminService.getAllFarms());
+    }
+
+    @GetMapping("/viewCrops")
+    public ResponseEntity<List<AdminCropResponse>> viewCrops() {
+        return ResponseEntity.ok(adminService.getAllCrops());
+    }
+
     @PostMapping("/addFarmer")
     public ResponseEntity addFarmer(
             @Valid @RequestBody AddFarmerRequest request,
@@ -35,6 +46,19 @@ public class AdminController {
 
         AddFarmerResponse response =
                 adminService.addFarmer(request, authentication.getName());
+
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/addAdmin")
+    public ResponseEntity<AddFarmerResponse> addAdmin(
+            @Valid @RequestBody AddFarmerRequest request) {
+
+        AddFarmerResponse response = adminService.addAdmin(request);
 
         if ("400".equals(response.getStatusCode())) {
             return ResponseEntity.badRequest().body(response);
@@ -82,6 +106,41 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addFarm")
+    public ResponseEntity<ApiResponse> addFarm(@Valid @RequestBody AdminAddFarmRequest request) {
+        ApiResponse response = adminService.addFarm(request);
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/editFarm/{farmId}")
+    public ResponseEntity<ApiResponse> editFarm(
+            @PathVariable Long farmId,
+            @Valid @RequestBody AdminEditFarmRequest request) {
+        ApiResponse response = adminService.editFarm(farmId, request);
+        if ("400".equals(response.getStatusCode())) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteFarm/{farmId}")
+    public ResponseEntity<ApiResponse> deleteFarm(@PathVariable Long farmId) {
+        ApiResponse response = adminService.deleteFarm(farmId);
+        if ("404".equals(response.getStatusCode())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         return ResponseEntity.ok(response);
     }
 }

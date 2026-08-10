@@ -17,6 +17,9 @@ public interface CropRepository extends JpaRepository<Crop, Long> {
     // Count total crops belonging to a farmer
     long countByFarm_Farmer_Id(Long farmerId);
 
-    // NEW: Fetch all crops belonging to a farmer
+    // Fetch all crops belonging to a farmer
     List<Crop> findByFarm_Farmer_Id(Long farmerId);
+
+    // Fetch all crops belonging to a farmer
+    List<Crop> findAllByFarm_Farmer_Id(Long farmerId);
 }

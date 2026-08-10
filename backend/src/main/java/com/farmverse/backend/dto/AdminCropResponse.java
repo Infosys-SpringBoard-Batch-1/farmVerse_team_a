@@ -5,17 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CropDetail {
-    private Long cropId;
+public class AdminCropResponse {
+    private Long id;
     private String cropName;
     private String cropType;
     private Integer quantity;
+    private Double revenue;
     private LocalDate sowingDate;
     private LocalDate harvestDate;
+    private LocalDateTime createdAt;
+    private Long farmId;
     private String farmName;
-    private Double revenue;
+    private String farmerUsername;
+    private String farmerFullName;
 }

@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/farmverse/crops")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class CropController {
 

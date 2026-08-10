@@ -5,6 +5,7 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 
 // Authentication
 import Landing from "../pages/Landing";
+import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
@@ -15,7 +16,9 @@ import Unauthorized from "../pages/Unauthorized/Unauthorized";
 // Admin Pages
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import Farmers from "../pages/Admin/Farmers";
+import Farms from "../pages/Admin/Farms";
 import Crops from "../pages/Admin/Crops";
+import CreateAdmin from "../pages/admin/CreateAdmin";
 
 // Farmer Pages
 import FarmerDashboard from "../pages/Farmer/FarmerDashboard";
@@ -23,7 +26,12 @@ import Farm from "../pages/Farm/Farm";
 import AddFarm from "../pages/Farm/AddFarm";
 import EditFarm from "../pages/Farm/EditFarm";
 import ViewFarm from "../pages/Farm/ViewFarm";
+
 import AddCrop from "../pages/Crop/AddCrop";
+import ViewCrop from "../pages/Crop/ViewCrop";
+import EditCrop from "../pages/Crop/EditCrop";
+import ViewAllCrops from "../pages/Crop/ViewAllCrops";
+
 import Weather from "../pages/Weather/Weather";
 import Analytics from "../pages/Analytics/Analytics";
 import AIRecommendation from "../pages/Recommendations/AIRecommendation";
@@ -32,11 +40,6 @@ import AIRecommendation from "../pages/Recommendations/AIRecommendation";
 import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/Profile/EditProfile";
 import Settings from "../pages/Settings/Settings";
-import ViewCrop from "../pages/Crop/ViewCrop";
-import EditCrop from "../pages/Crop/EditCrop";
-
-import ViewAllCrops from "../pages/Crop/ViewAllCrops";
-import CreateAdmin from "../pages/admin/CreateAdmin";
 
 function AppRoutes() {
   return (
@@ -47,32 +50,35 @@ function AppRoutes() {
 
         <Route path="/" element={<Landing />} />
 
+        {/* Ananya's Home page */}
+        <Route path="/home" element={<Home />} />
+
+
         {/* ================= AUTH ================= */}
 
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
 
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-        <Route path="/oauth-success" element={<OAuthSuccess />} />
-
-        <Route path="/unauthorized" element={<Unauthorized />} />
-
-        {/* ================= FARM VIEW ================= */}
-
-        <Route path="/farm/:id" element={<ViewFarm />} />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
 
         <Route
-  path="/admin/create-admin"
-  element={
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
-      <CreateAdmin />
-    </ProtectedRoute>
-  }
-/>
+          path="/reset-password"
+          element={<ResetPassword />}
+        />
+
+        <Route
+          path="/oauth-success"
+          element={<OAuthSuccess />}
+        />
+
+        <Route
+          path="/unauthorized"
+          element={<Unauthorized />}
+        />
 
 
         {/* ================= ADMIN ================= */}
@@ -96,6 +102,15 @@ function AppRoutes() {
         />
 
         <Route
+          path="/admin/farms"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <Farms />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/crops"
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
@@ -103,6 +118,16 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/admin/create-admin"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <CreateAdmin />
+            </ProtectedRoute>
+          }
+        />
+
 
         {/* ================= FARMER ================= */}
 
@@ -114,6 +139,9 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+
+        {/* ================= FARM ================= */}
 
         <Route
           path="/farm"
@@ -143,6 +171,18 @@ function AppRoutes() {
         />
 
         <Route
+          path="/farm/:id"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <ViewFarm />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ================= CROPS ================= */}
+
+        <Route
           path="/farm/:id/crop/add"
           element={
             <ProtectedRoute allowedRoles={["FARMER"]}>
@@ -151,32 +191,46 @@ function AppRoutes() {
           }
         />
 
+        {/* New farm-aware edit route */}
         <Route
-  path="/crop/:id"
-  element={
-    <ProtectedRoute allowedRoles={["FARMER"]}>
-      <ViewCrop />
-    </ProtectedRoute>
-  }
-/>
+          path="/farm/:farmId/crop/edit/:cropId"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <EditCrop />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/crop/edit/:id"
-  element={
-    <ProtectedRoute allowedRoles={["FARMER"]}>
-      <EditCrop />
-    </ProtectedRoute>
-  }
-/>
+        {/* Existing edit route */}
+        <Route
+          path="/crop/edit/:id"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <EditCrop />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-    path="/crops"
-    element={
-        <ProtectedRoute allowedRoles={["FARMER"]}>
-            <ViewAllCrops />
-        </ProtectedRoute>
-    }
-/>
+        <Route
+          path="/crop/:id"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <ViewCrop />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/crops"
+          element={
+            <ProtectedRoute allowedRoles={["FARMER"]}>
+              <ViewAllCrops />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ================= WEATHER ================= */}
 
         <Route
           path="/weather"
@@ -187,6 +241,9 @@ function AppRoutes() {
           }
         />
 
+
+        {/* ================= ANALYTICS ================= */}
+
         <Route
           path="/analytics"
           element={
@@ -196,6 +253,9 @@ function AppRoutes() {
           }
         />
 
+
+        {/* ================= AI RECOMMENDATION ================= */}
+
         <Route
           path="/recommendation"
           element={
@@ -204,6 +264,9 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+
+        {/* ================= PROFILE ================= */}
 
         <Route
           path="/profile"
@@ -232,6 +295,7 @@ function AppRoutes() {
           }
         />
 
+
         {/* ================= 404 ================= */}
 
         <Route
@@ -239,7 +303,10 @@ function AppRoutes() {
           element={
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
               <div className="text-center">
-                <h1 className="text-7xl font-bold text-red-600">404</h1>
+
+                <h1 className="text-7xl font-bold text-red-600">
+                  404
+                </h1>
 
                 <p className="mt-4 text-2xl">
                   Page Not Found
@@ -248,6 +315,7 @@ function AppRoutes() {
                 <p className="mt-2 text-gray-500">
                   The page you are looking for does not exist.
                 </p>
+
               </div>
             </div>
           }

@@ -54,31 +54,19 @@ function Footer() {
 
             <div className="flex gap-4 mt-8">
 
-              <a
-                href="#"
-                className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
-              >
+              <a href="#" className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition" >
                 <FaFacebookF />
               </a>
 
-              <a
-                href="#"
-                className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
-              >
+              <a href="#" className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition" >
                 <FaTwitter />
               </a>
 
-              <a
-                href="#"
-                className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
-              >
+              <a href="#" className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition" >
                 <FaInstagram />
               </a>
 
-              <a
-                href="#"
-                className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
-              >
+              <a href="#" className="w-11 h-11 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition" >
                 <FaLinkedinIn />
               </a>
 
@@ -212,24 +200,15 @@ function Footer() {
 
           <div className="flex gap-8 mt-5 md:mt-0 text-gray-500">
 
-            <a
-              href="#"
-              className="hover:text-green-400 transition"
-            >
+            <a href="#" className="hover:text-green-400 transition" >
               Privacy Policy
             </a>
 
-            <a
-              href="#"
-              className="hover:text-green-400 transition"
-            >
+            <a href="#" className="hover:text-green-400 transition" >
               Terms of Service
             </a>
 
-            <a
-              href="#"
-              className="hover:text-green-400 transition"
-            >
+            <a href="#" className="hover:text-green-400 transition" >
               Support
             </a>
 

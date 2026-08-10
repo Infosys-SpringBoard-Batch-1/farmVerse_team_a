@@ -2,6 +2,8 @@ package com.farmverse.backend.service;
 
 import com.farmverse.backend.dto.*;
 import com.farmverse.backend.entity.User;
+import com.farmverse.backend.entity.Farm;
+import com.farmverse.backend.entity.Crop;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.farmverse.backend.enums.Role;
 import com.farmverse.backend.repository.CropRepository;
@@ -41,12 +43,49 @@ public class AdminService {
 
     public List<FarmerResponse> getAllFarmers() {
 
-        return userRepository.findByRole(Role.FARMER)
+        return userRepository.findAll()
                 .stream()
                 .map(user -> new FarmerResponse(
-                        user.getFullName(),
+                        user.getFullName() + (user.getRole() == Role.ADMIN ? " (Admin)" : ""),
                         user.getUsername(),
                         farmRepository.countByFarmerId(user.getId())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<AdminFarmResponse> getAllFarms() {
+        return farmRepository.findAll()
+                .stream()
+                .map(farm -> new AdminFarmResponse(
+                        farm.getId(),
+                        farm.getFarmName(),
+                        farm.getFarmType(),
+                        farm.getAreaSqMt(),
+                        farm.getLocation(),
+                        farm.getSoilType(),
+                        farm.getCreatedAt(),
+                        farm.getFarmer().getUsername(),
+                        farm.getFarmer().getFullName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<AdminCropResponse> getAllCrops() {
+        return cropRepository.findAll()
+                .stream()
+                .map(crop -> new AdminCropResponse(
+                        crop.getId(),
+                        crop.getCropName(),
+                        crop.getCropType(),
+                        crop.getQuantity(),
+                        crop.getRevenue(),
+                        crop.getSowingDate(),
+                        crop.getHarvestDate(),
+                        crop.getCreatedAt(),
+                        crop.getFarm().getId(),
+                        crop.getFarm().getFarmName(),
+                        crop.getFarm().getFarmer().getUsername(),
+                        crop.getFarm().getFarmer().getFullName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -89,6 +128,34 @@ public class AdminService {
         );
     }
 
+    public AddFarmerResponse addAdmin(AddFarmerRequest request) {
+
+        if (userRepository.existsByUsername(request.getUsername())) {
+            return new AddFarmerResponse(
+                    "error",
+                    "400",
+                    "Username already taken",
+                    null
+            );
+        }
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.ADMIN);
+
+        User savedUser = userRepository.save(user);
+
+        return new AddFarmerResponse(
+                "ok",
+                "200",
+                "Admin added successfully",
+                String.valueOf(savedUser.getId())
+        );
+    }
+
     public EditFarmerResponse editFarmer(
             String username,
             EditFarmerRequest request,
@@ -122,6 +189,7 @@ public class AdminService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User updatedUser = userRepository.save(user);
+
         applicationHistoryService.log(
                 adminUsername,
                 "EDIT_FARMER",
@@ -156,6 +224,7 @@ public class AdminService {
         Long id = user.getId();
 
         userRepository.delete(user);
+
         applicationHistoryService.log(
                 adminUsername,
                 "DELETE_FARMER",
@@ -170,5 +239,69 @@ public class AdminService {
                 "Farmer deleted successfully",
                 String.valueOf(id)
         );
+    }
+
+    public ApiResponse addFarm(AdminAddFarmRequest request) {
+        User farmer = userRepository
+                .findByUsername(request.getFarmerUsername())
+                .orElse(null);
+
+        if (farmer == null) {
+            return ApiResponse.error("404", "Farmer not found");
+        }
+
+        Farm farm = new Farm();
+        farm.setFarmName(request.getFarmName());
+        farm.setFarmType(request.getFarmType());
+        farm.setAreaSqMt(request.getAreaSqMt());
+        farm.setLocation(request.getLocation());
+        farm.setSoilType(request.getSoilType());
+        farm.setFarmer(farmer);
+
+        farmRepository.save(farm);
+
+        return ApiResponse.ok("Farm added successfully", null);
+    }
+
+    public ApiResponse editFarm(
+            Long farmId,
+            AdminEditFarmRequest request) {
+
+        Farm farm = farmRepository.findById(farmId).orElse(null);
+
+        if (farm == null) {
+            return ApiResponse.error("404", "Farm not found");
+        }
+
+        User farmer = userRepository
+                .findByUsername(request.getFarmerUsername())
+                .orElse(null);
+
+        if (farmer == null) {
+            return ApiResponse.error("404", "Farmer not found");
+        }
+
+        farm.setFarmName(request.getFarmName());
+        farm.setFarmType(request.getFarmType());
+        farm.setAreaSqMt(request.getAreaSqMt());
+        farm.setLocation(request.getLocation());
+        farm.setSoilType(request.getSoilType());
+        farm.setFarmer(farmer);
+
+        farmRepository.save(farm);
+
+        return ApiResponse.ok("Farm updated successfully", null);
+    }
+
+    public ApiResponse deleteFarm(Long farmId) {
+        Farm farm = farmRepository.findById(farmId).orElse(null);
+
+        if (farm == null) {
+            return ApiResponse.error("404", "Farm not found");
+        }
+
+        farmRepository.delete(farm);
+
+        return ApiResponse.ok("Farm deleted successfully", null);
     }
 }
