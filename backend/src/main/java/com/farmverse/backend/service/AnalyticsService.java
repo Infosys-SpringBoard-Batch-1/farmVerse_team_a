@@ -5,6 +5,7 @@ import com.farmverse.backend.entity.Crop;
 import com.farmverse.backend.entity.User;
 import com.farmverse.backend.repository.CropRepository;
 import com.farmverse.backend.repository.UserRepository;
+import com.farmverse.backend.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,15 @@ public class AnalyticsService {
 
     private final CropRepository cropRepository;
     private final UserRepository userRepository;
+    private final FarmRepository farmRepository;
 
     public AnalyticsResponse getAnalytics(String username) {
         User farmer = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         List<Crop> crops = cropRepository.findAllByFarm_Farmer_Id(farmer.getId());
+        long activeFarms = farmRepository.countByFarmerId(farmer.getId());
+        long totalCrops = cropRepository.countByFarm_Farmer_Id(farmer.getId());
 
         double totalProduction = 0;
         double totalRevenue = 0;
@@ -73,6 +77,8 @@ public class AnalyticsService {
                 .cropProduction(cropProduction)
                 .monthlyProduction(monthlyProduction)
                 .monthlyReport(monthlyReport)
+                .activeFarms(activeFarms)
+                .totalCrops(totalCrops)
                 .build();
     }
 }

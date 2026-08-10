@@ -107,7 +107,10 @@ function DashboardLayout({ children }) {
 
                 {/* Page Content */}
                 <main className="flex-1 p-8 overflow-auto relative">
-                    {children}
+                    <div className="absolute inset-0 bg-[url('/leafy_bg.jpg')] bg-cover bg-center opacity-[0.03] pointer-events-none z-0"></div>
+                    <div className="relative z-10">
+                        {children}
+                    </div>
 
                     {/* Toast Notification */}
                     {toast && (

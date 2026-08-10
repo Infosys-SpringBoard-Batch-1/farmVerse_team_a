@@ -1,12 +1,12 @@
-import { useState } from "react"; import { Link, useNavigate } from "react-router-dom"; import { FaUser, FaEnvelope, FaLock, FaSeedling, FaEye, FaEyeSlash, FaUserShield, } from "react-icons/fa"; import { validateEmail, validatePassword, validateUsername, passwordsMatch, } from "../../utils/validation"; import { registerFarmer } from "../../services/auth"; function Register() { const navigate = useNavigate(); const [selectedRole, setSelectedRole] = useState("FARMER"); const [showPassword, setShowPassword] = useState(false); const [showConfirmPassword, setShowConfirmPassword] = useState(false); const [loading, setLoading] = useState(false); const [formData, setFormData] = useState({ fullName: "", username: "", email: "", password: "", confirmPassword: "", }); const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value, }); }; const isFullNameValid = formData.fullName.trim().length >= 3; const isUsernameValid = validateUsername(formData.username); const isEmailValid = validateEmail(formData.email); const isPasswordValid = validatePassword(formData.password); const isConfirmPasswordValid = passwordsMatch( formData.password, formData.confirmPassword ); const isFormValid = isFullNameValid && isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid; const handleSubmit = async (e) => {
+import { useState } from "react"; import { Link, useNavigate } from "react-router-dom"; import { FaUser, FaEnvelope, FaLock, FaSeedling, FaEye, FaEyeSlash, FaUserShield, } from "react-icons/fa"; import { validateEmail, validatePassword, validateUsername, passwordsMatch, } from "../../utils/validation"; import { registerFarmer } from "../../services/auth"; function Register() { const navigate = useNavigate(); const [selectedRole, setSelectedRole] = useState("FARMER"); const [showPassword, setShowPassword] = useState(false); const [showConfirmPassword, setShowConfirmPassword] = useState(false); const [loading, setLoading] = useState(false); const [showTermsModal, setShowTermsModal] = useState(false); const [termsAccepted, setTermsAccepted] = useState(false); const [formData, setFormData] = useState({ fullName: "", username: "", email: "", password: "", confirmPassword: "", }); const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value, }); }; const isFullNameValid = formData.fullName.trim().length >= 3; const isUsernameValid = validateUsername(formData.username); const isEmailValid = validateEmail(formData.email); const isPasswordValid = validatePassword(formData.password); const isConfirmPasswordValid = passwordsMatch( formData.password, formData.confirmPassword ); const isFormValid = isFullNameValid && isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid; const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (selectedRole === "ADMIN") {
-      // Temporarily enabled for setup
-    }
-
     if (!isFormValid) return;
+    setShowTermsModal(true);
+  };
 
+  const handleConfirmRegistration = async () => {
+    if (!termsAccepted) return;
+    setShowTermsModal(false);
     setLoading(true);
 
     try {
@@ -15,36 +15,29 @@ import { useState } from "react"; import { Link, useNavigate } from "react-route
         username: formData.username.trim(),
         email: formData.email.trim(),
         password: formData.password,
-
-        // IMPORTANT
         role: selectedRole,
       };
 
       await registerFarmer(payload);
-
       alert("Registration Successful!");
-
       navigate("/login");
-
     } catch (error) {
       console.error(error);
-
       const errorData = error.response?.data;
       const errorMessage = typeof errorData === 'string'
         ? errorData
         : errorData?.message || "Registration Failed.";
-
       alert(errorMessage);
     } finally {
       setLoading(false);
     }
   };
     return (
-    <div className="h-screen bg-slate-50 flex justify-center items-center px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-green-700 via-emerald-600 to-teal-800 z-0"></div>
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay z-0"></div>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center px-4 py-8 relative overflow-y-auto">
+      <div className="absolute inset-0 bg-[url('/leafy_bg.jpg')] bg-cover bg-center z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/90 to-teal-950/90 z-0"></div>
       
-      <div className="w-full max-w-xl h-full max-h-[95vh] bg-white rounded-3xl shadow-2xl p-10 relative z-10 overflow-y-auto">
+      <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl p-10 relative z-10 my-auto">
 
         {/* Logo */}
         <div className="flex justify-center mb-2">
@@ -80,16 +73,16 @@ import { useState } from "react"; import { Link, useNavigate } from "react-route
           </div>
 
           {/* Admin */}
-          <div onClick={() => setSelectedRole("ADMIN")} className={`cursor-pointer rounded-2xl border-2 p-5 transition-all duration-300 hover:shadow-md ${ selectedRole === "ADMIN" ? "border-blue-500 bg-blue-50 shadow-blue-100 shadow-inner" : "border-gray-100 bg-gray-50 hover:bg-gray-100/80" }`} >
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${selectedRole === "ADMIN" ? "bg-blue-100 text-blue-600" : "bg-white text-gray-400 shadow-sm"}`}>
+          <div className="cursor-not-allowed opacity-50 rounded-2xl border border-gray-200 bg-gray-50 p-5 transition-all duration-300 filter grayscale select-none" >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-white text-gray-400 shadow-sm">
               <FaUserShield className="text-2xl" />
             </div>
 
-            <h2 className={`font-bold text-lg mb-1 ${selectedRole === "ADMIN" ? "text-blue-800" : "text-gray-700"}`}>
-              Admin
+            <h2 className="font-bold text-lg mb-1 text-gray-400 flex items-center gap-2">
+              Admin <span className="text-xs font-semibold px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full">Disabled</span>
             </h2>
 
-            <p className={`text-xs leading-relaxed ${selectedRole === "ADMIN" ? "text-blue-600/80" : "text-gray-500"}`}>
+            <p className="text-xs leading-relaxed text-gray-400">
               Admin accounts are created only by the system administrator.
             </p>
           </div>
@@ -222,12 +215,89 @@ import { useState } from "react"; import { Link, useNavigate } from "react-route
         )}
 
         {/* Login Link */}
-        <p className="text-center mt-10 text-gray-600 font-medium">
-          Already have an account?
-          <Link to="/login" className="ml-2 text-emerald-600 font-bold hover:text-emerald-700 hover:underline" >
-            Login here
-          </Link>
-        </p>
+        <div className="text-center mt-10 space-y-3">
+          <p className="text-gray-600 font-medium">
+            Already have an account?
+            <Link to="/login" className="ml-2 text-emerald-600 font-bold hover:text-emerald-700 hover:underline" >
+              Login here
+            </Link>
+          </p>
+          <div>
+            <Link to="/" className="text-sm text-gray-500 hover:text-emerald-600 font-semibold transition-colors" >
+              Back to Home
+            </Link>
+          </div>
+        </div>
+
+        {/* Terms and Conditions Modal */}
+        {showTermsModal && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl animate-in fade-in zoom-in duration-200 border border-gray-100 flex flex-col max-h-[90vh]">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">
+                Data Privacy and Terms of Service
+              </h2>
+              
+              <div className="overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4 mb-6 pr-2 max-h-[40vh] custom-scrollbar">
+                <p>
+                  Welcome to FarmVerse. We are committed to protecting your personal and agricultural data. Before finalizing your registration, please review how we collect and process your information:
+                </p>
+                <p>
+                  <strong>1. Collection of Data:</strong> We collect your full name, username, email address, password, and role selection for secure identity verification.
+                </p>
+                <p>
+                  <strong>2. Farm and Location Metrics:</strong> Registered farm profiles (including coordinates, areas, and soil structures) are mapped to localized weather databases and mandi market indices to provide regional wholesale rates.
+                </p>
+                <p>
+                  <strong>3. AI Recommendation System:</strong> Crop descriptions and quantities are analyzed securely via agricultural models (including Krishi AI) to generate localized planting advice and fertilizer tips.
+                </p>
+                <p>
+                  <strong>4. Zero Third-Party Sharing:</strong> We do not sell, rent, or lease your private data or farm details to marketing platforms or external agencies.
+                </p>
+                <p>
+                  By checking the consent box below, you authorize the secure storage, retrieval, and analytical processing of your data within the FarmVerse ecosystem.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-3 p-4 bg-slate-50 border border-slate-100 rounded-2xl mb-6">
+                <input
+                  type="checkbox"
+                  id="consentCheckbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded cursor-pointer"
+                />
+                <label htmlFor="consentCheckbox" className="text-xs text-gray-600 leading-normal select-none cursor-pointer">
+                  I agree to the terms and conditions regarding the processing and secure storage of my agricultural data.
+                </label>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowTermsModal(false);
+                    setTermsAccepted(false);
+                  }}
+                  className="flex-1 py-3 px-4 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Decline
+                </button>
+                <button
+                  type="button"
+                  disabled={!termsAccepted}
+                  onClick={handleConfirmRegistration}
+                  className={`flex-1 py-3 px-4 text-white font-semibold rounded-xl transition-all ${
+                    !termsAccepted
+                      ? "bg-gray-300 cursor-not-allowed shadow-none"
+                      : "bg-emerald-600 hover:bg-emerald-700 hover:-translate-y-0.5 shadow-lg shadow-emerald-600/20"
+                  }`}
+                >
+                  Accept and Register
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

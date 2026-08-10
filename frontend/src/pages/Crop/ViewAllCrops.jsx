@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getAllCrops } from "../../services/crop";
+import { getAllFarms } from "../../services/farm";
+import MandiPriceWidget from "../../components/ui/MandiPriceWidget";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaEye, FaEdit } from "react-icons/fa";
 
@@ -9,7 +11,7 @@ export default function ViewAllCrops() {
     const navigate = useNavigate();
 
     const [crops, setCrops] = useState([]);
-
+    const [farmLocations, setFarmLocations] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -17,23 +19,25 @@ export default function ViewAllCrops() {
     }, []);
 
     const loadCrops = async () => {
-
         try {
-
             const response = await getAllCrops();
-
             setCrops(response);
 
+            try {
+                const farmsResponse = await getAllFarms();
+                const locMap = {};
+                (farmsResponse.farms || []).forEach(f => {
+                    locMap[f.farmName] = f.location;
+                });
+                setFarmLocations(locMap);
+            } catch (farmErr) {
+                console.error("Failed to load farms mapping:", farmErr);
+            }
         } catch (err) {
-
             console.log(err);
-
         } finally {
-
             setLoading(false);
-
         }
-
     };
 
     if (loading) {
@@ -86,10 +90,9 @@ export default function ViewAllCrops() {
                             </h2>
 
                             <p><strong>Farm:</strong> {crop.farmName}</p>
-
                             <p><strong>Type:</strong> {crop.cropType}</p>
-
                             <p><strong>Quantity:</strong> {crop.quantity}</p>
+                            <MandiPriceWidget cropName={crop.cropName} farmLocation={farmLocations[crop.farmName] || ""} />
 
                             <div className="grid grid-cols-2 gap-2 mt-5">
 

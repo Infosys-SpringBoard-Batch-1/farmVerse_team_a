@@ -10,6 +10,7 @@ import {
   FaUserCircle,
   FaCog,
   FaSignOutAlt,
+  FaHistory
 } from "react-icons/fa";
 
 import { logout } from "../../services/auth";
@@ -40,6 +41,11 @@ function Sidebar() {
       name: "Crops",
       icon: <FaLeaf />,
       path: "/admin/crops",
+    },
+    {
+      name: "History",
+      icon: <FaHistory />,
+      path: "/admin/history",
     },
   ];
 
@@ -73,6 +79,11 @@ function Sidebar() {
       name: "AI Recommendation",
       icon: <FaRobot />,
       path: "/recommendation",
+    },
+    {
+      name: "History",
+      icon: <FaHistory />,
+      path: "/history",
     },
     {
       name: "Profile",

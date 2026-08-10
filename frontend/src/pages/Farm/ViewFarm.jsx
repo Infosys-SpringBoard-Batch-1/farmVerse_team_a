@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getFarmById } from "../../services/farm";
 import { deleteCrop } from "../../services/crop";
+import MandiPriceWidget from "../../components/ui/MandiPriceWidget";
+import { MapPin, Sprout, Ruler, Globe } from "lucide-react";
 
 import {
   FaArrowLeft,
@@ -155,22 +157,22 @@ export default function ViewFarm() {
           <div className="space-y-4 text-lg text-gray-700">
 
             <p className="flex items-center gap-3">
-              <span className="text-2xl">📍</span>
+              <MapPin className="w-5 h-5 text-emerald-600" />
               <strong>Location:</strong> {farm.location}
             </p>
 
             <p className="flex items-center gap-3">
-              <span className="text-2xl">🌱</span>
+              <Sprout className="w-5 h-5 text-emerald-600" />
               <strong>Farm Type:</strong> {farm.farmType}
             </p>
 
             <p className="flex items-center gap-3">
-              <span className="text-2xl">📐</span>
+              <Ruler className="w-5 h-5 text-emerald-600" />
               <strong>Area:</strong> {farm.areaSqMt} sq.m
             </p>
 
             <p className="flex items-center gap-3">
-              <span className="text-2xl">🌍</span>
+              <Globe className="w-5 h-5 text-emerald-600" />
               <strong>Soil:</strong> {farm.soilType}
             </p>
 
@@ -282,6 +284,8 @@ export default function ViewFarm() {
                     </p>
 
                   </div>
+
+                  <MandiPriceWidget cropName={crop.cropName} farmLocation={farm.location} />
 
                 </div>
 

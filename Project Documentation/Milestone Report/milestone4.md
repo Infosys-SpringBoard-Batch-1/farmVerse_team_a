@@ -1,14 +1,14 @@
 # FarmVerse: Precision Agriculture Management Platform
 ## Milestone 4 Progress Report
-**Duration:** 2 weeks | **Status:** In Progress
-
+**Duration:** 2 weeks | **Status:** Completed
+| Version 2.0.0
 ---
 
 ## Executive Summary
 
-Milestone 4 focuses on AI feature delivery, frontend completion, and platform polish. The team shipped the full Krishi AI chatbot (backend and frontend), integrated weather data into the farmer experience, and built an analytics page for collective farm insights. Remaining work includes the Admin Dashboard UI, a backend chat logging feature, and presentation updates.
+Milestone 4 focuses on AI feature delivery, frontend completion, and platform polish. The team shipped the full Krishi AI chatbot (backend and frontend), integrated weather data into the farmer experience, and built an analytics page for collective farm insights. Additionally, we successfully implemented a keyless, client-side Mandi Price Tracker and fully delivered the frontend integration for the Application Audit History logs.
 
-**Team Velocity:** 6 objectives |
+**Team Velocity:** 7 objectives |
 
 ---
 
@@ -104,21 +104,30 @@ Built a dedicated analytics page that aggregates and visualizes collective farm 
 
 ---
 
-### 5. Backend Logging / History Feature
+### 5. Application Logging and History Integration
 **Owners:** Bhagyesh Patil, Arfa Banu
-**Status:** In Progress
+**Status:** Completed
 
 **Details:**
 
-Implementing a backend feature to store/track the requests that are being made to the server. It will be used to maintain a record of services being used.
+Implemented a full audit log system to track and query requests made to the server, maintaining a clear ledger of administrative and agricultural activity. 
 
-This component would store details such as `Activity Name`, `Time of occurence` and the `Username` for maintaining a good, trackable record of requests that is being entertained.
+**Backend Deliverables:**
+- `ApplicationHistory.java` (JPA Entity): stores fields such as action, username, entity type, entity ID, description, and timestamp
+- `ApplicationHistoryRepository.java`: supports queries sorted by timestamp descending
+- `ApplicationHistoryController.java`: exposes `GET /farmverse/admin/history` (Admin view of all logs) and `GET /farmverse/farmer/history` (Farmer view of own logs)
+- Request-level logging integrated across `FarmService`, `CropService`, and `AdminService`
+
+**Frontend Deliverables:**
+- `history.js` (Service): calls JWT-authenticated backend history endpoints
+- `History.jsx` (Page): displays audit logs in a clean card-styled layout, featuring dynamic role-based columns, outline status badges, and search/category filters
+- `Sidebar.jsx` & `AppRoutes.jsx` integration
 
 ---
 
 ### 6. Presentation Update
 **Owner:** Arfa Banu
-**Status:** In Progress
+**Status:** Completed
 
 **Details:**
 
@@ -132,44 +141,61 @@ Updating the project presentation to reflect Milestone 4 deliverables, including
 
 ---
 
+### 7. Mandi Price Tracker
+**Owner:** Ananya C.Y
+**Status:** Completed
+
+**Details:**
+
+Designed and implemented a keyless, client-side Mandi Price Tracker to give farmers live wholesale market rates.
+
+**Key Features Implemented:**
+- `mandiService.js` (Service): resolves local market rates dynamically based on farm location and crop commodity type (supporting tons or quintals), including 5-day historical sparkline trends
+- `MandiPriceWidget.jsx` (UI Component): displays live modal pricing, price ranges (Min/Max), and a fully animated 5-day CSS-rendered sparkline chart
+- Multi-page integration across the Farm Details page, Crop Details page, and the main Crop List view
+- Landing page mock preview highlighting generalized market categories
+
+---
+
 ## Testing & Validation (Milestone 4)
 
-### AI Endpoint Testing
-- `POST /farmverse/chat/sendMessage` -- success response with agriculture queries
-- Off-topic query handling -- Krishi AI correctly declines non-agriculture questions
-- Unauthorized access -- 401 returned when token is missing or invalid
-- Empty message body -- 400 returned with validation error
+### AI & History Endpoint Testing
+- `POST /farmverse/chat/sendMessage` - success response with agriculture queries
+- Off-topic query handling - Krishi AI correctly declines non-agriculture questions
+- `GET /farmverse/admin/history` - yields all system audit logs when called by ADMIN
+- `GET /farmverse/farmer/history` - yields only personal logs when called by FARMER
 
 ### Frontend Testing
-- Krishi AI chat -- message send, response render, auto-scroll verified
-- Weather tab -- data loads correctly on tab open
-- Analytics page -- all data aggregation displays correctly
-- Cross-component navigation -- no regressions observed
+- Krishi AI chat - message send, response render, auto-scroll verified
+- Weather tab - data loads correctly on tab open
+- Analytics page - all data aggregation displays correctly
+- Mandi Price Tracker - location matching, price scaling, and sparklines verified
+- History - role-based columns, search filters, and action badge colors verified
+- Cross-component navigation - no regressions observed
 
 ---
 
 ## Team Contributions (Milestone 4)
 
-| Member | Role | Milestone 4 Contributions |
-|--------|------|--------------------------|
-| **Arindam Pal** | Backend + Frontend | Krishi AI backend (Gemini API, prompt engineering), Krishi AI chat UI (auto-scroll, smooth UX, API wiring) |
-| **Ananya C.Y** | Frontend | Weather tab integration, Analytics page, Admin Dashboard (in progress) |
-| **Bhagyesh Patil** | Backend | Chat logging/history feature (in progress) |
-| **Arfa Banu** | Database + Presentation | Chat logging/history feature (in progress), Presentation update (in progress) |
-| **Shaik Kousar Bee** | AI/ML | AI implementation support |
+| Member | Role | Milestone 4 Contributions                                                                                           |
+|--------|------|---------------------------------------------------------------------------------------------------------------------|
+| **Arindam Pal** | Backend \| UI/UX Design | Krishi AI backend (Gemini API, prompt engineering), chat UI, registration role constraints, and page layout updates |
+| **Ananya C.Y** | Frontend | Weather tab integration, Analytics page, Admin Dashboard, Mandi Price integration                                   |
+| **Bhagyesh Patil** | Backend | Chat logging/history backend feature                                                                                |
+| **Arfa Banu** | Database + Presentation | Chat logging/history backend feature, Presentation update                                             |
+| **Shaik Kousar Bee** | AI/ML | AI implementation support                                                                                           |
 
 ---
 
 ## Next Steps (Post Milestone 4)
 
 ### Immediate
-1. Complete and test the chat history backend feature (Bhagyesh, Arfa)
-2. Complete the Admin Dashboard UI (Ananya)
-3. Finalize and review the updated presentation (Arfa)
-4. End-to-end testing of full Krishi AI flow including chat history retrieval
-5. Final integration testing across all Milestone 4 features
+1. Complete the Admin Dashboard UI (Ananya)
+2. Finalize and review the updated presentation (Arfa)
+3. End-to-end testing of full Krishi AI flow including chat history retrieval
+4. Final integration testing across all Milestone 4 features
 
 ---
 
-Last Updated: 08-08-2026
+Last Updated: 11-08-2026
 Maintained By: Team A: Infosys Springboard

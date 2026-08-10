@@ -23,8 +23,8 @@ A key highlight of FarmVerse is **Krishi AI** : an intelligent, agriculture-focu
 **Team A - Infosys Springboard Virtual Internship 7.0 (Java Fullstack Developer Track)**
 
 **Mentor: Mr. Vinay Prashant**
-- Ananya C.Y (Frontend)
-- Arindam Pal (Backend)
+- Ananya C.Y (Frontend | UI/UX Design)
+- Arindam Pal (Backend | UI/UX Design)
 - Arfa (Database/Schema)
 - Bhagyesh (Backend)
 - Kousar Bee (AI Implementation)
@@ -235,6 +235,12 @@ DB_PASSWORD=your_db_password
 JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRATION=86400000
 GEMINI_API_KEY=your_gemini_api_key
+```
+
+Create a `.env` file in the backend root directory or configure system environment variables:
+```
+VITE_OPENWEATHER_API_KEY=your_key_here
+VITE_GROQ_API_KEY=your_key_here
 ```
 
 3. Update application.properties

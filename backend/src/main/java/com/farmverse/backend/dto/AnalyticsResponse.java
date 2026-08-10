@@ -18,6 +18,8 @@ public class AnalyticsResponse {
     private Map<String, Double> cropProduction;
     private Map<String, Double> monthlyProduction;
     private List<MonthlyReportEntry> monthlyReport;
+    private Long activeFarms;
+    private Long totalCrops;
 
     @Data
     @AllArgsConstructor
