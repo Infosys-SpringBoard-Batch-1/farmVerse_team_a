@@ -54,7 +54,7 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
       </div>
 
       {/* Statistics */}
-      <div className="grid md:grid-cols-4 gap-6 mb-10">
+      <div className="grid md:grid-cols-2 gap-6 mb-10">
         <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
           <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Production</p>
           <h1 className="text-4xl font-extrabold mt-2 text-green-600 ">
@@ -65,18 +65,6 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
           <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Revenue</p>
           <h1 className="text-4xl font-extrabold mt-2 text-blue-600 ">
             ₹{totalRevenue ? (totalRevenue / 100000).toFixed(2) : 0}L
-          </h1>
-        </div>
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Water Saved</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-cyan-600 ">
-            24%
-          </h1>
-        </div>
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">AI Accuracy</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-purple-600 ">
-            96%
           </h1>
         </div>
       </div>
