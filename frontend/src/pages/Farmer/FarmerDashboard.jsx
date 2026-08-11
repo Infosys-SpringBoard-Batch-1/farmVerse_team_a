@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaSeedling, FaLeaf, FaCloudSun, FaPlus, } from "react-icons/fa";
 import DashboardLayout from "../../components/Layout/DashboardLayout";
 import { getAllFarms } from "../../services/farm";
+import SmartFarmingRecommendation from "../../components/ui/SmartFarmingRecommendation";
 
 function FarmerDashboard() {
   const navigate = useNavigate();
@@ -161,6 +162,11 @@ function FarmerDashboard() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Smart Farming Recommendation Widget */}
+      <div className="mt-10">
+        <SmartFarmingRecommendation />
       </div>
 
     </DashboardLayout>

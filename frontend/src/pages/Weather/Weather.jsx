@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; import axios from "axios"; import { WiDaySunny, WiHumidity, WiStrongWind, WiCloud, } from "react-icons/wi"; import DashboardLayout from "../../components/layout/DashboardLayout"; const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "b2cf1d2569d8676de02b88f8e7b98ec2"; export default function Weather() { const [city, setCity] = useState("Bengaluru"); const [weather, setWeather] = useState(null); const [forecast, setForecast] = useState([]); const [loading, setLoading] = useState(false); const fetchWeather = async (cityName) => { try { setLoading(true); const current = await axios.get( `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}` ); const next = await axios.get( `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${API_KEY}` ); setWeather(current.data); const daily = next.data.list.filter((item) => item.dt_txt.includes("12:00:00") ); setForecast(daily); } catch (err) { alert("Unable to fetch weather."); console.error(err); } finally { setLoading(false); } }; useEffect(() => {
+import { useEffect, useState } from "react"; import axios from "axios"; import { WiDaySunny, WiHumidity, WiStrongWind, WiCloud, } from "react-icons/wi"; import DashboardLayout from "../../components/layout/DashboardLayout"; const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "b2cf1d2569d8676de02b88f8e7b98ec2"; export default function Weather() { const [city, setCity] = useState("Bengaluru"); const [weather, setWeather] = useState(null); const [forecast, setForecast] = useState([]); const [loading, setLoading] = useState(false); const [error, setError] = useState(""); const fetchWeather = async (cityName) => { try { setLoading(true); setError(""); const current = await axios.get( `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}` ); const next = await axios.get( `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${API_KEY}` ); setWeather(current.data); const daily = next.data.list.filter((item) => item.dt_txt.includes("12:00:00") ); setForecast(daily); } catch (err) { setError(`Unable to find weather data for "${cityName}". Please check the spelling.`); setWeather(null); setForecast([]); console.error(err); } finally { setLoading(false); } }; useEffect(() => {
     fetchWeather(city);
   }, []);
 
@@ -29,7 +29,15 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
         </div>
       )}
 
-      {weather && (
+      {error && !loading && (
+        <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-6 text-center shadow-sm">
+          <p className="text-4xl mb-3">😕</p>
+          <h3 className="font-bold text-lg mb-2">Location Not Found</h3>
+          <p>{error}</p>
+        </div>
+      )}
+
+      {weather && !loading && !error && (
         <>
           <div className="bg-white rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-10">
 
@@ -108,31 +116,6 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
                 </p>
               </div>
             ))}
-          </div>
-
-          <div className="bg-emerald-50 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm p-8 mt-12">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">🌾</span>
-              <h2 className="text-2xl font-bold text-emerald-800 ">
-                Smart Farming Recommendation
-              </h2>
-            </div>
-
-            <ul className="list-disc ml-8 space-y-3 text-emerald-900/80 text-lg"> {weather.main.humidity > 80 ? (
-                <li>High humidity. Monitor crops for fungal diseases.</li>
-              ) : (
-                <li>Humidity is suitable for healthy crop growth.</li> )} {weather.wind.speed > 8 ? (
-                <li>Avoid pesticide spraying due to strong winds.</li>
-              ) : (
-                <li>Wind conditions are favorable for spraying.</li>
-              )}
-
-              {weather.weather[0].main === "Rain" ? (
-                <li>Rain expected. Postpone irrigation today.</li>
-              ) : (
-                <li>No significant rain expected. Irrigation can continue if required.</li>
-              )}
-            </ul>
           </div>
         </>
       )}
