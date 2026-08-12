@@ -1,4 +1,3 @@
-import ReactMarkdown from "react-markdown";
 export default function ChatMessage({ message, isUser }) {
   return (
     <div
@@ -13,15 +12,21 @@ export default function ChatMessage({ message, isUser }) {
           px-4
           py-3
           text-sm
-          whitespace-pre-wrap
           ${
             isUser
-              ? "bg-green-700 text-white rounded-br-md"
+              ? "bg-green-700 text-white rounded-br-md whitespace-pre-wrap"
               : "bg-white border border-gray-200 text-gray-800 rounded-bl-md shadow-sm"
           }
         `}
       >
-        <ReactMarkdown>{message}</ReactMarkdown>
+        {isUser ? (
+          message
+        ) : (
+          <div
+            className="chatbot-html-content"
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
+        )}
       </div>
     </div>
   );

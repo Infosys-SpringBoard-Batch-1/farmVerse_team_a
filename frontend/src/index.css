@@ -52,3 +52,64 @@ html.dark textarea {
 html.dark input::placeholder {
   color: #64748b !important;
 }
+
+/* Chatbot HTML content styling */
+.chatbot-html-content h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: inherit;
+}
+.chatbot-html-content h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
+  color: inherit;
+}
+.chatbot-html-content ul {
+  list-style-type: disc;
+  margin-left: 1.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.chatbot-html-content ol {
+  list-style-type: decimal;
+  margin-left: 1.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.chatbot-html-content li {
+  margin-bottom: 0.2rem;
+}
+.chatbot-html-content b, .chatbot-html-content strong {
+  font-weight: 700;
+}
+.chatbot-html-content p {
+  margin-bottom: 0.4rem;
+}
+.chatbot-html-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+.chatbot-html-content th, .chatbot-html-content td {
+  border: 1px solid #e2e8f0;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+}
+.chatbot-html-content th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+}
+html.dark .chatbot-html-content th {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+html.dark .chatbot-html-content td {
+  border-color: #475569 !important;
+}
