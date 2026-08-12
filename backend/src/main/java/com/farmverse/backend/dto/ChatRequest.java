@@ -16,6 +16,6 @@ public class ChatRequest {
     @NotNull(message = "Message cannot be empty")
     private String message;
 
-    //for sending previous message for context
+    // for sending previous message for context
     private List<ChatMessage> conversationHistory;
 }

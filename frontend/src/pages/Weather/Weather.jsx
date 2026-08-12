@@ -110,30 +110,6 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
             ))}
           </div>
 
-          <div className="bg-emerald-50 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm p-8 mt-12">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">🌾</span>
-              <h2 className="text-2xl font-bold text-emerald-800 ">
-                Smart Farming Recommendation
-              </h2>
-            </div>
-
-            <ul className="list-disc ml-8 space-y-3 text-emerald-900/80 text-lg"> {weather.main.humidity > 80 ? (
-                <li>High humidity. Monitor crops for fungal diseases.</li>
-              ) : (
-                <li>Humidity is suitable for healthy crop growth.</li> )} {weather.wind.speed > 8 ? (
-                <li>Avoid pesticide spraying due to strong winds.</li>
-              ) : (
-                <li>Wind conditions are favorable for spraying.</li>
-              )}
-
-              {weather.weather[0].main === "Rain" ? (
-                <li>Rain expected. Postpone irrigation today.</li>
-              ) : (
-                <li>No significant rain expected. Irrigation can continue if required.</li>
-              )}
-            </ul>
-          </div>
         </>
       )}
     </DashboardLayout>

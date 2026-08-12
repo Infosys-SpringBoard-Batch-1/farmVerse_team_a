@@ -15,9 +15,9 @@ export default function ChatWindow({
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({
-          behavior: "smooth",
-      });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
   }, [messages, loading]);
 
   return (
@@ -83,8 +83,8 @@ export default function ChatWindow({
           ))
 
         )}
-    {loading && <TypingIndicator />}
-    <div ref={messagesEndRef} />
+        {loading && <TypingIndicator />}
+        <div ref={messagesEndRef} />
 
       </div>
 
@@ -92,10 +92,10 @@ export default function ChatWindow({
 
       <div className="border-t bg-white p-4">
 
-          <ChatInput
-              onSend={onSend}
-              loading={loading}
-          />
+        <ChatInput
+          onSend={onSend}
+          loading={loading}
+        />
 
       </div>
 

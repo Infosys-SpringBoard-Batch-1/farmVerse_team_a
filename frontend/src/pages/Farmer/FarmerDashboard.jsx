@@ -4,6 +4,7 @@ import { FaSeedling, FaLeaf, FaCloudSun, FaPlus, } from "react-icons/fa";
 import { MapPin, Sprout, Wheat, Ruler } from "lucide-react";
 import DashboardLayout from "../../components/Layout/DashboardLayout";
 import { getAllFarms } from "../../services/farm";
+import SmartFarmingRecommendation from "../../components/ui/SmartFarmingRecommendation";
 
 function FarmerDashboard() {
   const navigate = useNavigate();
@@ -117,6 +118,11 @@ function FarmerDashboard() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Smart Farming Recommendation */}
+      <div className="mt-10">
+        <SmartFarmingRecommendation />
       </div>
 
       {/* Recent Farms */}

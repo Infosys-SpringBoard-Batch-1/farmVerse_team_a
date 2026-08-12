@@ -6,6 +6,7 @@ import WeatherCard from "../../components/ui/WeatherCard";
 import AIInsightCard from "../../components/ui/AIInsightCard";
 import ActivityCard from "../../components/ui/ActivityCard";
 import FarmCard from "../../components/ui/FarmCard";
+import SmartFarmingRecommendation from "../../components/ui/SmartFarmingRecommendation";
 
 import {
   FaCloudSun,
@@ -125,6 +126,14 @@ function Dashboard() {
         </div>
 
         <WeatherCard />
+
+      </div>
+
+      {/* Smart Farming Recommendation */}
+
+      <div className="mt-10">
+
+        <SmartFarmingRecommendation />
 
       </div>
 
