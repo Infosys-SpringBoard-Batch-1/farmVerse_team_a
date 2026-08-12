@@ -27,6 +27,9 @@ public class Crop {
     private LocalDate sowingDate;
     @Column(name = "harvest_date",nullable = false)
     private LocalDate harvestDate;
+    
+    @Column(name = "revenue")
+    private Double revenue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "farm_id", nullable = false)

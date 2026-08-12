@@ -37,4 +37,13 @@ CREATE TABLE crops (
     harvest_date DATE NOT NULL,
     farm_id BIGINT NOT NULL REFERENCES farms(id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+
+-- Create conversation_messages table
+CREATE TABLE conversation_messages (
+    id BIG SERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('USER', 'ASSISTANT')),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 );

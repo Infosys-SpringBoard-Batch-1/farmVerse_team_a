@@ -24,14 +24,9 @@ function ActivityCard() {
 
       </h2>
 
-      <div className="space-y-4">
+      <div className="space-y-4"> {activities.map((item,index)=>(
 
-        {activities.map((item,index)=>(
-
-          <div
-            key={index}
-            className="bg-green-50 rounded-xl p-4"
-          >
+          <div key={index} className="bg-green-50 rounded-xl p-4" >
 
             {item}
 

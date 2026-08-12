@@ -1,20 +1,4 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
-
-function ResetPassword() {
-
-    const [searchParams] = useSearchParams();
-
-    const token = searchParams.get("token");
-
-    const navigate = useNavigate();
-
-    const [password, setPassword] = useState("");
-
-    const [message, setMessage] = useState("");
-
-    const handleSubmit = async (e)=>{
+import { useSearchParams, useNavigate } from "react-router-dom"; import { useState } from "react"; import axios from "axios"; function ResetPassword() { const [searchParams] = useSearchParams(); const token = searchParams.get("token"); const navigate = useNavigate(); const [password, setPassword] = useState(""); const [message, setMessage] = useState(""); const handleSubmit = async (e)=>{
 
         e.preventDefault();
 
@@ -52,22 +36,11 @@ function ResetPassword() {
                     Reset Password
                 </h2>
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-5"
-                >
+                <form onSubmit={handleSubmit} className="space-y-5" >
 
-                    <input
-                        type="password"
-                        placeholder="New Password"
-                        className="w-full border rounded-xl p-3"
-                        value={password}
-                        onChange={(e)=>setPassword(e.target.value)}
-                    />
+                    <input type="password" placeholder="New Password" className="w-full border rounded-xl p-3" value={password} onChange={(e)=>setPassword(e.target.value)} />
 
-                    <button
-                        className="w-full bg-green-600 text-white py-3 rounded-xl"
-                    >
+                    <button className="w-full bg-green-600 text-white py-3 rounded-xl" >
                         Reset Password
                     </button>
 

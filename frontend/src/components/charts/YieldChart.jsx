@@ -109,10 +109,7 @@ function YieldChart() {
 
       </div>
 
-      <Bar
-        data={data}
-        options={options}
-      />
+      <Bar data={data} options={options} />
 
     </div>
 

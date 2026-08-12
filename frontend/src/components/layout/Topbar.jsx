@@ -18,7 +18,7 @@ function Topbar() {
         </h1>
 
         <p className="text-gray-500">
-          Welcome back, Ananya 👋
+          Welcome back, Ananya
         </p>
 
       </div>
@@ -29,11 +29,7 @@ function Topbar() {
 
         <FaSearch className="text-gray-400 mr-3" />
 
-        <input
-          type="text"
-          placeholder="Search farms, crops, reports..."
-          className="bg-transparent outline-none w-full text-gray-700"
-        />
+        <input type="text" placeholder="Search farms, crops, reports..." className="bg-transparent outline-none w-full text-gray-700" />
 
       </div>
 
@@ -63,10 +59,7 @@ function Topbar() {
 
         <div className="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-xl">
 
-          <FaUserCircle
-            className="text-green-700"
-            size={40}
-          />
+          <FaUserCircle className="text-green-700" size={40} />
 
           <div>
 

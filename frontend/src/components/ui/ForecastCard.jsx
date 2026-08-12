@@ -1,16 +1,4 @@
-import {
-  FaCloudSun,
-  FaCloudRain,
-  FaSun,
-} from "react-icons/fa";
-
-function ForecastCard({
-  day,
-  temp,
-  type,
-}) {
-
-  const getIcon = () => {
+import { FaCloudSun, FaCloudRain, FaSun, } from "react-icons/fa"; function ForecastCard({ day, temp, type, }) { const getIcon = () => {
 
     if (type === "Sunny")
       return <FaSun className="text-yellow-500 text-4xl" />;

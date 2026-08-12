@@ -17,4 +17,5 @@ public class CropDetail {
     private LocalDate sowingDate;
     private LocalDate harvestDate;
     private String farmName;
+    private Double revenue;
 }

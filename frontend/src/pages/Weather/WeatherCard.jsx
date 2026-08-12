@@ -1,6 +1,4 @@
-import React from "react";
-
-const WeatherCard = ({ title, value, icon }) => {
+import React from "react"; const WeatherCard = ({ title, value, icon }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-5 flex items-center gap-4 hover:shadow-lg transition">
       <div className="text-3xl text-green-600">

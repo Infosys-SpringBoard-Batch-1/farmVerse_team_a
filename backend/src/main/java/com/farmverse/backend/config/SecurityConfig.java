@@ -17,11 +17,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.farmverse.backend.security.CustomAuthorizationRequestRepository;
 import com.farmverse.backend.security.JwtAuthenticationFilter;
 import com.farmverse.backend.security.OAuth2LoginSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,7 +41,7 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
 
         configuration.setAllowedMethods(Arrays.asList(
                 "GET",
@@ -73,28 +74,50 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
+                
+                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> 
+                        response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage())
+                ))
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/oauth2/**",
-                                "/login/**",
-                                "/error"
-                        ).permitAll()
+              .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/farmverse/admin/**")
-                        .hasRole("ADMIN")
+    // Admin only
+    .requestMatchers("/api/auth/create-admin")
+    .hasRole("ADMIN")
 
-                        .requestMatchers("/farmverse/farmer/**")
-                        .hasRole("FARMER")
+    // Public APIs
+    .requestMatchers(
+        "/api/auth/login",
+        "/api/auth/register",
+        "/api/auth/forgot-password",
+        "/api/auth/reset-password",
+        "/oauth2/**",
+        "/login/**",
+        "/error"
+    ).permitAll()
 
-                        .anyRequest()
-                        .authenticated()
-                )
+    // Admin APIs
+    .requestMatchers("/farmverse/admin/**")
+    .hasRole("ADMIN")
+
+    // Farmer APIs
+    .requestMatchers("/farmverse/farmer/**")
+    .hasRole("FARMER")
+
+    .anyRequest()
+    .authenticated()
+)
 
                 .oauth2Login(oauth -> oauth
-    .authorizationEndpoint(auth -> auth.baseUri("/oauth2/authorization"))
-    .redirectionEndpoint(redir -> redir.baseUri("/login/oauth2/code/*"))
+
+    .authorizationEndpoint(auth -> auth
+            .baseUri("/oauth2/authorization")
+            .authorizationRequestRepository(customAuthorizationRequestRepository)
+    )
+
+    .redirectionEndpoint(redir ->
+            redir.baseUri("/login/oauth2/code/*")
+    )
 
     .successHandler(oAuth2LoginSuccessHandler)
 

@@ -80,3 +80,12 @@ export const isAdmin = () => {
   const user = getCurrentUser();
   return user?.role === "ADMIN";
 };
+
+export const createAdmin = async (data) => {
+    const response = await api.post(
+        "/api/auth/create-admin",
+        data
+    );
+
+    return response.data;
+};

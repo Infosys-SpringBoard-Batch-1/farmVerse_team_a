@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
 
-        // No Authorization header -> continue normally
+        // Skip if Authorization header is missing or invalid
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -42,17 +42,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
 
-            final String token = authHeader.substring(7);
+            // Remove "Bearer "
+            String token = authHeader.substring(7);
 
+            // Extract username from JWT
             String username = jwtService.extractUsername(token);
 
             if (username != null &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
 
+                // Validate token
                 if (jwtService.isTokenValid(token, username)) {
 
+                    // Extract role from JWT
                     String role = jwtService.extractRole(token);
 
+                    // Create Spring Security Authentication
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(
                                     username,
@@ -60,18 +65,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     List.of(new SimpleGrantedAuthority("ROLE_" + role))
                             );
 
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authentication);
+                    // Save authentication
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
 
         } catch (JwtException | IllegalArgumentException e) {
 
-            // Invalid, expired or malformed JWT
-            // Ignore it and continue as an unauthenticated request.
-
+            // Invalid or expired token
             SecurityContextHolder.clearContext();
-
         }
 
         filterChain.doFilter(request, response);
