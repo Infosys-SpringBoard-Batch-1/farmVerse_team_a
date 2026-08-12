@@ -15,7 +15,7 @@ import {
 
 import { logout } from "../../services/auth";
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsSidebarOpen }) {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -98,7 +98,12 @@ function Sidebar() {
   };
 
   return (
-    <aside className="w-64 h-full bg-gradient-to-b from-green-800 to-green-950 text-white flex flex-col shadow-2xl z-20 overflow-y-auto custom-scrollbar">
+    <aside className={`
+      fixed inset-y-0 left-0 z-50 transform 
+      ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      md:relative md:translate-x-0
+      w-64 h-full bg-gradient-to-b from-green-800 to-green-950 text-white flex flex-col shadow-2xl overflow-y-auto custom-scrollbar transition-transform duration-300 ease-in-out
+    `}>
       {/* Logo */}
       <div className="p-6 border-b border-green-700/50">
         <h1 className="text-3xl font-bold tracking-tight">🌿 FarmVerse</h1>
@@ -118,7 +123,9 @@ function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 mt-4 px-4 space-y-2"> {menu.map((item) => (
-          <NavLink key={item.name} to={item.path} className={({ isActive }) => `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${ isActive ? "bg-white text-green-800 font-bold shadow-lg shadow-black/10 scale-105" : "text-green-50 hover:bg-white/10 hover:translate-x-1 font-medium" }` } >
+          <NavLink key={item.name} to={item.path} 
+            onClick={() => setIsSidebarOpen && setIsSidebarOpen(false)}
+            className={({ isActive }) => `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${ isActive ? "bg-white text-green-800 font-bold shadow-lg shadow-black/10 scale-105" : "text-green-50 hover:bg-white/10 hover:translate-x-1 font-medium" }` } >
             <span className={`text-xl flex items-center justify-center w-8 transition-transform duration-300`}>{item.icon}</span>
             <span className="flex-1 tracking-wide">{item.name}</span>
           </NavLink>

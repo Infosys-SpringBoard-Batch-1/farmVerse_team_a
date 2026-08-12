@@ -139,7 +139,7 @@ export default function ViewFarm() {
       {/* Back Button */}
       <button
         onClick={() => navigate("/farm")}
-        className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 transition-colors mb-6 font-semibold"
+        className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 transition-colors mb-4 md:mb-6 font-semibold text-sm md:text-base"
       >
         <FaArrowLeft />
         Back to Farms
@@ -148,7 +148,7 @@ export default function ViewFarm() {
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
         {/* Farm Details */}
-        <h1 className="text-4xl font-bold text-gray-800">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 break-words">
           {farm.farmName}
         </h1>
 
@@ -181,17 +181,17 @@ export default function ViewFarm() {
         </div>
 
         {/* Crop Header */}
-        <div className="flex justify-between items-center mt-12 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-10 md:mt-12 mb-6 md:mb-8 gap-4 md:gap-0">
 
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
             Crops
           </h2>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3 w-full md:w-auto">
 
             <button
               onClick={() => navigate("/crops")}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+              className="flex-1 md:flex-none justify-center bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-5 py-2.5 md:py-3 rounded-xl flex items-center gap-1.5 md:gap-2 text-sm md:text-base font-semibold"
             >
               <FaList />
               View All
@@ -201,7 +201,7 @@ export default function ViewFarm() {
               onClick={() =>
                 navigate(`/farm/${farm.farmId}/crop/add`)
               }
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-green-600/30 transition-all hover:scale-105"
+              className="flex-1 md:flex-none justify-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-3 md:px-6 py-2.5 md:py-3 rounded-xl flex items-center gap-1.5 md:gap-2 shadow-lg shadow-green-600/30 transition-all hover:scale-105 text-sm md:text-base"
             >
               <FaPlus />
               Add Crop

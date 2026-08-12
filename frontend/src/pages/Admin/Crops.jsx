@@ -36,15 +36,15 @@ function Crops() {
 
   return (
     <DashboardLayout>
-      <div className="p-8 max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto">
 
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-10 gap-4 md:gap-0">
           <div>
-            <h1 className="text-4xl font-extrabold text-slate-800 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 tracking-tight">
               Crops Management
             </h1>
 
-            <p className="mt-2 text-gray-500 text-lg">
+            <p className="mt-1 md:mt-2 text-gray-500 text-base md:text-lg">
               View and oversee all registered crops across the platform.
             </p>
           </div>
@@ -58,41 +58,45 @@ function Crops() {
             </h2>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-hidden">
             <table className="w-full text-left border-collapse">
 
-              <thead>
+              <thead className="hidden md:table-header-group">
                 <tr className="bg-gray-50/50">
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Crop Details
                   </th>
 
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Yield & Revenue
                   </th>
 
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Farm & Owner
                   </th>
 
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     Dates
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 flex flex-col md:table-row-group">
 
                 {crops.map((crop, idx) => (
                   <tr
                     key={idx}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors flex flex-col md:table-row p-4 md:p-0"
                   >
 
-                    <td className="py-5 px-8">
-                      <div className="flex items-center gap-3">
+                    <td className="py-4 md:py-5 px-3 md:px-8 flex justify-between items-center md:table-cell border-b border-gray-100 md:border-none bg-emerald-50/30 md:bg-transparent rounded-t-xl md:rounded-none">
+                      <div className="md:hidden flex items-center gap-2">
+                        <span className="bg-emerald-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">{idx + 1}</span>
+                        <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Crop Details</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-right md:text-left">
 
-                        <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                        <div className="flex w-10 h-10 rounded-full bg-amber-100 text-amber-600 items-center justify-center shrink-0">
                           <FaLeaf />
                         </div>
 
@@ -109,8 +113,9 @@ function Crops() {
                       </div>
                     </td>
 
-                    <td className="py-5 px-8">
-                      <div className="flex flex-col gap-1">
+                    <td className="py-3 md:py-5 px-2 md:px-8 flex justify-between items-center md:table-cell border-b border-gray-50 md:border-none">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Yield & Revenue</span>
+                      <div className="flex flex-col gap-1 text-right md:text-left">
 
                         <span className="text-sm text-emerald-600 font-medium">
                           Quantity: {crop.quantity}
@@ -123,11 +128,12 @@ function Crops() {
                       </div>
                     </td>
 
-                    <td className="py-5 px-8">
-                      <div className="flex flex-col gap-1">
+                    <td className="py-3 md:py-5 px-2 md:px-8 flex justify-between items-center md:table-cell border-b border-gray-50 md:border-none">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Farm & Owner</span>
+                      <div className="flex flex-col gap-1 text-right md:text-left">
 
-                        <span className="flex items-center gap-2 text-sm text-gray-700">
-                          <FaTractor className="text-gray-400" />
+                        <span className="flex items-center justify-end md:justify-start gap-2 text-sm text-gray-700">
+                          <FaTractor className="text-gray-400 hidden md:block" />
                           {crop.farmName}
                         </span>
 
@@ -138,16 +144,17 @@ function Crops() {
                       </div>
                     </td>
 
-                    <td className="py-5 px-8 text-gray-500 text-sm">
-                      <div className="flex flex-col gap-1">
+                    <td className="py-3 md:py-5 px-2 md:px-8 text-gray-500 text-sm flex justify-between items-center md:table-cell">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Dates</span>
+                      <div className="flex flex-col gap-1 text-right md:text-left">
 
-                        <span className="flex items-center gap-2">
-                          <FaCalendarAlt className="text-gray-400" />
+                        <span className="flex items-center justify-end md:justify-start gap-2">
+                          <FaCalendarAlt className="text-gray-400 hidden md:block" />
                           S: {new Date(crop.sowingDate).toLocaleDateString()}
                         </span>
 
-                        <span className="flex items-center gap-2">
-                          <FaCalendarAlt className="text-gray-400" />
+                        <span className="flex items-center justify-end md:justify-start gap-2">
+                          <FaCalendarAlt className="text-gray-400 hidden md:block" />
                           H: {new Date(crop.harvestDate).toLocaleDateString()}
                         </span>
 

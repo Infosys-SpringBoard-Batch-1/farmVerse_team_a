@@ -25,25 +25,25 @@ import { useState } from "react"; import { useNavigate } from "react-router-dom"
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto mt-10 bg-white shadow-xl border border-gray-100 rounded-3xl overflow-hidden grid md:grid-cols-2">
+      <div className="max-w-4xl mx-auto mt-2 md:mt-10 mb-10 bg-white shadow-xl border border-gray-100 rounded-2xl md:rounded-3xl overflow-hidden grid md:grid-cols-2">
         {/* Left Info Panel with Vector Foliage background */}
-        <div className="relative p-12 text-white flex flex-col justify-between overflow-hidden bg-emerald-950 min-h-[400px]">
+        <div className="relative p-8 md:p-12 text-white flex flex-col justify-center md:justify-between overflow-hidden bg-emerald-950 min-h-[250px] md:min-h-[400px]">
           <div className="absolute inset-0 bg-[url('/leafy_bg.jpg')] bg-cover bg-center z-0 opacity-40"></div>
           <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-emerald-850/85 to-teal-950/95 z-0"></div>
           
           <div className="relative z-10 flex flex-col h-full justify-center">
-            <h2 className="text-4xl font-extrabold mb-4 tracking-tight leading-tight">
+            <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4 tracking-tight leading-tight">
               Expand Your Agriculture Network
             </h2>
-            <p className="text-sm leading-relaxed text-emerald-100/90 max-w-sm">
+            <p className="text-xs md:text-sm leading-relaxed text-emerald-100/90 max-w-sm">
               Register a new farm plot to start monitoring crops, tracking localized weather trends, fetching market wholesale rates, and generating artificial intelligence recommendations.
             </p>
           </div>
         </div>
 
         {/* Right Form Panel */}
-        <div className="p-10 flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">Add Farm</h1>
+        <div className="p-6 md:p-10 flex flex-col justify-center">
+          <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-gray-800">Add Farm</h1>
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
