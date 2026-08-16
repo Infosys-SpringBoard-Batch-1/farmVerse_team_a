@@ -1,4 +1,4 @@
-# FarmVerse - Precision Agriculture Management Platform
+# FarmVerse - Intelligent farm operations platform with smart Argo precision system
 
 ---
 ## Problem Statement
