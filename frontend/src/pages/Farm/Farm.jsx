@@ -124,6 +124,15 @@ function Farm() {
                   <p className="flex items-center gap-3">
                     <Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops
                   </p>
+                  {farm.cropNames && farm.cropNames.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-1 pl-7">
+                      {farm.cropNames.map((name, idx) => (
+                        <span key={idx} className="bg-emerald-100/50 text-emerald-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200/50">
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 md:gap-4 mt-6 md:mt-8">

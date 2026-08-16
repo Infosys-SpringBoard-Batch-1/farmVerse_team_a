@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSeedling, FaLeaf, FaCloudSun, FaPlus } from "react-icons/fa";
-import { MapPin, Sprout, Wheat, Ruler, Droplets, Wind } from "lucide-react";
+import { MapPin, Sprout, Wheat, Ruler, Droplets, Wind, AlertTriangle, CheckCircle, CloudRain } from "lucide-react";
 import DashboardLayout from "../../components/Layout/DashboardLayout";
 import { getAllFarms } from "../../services/farm";
 import axios from "axios";
@@ -174,11 +174,26 @@ function FarmerDashboard() {
                       <p className="flex items-center gap-2"><MapPin className="w-4 h-4 text-emerald-600" /> {farm.location}</p>
                       <p className="flex items-center gap-2"><Sprout className="w-4 h-4 text-emerald-600" /> {farm.farmType}</p>
                       <p className="flex items-center gap-2"><Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops</p>
+                      {farm.cropNames && farm.cropNames.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-1 pl-6">
+                          {farm.cropNames.map((name, idx) => (
+                            <span key={idx} className="bg-emerald-100/50 text-emerald-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200/50">
+                              {name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       <p className="flex items-center gap-2"><Ruler className="w-4 h-4 text-emerald-600" /> {farm.areaSqMt} sq.m</p>
                     </div>
-                    <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="mt-6 w-full bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 font-bold px-4 py-3 rounded-xl transition-colors shadow-sm" >
-                      View Farm
-                    </button>
+                    <div className="mt-6 flex gap-3">
+                      <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="flex-1 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 font-bold px-3 py-3 rounded-xl transition-colors shadow-sm text-sm text-center" >
+                        View Farm
+                      </button>
+                      <button onClick={() => navigate(`/farm/${farm.farmId}/crop/add`)} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold px-3 py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all hover:scale-[1.02] text-sm text-center" >
+                        <FaPlus className="text-xs" />
+                        Add Crop
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -258,12 +273,12 @@ function FarmerDashboard() {
                                 {/* Humidity checks */}
                                 {humidity > 80 ? (
                                   <li className="flex items-start gap-1.5 text-amber-800 bg-amber-50/50 p-2 rounded-lg border border-amber-100">
-                                    <span className="text-sm mt-0.5">⚠️</span>
+                                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" />
                                     <span>High humidity. Monitor crops for fungal diseases.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>Humidity is suitable for healthy crop growth.</span>
                                   </li>
                                 )}
@@ -271,12 +286,12 @@ function FarmerDashboard() {
                                 {/* Wind speed checks */}
                                 {windSpeed > 8 ? (
                                   <li className="flex items-start gap-1.5 text-amber-800 bg-amber-50/50 p-2 rounded-lg border border-amber-100">
-                                    <span className="text-sm mt-0.5">⚠️</span>
+                                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" />
                                     <span>Avoid pesticide spraying due to strong winds.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>Wind conditions are favorable for spraying.</span>
                                   </li>
                                 )}
@@ -284,12 +299,12 @@ function FarmerDashboard() {
                                 {/* Rain checks */}
                                 {condition === "Rain" ? (
                                   <li className="flex items-start gap-1.5 text-blue-800 bg-blue-50/50 p-2 rounded-lg border border-blue-100">
-                                    <span className="text-sm mt-0.5">🌧️</span>
+                                    <CloudRain className="w-4 h-4 mt-0.5 shrink-0 text-blue-600" />
                                     <span>Rain expected today. Postpone scheduled irrigation.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>No rain expected. Irrigation can continue if required.</span>
                                   </li>
                                 )}
@@ -299,8 +314,8 @@ function FarmerDashboard() {
                         );
                       })()
                     ) : (
-                      <div className="mt-3 pt-3 border-t border-emerald-100/60 text-center py-2 text-xs text-red-500 font-semibold flex items-center justify-center gap-1">
-                        ⚠️ Weather unavailable for "{farm.location.trim()}"
+                      <div className="mt-3 pt-3 border-t border-emerald-100/60 text-center py-2 text-xs text-red-500 font-semibold flex items-center justify-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" /> Weather unavailable for "{farm.location.trim()}"
                       </div>
                     )}
                   </div>

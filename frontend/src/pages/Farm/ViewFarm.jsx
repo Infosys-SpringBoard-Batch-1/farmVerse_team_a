@@ -285,6 +285,64 @@ export default function ViewFarm() {
 
                   </div>
 
+                  {(() => {
+                    const calculateProgress = (sowingDateStr, harvestDateStr) => {
+                      if (!sowingDateStr || !harvestDateStr) return null;
+                      try {
+                        const sowing = new Date(sowingDateStr);
+                        const harvest = new Date(harvestDateStr);
+                        const now = new Date();
+
+                        if (isNaN(sowing.getTime()) || isNaN(harvest.getTime())) return null;
+
+                        sowing.setHours(0,0,0,0);
+                        harvest.setHours(0,0,0,0);
+                        now.setHours(0,0,0,0);
+
+                        const totalDuration = harvest.getTime() - sowing.getTime();
+                        if (totalDuration <= 0) return null;
+
+                        const elapsed = now.getTime() - sowing.getTime();
+                        let percent = Math.round((elapsed / totalDuration) * 100);
+                        percent = Math.max(0, Math.min(100, percent));
+
+                        const msPerDay = 1000 * 60 * 60 * 24;
+                        const daysLeft = Math.max(0, Math.ceil((harvest.getTime() - now.getTime()) / msPerDay));
+
+                        return { percent, daysLeft };
+                      } catch (e) {
+                        console.error(e);
+                        return null;
+                      }
+                    };
+
+                    const progress = calculateProgress(crop.sowingDate, crop.harvestDate);
+                    if (!progress) return null;
+
+                    return (
+                      <div className="mt-4 pt-3 border-t border-gray-100">
+                        <div className="flex justify-between items-center mb-1 text-xs">
+                          <span className="font-semibold text-gray-500 font-medium">Harvest Progress</span>
+                          <span className="font-bold text-emerald-600">{progress.percent}%</span>
+                        </div>
+                        <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-emerald-500 to-green-600"
+                            style={{ width: `${progress.percent}%` }}
+                          ></div>
+                        </div>
+                        <div className="flex justify-between items-center mt-1 text-[10px] text-gray-400 font-medium">
+                          <span>Sown: {new Date(crop.sowingDate).toLocaleDateString()}</span>
+                          <span>
+                            {progress.percent >= 100
+                              ? "Ready to Harvest!"
+                              : `${progress.daysLeft} days left`}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
                   <MandiPriceWidget cropName={crop.cropName} farmLocation={farm.location} />
 
                 </div>

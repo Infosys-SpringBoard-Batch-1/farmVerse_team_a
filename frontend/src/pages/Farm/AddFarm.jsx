@@ -1,4 +1,4 @@
-import { useState } from "react"; import { useNavigate } from "react-router-dom"; import { addFarm } from "../../services/farm"; import DashboardLayout from "../../components/layout/DashboardLayout"; function AddFarm() { const navigate = useNavigate(); const [formData, setFormData] = useState({ farmName: "", farmType: "", areaSqMt: "", soilType: "", location: "", }); const [loading, setLoading] = useState(false); const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value, }); }; const handleSubmit = async (e) => {
+import { useState } from "react"; import { useNavigate } from "react-router-dom"; import { addFarm } from "../../services/farm"; import DashboardLayout from "../../components/layout/DashboardLayout"; import { useNotifications } from "../../hooks/useNotifications"; function AddFarm() { const navigate = useNavigate(); const { addNotification } = useNotifications(); const [formData, setFormData] = useState({ farmName: "", farmType: "", areaSqMt: "", soilType: "", location: "", }); const [loading, setLoading] = useState(false); const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value, }); }; const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
@@ -9,6 +9,7 @@ import { useState } from "react"; import { useNavigate } from "react-router-dom"
         areaSqMt: Number(formData.areaSqMt),
       });
 
+      addNotification(`Successfully added your new farm: ${formData.farmName}.`, 'success');
       alert("Farm added successfully!");
 
       navigate("/farm");
