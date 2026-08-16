@@ -102,7 +102,7 @@ export default function History() {
       <div className="space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold text-slate-800 flex items-center gap-3">
               <FaHistory className="text-green-700" />
@@ -117,7 +117,7 @@ export default function History() {
           </div>
           <button 
             onClick={loadHistory}
-            className="px-5 py-2.5 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition shadow-lg shadow-green-700/10 self-start md:self-auto"
+            className="w-full md:w-auto px-5 py-3 md:py-2.5 bg-green-700 text-white rounded-xl font-semibold hover:bg-green-800 transition shadow-lg shadow-green-700/10 flex justify-center md:mt-1"
           >
             Refresh Logs
           </button>
@@ -193,50 +193,85 @@ export default function History() {
                 <p className="text-sm mt-1">Try adjusting your filters or check back later.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b border-gray-100 text-gray-500 text-xs font-bold uppercase bg-gray-50/50">
-                      {isAdmin && <th className="px-6 py-4">User</th>}
-                      <th className="px-6 py-4">Action</th>
-                      <th className="px-6 py-4">Entity Type</th>
-                      <th className="px-6 py-4">Entity ID</th>
-                      <th className="px-6 py-4">Description</th>
-                      <th className="px-6 py-4">Timestamp</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50 text-sm text-gray-700">
-                    {filteredLogs.map((log, idx) => (
-                      <tr key={idx} className="hover:bg-gray-50/30 transition-colors">
-                        {isAdmin && (
-                          <td className="px-6 py-4 font-bold text-gray-900">
-                            {log.username}
+              <>
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-gray-100 text-gray-500 text-xs font-bold uppercase bg-gray-50/50">
+                        {isAdmin && <th className="px-6 py-4">User</th>}
+                        <th className="px-6 py-4">Action</th>
+                        <th className="px-6 py-4">Entity Type</th>
+                        <th className="px-6 py-4">Entity ID</th>
+                        <th className="px-6 py-4">Description</th>
+                        <th className="px-6 py-4">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50 text-sm text-gray-700">
+                      {filteredLogs.map((log, idx) => (
+                        <tr key={idx} className="hover:bg-gray-50/30 transition-colors">
+                          {isAdmin && (
+                            <td className="px-6 py-4 font-bold text-gray-900">
+                              {log.username}
+                            </td>
+                          )}
+                          <td className="px-6 py-4">
+                            <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getActionBadgeColor(log.action)}`}>
+                              {log.action}
+                            </span>
                           </td>
-                        )}
-                        <td className="px-6 py-4">
+                          <td className="px-6 py-4">
+                            <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getEntityBadgeColor(log.entityType)}`}>
+                              {log.entityType || "N/A"}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 font-mono text-xs text-gray-500">
+                            {log.entityId || "N/A"}
+                          </td>
+                          <td className="px-6 py-4 font-medium max-w-xs truncate" title={log.description}>
+                            {log.description}
+                          </td>
+                          <td className="px-6 py-4 text-gray-500 text-xs">
+                            {log.timestamp ? new Date(log.timestamp).toLocaleString("en-IN") : "N/A"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden divide-y divide-gray-100">
+                  {filteredLogs.map((log, idx) => (
+                    <div key={idx} className="p-5 hover:bg-gray-50/50 transition-colors">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex flex-wrap gap-2">
                           <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getActionBadgeColor(log.action)}`}>
                             {log.action}
                           </span>
-                        </td>
-                        <td className="px-6 py-4">
                           <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getEntityBadgeColor(log.entityType)}`}>
                             {log.entityType || "N/A"}
                           </span>
-                        </td>
-                        <td className="px-6 py-4 font-mono text-xs text-gray-500">
-                          {log.entityId || "N/A"}
-                        </td>
-                        <td className="px-6 py-4 font-medium max-w-xs truncate" title={log.description}>
-                          {log.description}
-                        </td>
-                        <td className="px-6 py-4 text-gray-500 text-xs">
-                          {log.timestamp ? new Date(log.timestamp).toLocaleString("en-IN") : "N/A"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                        <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
+                          {log.timestamp ? new Date(log.timestamp).toLocaleDateString("en-IN") : ""}
+                        </span>
+                      </div>
+                      {isAdmin && (
+                        <div className="text-sm font-semibold text-gray-900 mb-1">
+                          User: {log.username}
+                        </div>
+                      )}
+                      <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                        {log.description}
+                      </p>
+                      <p className="text-xs text-gray-400 font-mono">
+                        ID: {log.entityId || "N/A"}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         )}

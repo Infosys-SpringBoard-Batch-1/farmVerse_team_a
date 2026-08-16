@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSeedling, FaLeaf, FaCloudSun, FaPlus } from "react-icons/fa";
-import { MapPin, Sprout, Wheat, Ruler, Droplets, Wind } from "lucide-react";
+import { MapPin, Sprout, Wheat, Ruler, Droplets, Wind, AlertTriangle, CheckCircle, CloudRain } from "lucide-react";
 import DashboardLayout from "../../components/Layout/DashboardLayout";
 import { getAllFarms } from "../../services/farm";
 import axios from "axios";
@@ -44,7 +44,7 @@ function FarmerDashboard() {
           const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "b2cf1d2569d8676de02b88f8e7b98ec2";
           const res = await axios.get(
             `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-              farm.location
+              farm.location.trim()
             )}&units=metric&appid=${API_KEY}`
           );
           setFarmWeather((prev) => ({ ...prev, [farm.farmId]: res.data }));
@@ -67,12 +67,12 @@ function FarmerDashboard() {
   return (
     <DashboardLayout>
       {/* Heading */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 ">
+      <div className="mb-4 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 ">
           Farmer Dashboard
         </h1>
 
-        <p className="text-gray-500 mt-2 text-lg">
+        <p className="text-gray-500 mt-2 text-sm md:text-lg">
           Welcome back, {username}! Here's an overview of your farm.
         </p>
       </div>
@@ -84,62 +84,60 @@ function FarmerDashboard() {
         <div className="lg:col-span-2 xl:col-span-3 space-y-10">
           
           {/* Dashboard Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
             
             {/* Farms Card */}
-            <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">My Farms</p>
-                  <h2 className="text-4xl font-extrabold mt-1 text-slate-800 ">
+            <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-4 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0">
+                <div className="order-2 md:order-1">
+                  <p className="text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">My Farms</p>
+                  <h2 className="text-2xl md:text-4xl font-extrabold mt-0.5 md:mt-1 text-slate-800 ">
                     {loading ? "..." : farms.length}
                   </h2>
                 </div>
-                <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                  <FaSeedling className="text-3xl text-emerald-600 " />
+                <div className="order-1 md:order-2 w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                  <FaSeedling className="text-lg md:text-3xl text-emerald-600 " />
                 </div>
               </div>
             </div>
 
             {/* Crops Card */}
-            <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">My Crops</p>
-                  <h2 className="text-4xl font-extrabold mt-1 text-slate-800 ">
+            <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-4 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0">
+                <div className="order-2 md:order-1">
+                  <p className="text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">My Crops</p>
+                  <h2 className="text-2xl md:text-4xl font-extrabold mt-0.5 md:mt-1 text-slate-800 ">
                     {loading ? "..." : totalCrops}
                   </h2>
                 </div>
-                <div className="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                  <FaLeaf className="text-3xl text-amber-500 " />
+                <div className="order-1 md:order-2 w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                  <FaLeaf className="text-lg md:text-3xl text-amber-500 " />
                 </div>
               </div>
             </div>
 
             {/* Total Area Card */}
-            <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Area</p>
-                  <h2 className="text-xl font-extrabold mt-1 text-slate-800 ">
+            <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-4 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0">
+                <div className="order-2 md:order-1">
+                  <p className="text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-wider">Total Area</p>
+                  <h2 className="text-lg md:text-2xl font-extrabold mt-0.5 md:mt-1 text-slate-800 break-all md:break-normal line-clamp-1">
                     {loading ? "..." : `${totalArea} sq.m`}
                   </h2>
                 </div>
-                <div className="w-16 h-16 rounded-2xl bg-cyan-50 border border-cyan-100 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                  <FaCloudSun className="text-3xl text-cyan-600 " />
+                <div className="order-1 md:order-2 w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-cyan-50 border border-cyan-100 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                  <FaCloudSun className="text-lg md:text-3xl text-cyan-600 " />
                 </div>
               </div>
             </div>
 
             {/* Quick Action Card */}
-            <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300 group">
-              <div>
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Quick Action</p>
-                <button onClick={() => navigate("/farm/add")} className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02]" >
-                  <FaPlus />
-                  Add Farm
-                </button>
-              </div>
+            <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-4 md:p-6 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group">
+              <p className="text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Quick Action</p>
+              <button onClick={() => navigate("/farm/add")} className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold px-3 md:px-5 py-2 md:py-3 rounded-lg md:rounded-xl flex items-center justify-center gap-1.5 md:gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02] text-xs md:text-base mt-auto" >
+                <FaPlus />
+                Add Farm
+              </button>
             </div>
           </div>
 
@@ -176,11 +174,26 @@ function FarmerDashboard() {
                       <p className="flex items-center gap-2"><MapPin className="w-4 h-4 text-emerald-600" /> {farm.location}</p>
                       <p className="flex items-center gap-2"><Sprout className="w-4 h-4 text-emerald-600" /> {farm.farmType}</p>
                       <p className="flex items-center gap-2"><Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops</p>
+                      {farm.cropNames && farm.cropNames.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-1 pl-6">
+                          {farm.cropNames.map((name, idx) => (
+                            <span key={idx} className="bg-emerald-100/50 text-emerald-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200/50">
+                              {name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       <p className="flex items-center gap-2"><Ruler className="w-4 h-4 text-emerald-600" /> {farm.areaSqMt} sq.m</p>
                     </div>
-                    <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="mt-6 w-full bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 font-bold px-4 py-3 rounded-xl transition-colors shadow-sm" >
-                      View Farm
-                    </button>
+                    <div className="mt-6 flex gap-3">
+                      <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="flex-1 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 font-bold px-3 py-3 rounded-xl transition-colors shadow-sm text-sm text-center" >
+                        View Farm
+                      </button>
+                      <button onClick={() => navigate(`/farm/${farm.farmId}/crop/add`)} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold px-3 py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all hover:scale-[1.02] text-sm text-center" >
+                        <FaPlus className="text-xs" />
+                        Add Crop
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -260,12 +273,12 @@ function FarmerDashboard() {
                                 {/* Humidity checks */}
                                 {humidity > 80 ? (
                                   <li className="flex items-start gap-1.5 text-amber-800 bg-amber-50/50 p-2 rounded-lg border border-amber-100">
-                                    <span className="text-sm mt-0.5">⚠️</span>
+                                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" />
                                     <span>High humidity. Monitor crops for fungal diseases.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>Humidity is suitable for healthy crop growth.</span>
                                   </li>
                                 )}
@@ -273,12 +286,12 @@ function FarmerDashboard() {
                                 {/* Wind speed checks */}
                                 {windSpeed > 8 ? (
                                   <li className="flex items-start gap-1.5 text-amber-800 bg-amber-50/50 p-2 rounded-lg border border-amber-100">
-                                    <span className="text-sm mt-0.5">⚠️</span>
+                                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" />
                                     <span>Avoid pesticide spraying due to strong winds.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>Wind conditions are favorable for spraying.</span>
                                   </li>
                                 )}
@@ -286,12 +299,12 @@ function FarmerDashboard() {
                                 {/* Rain checks */}
                                 {condition === "Rain" ? (
                                   <li className="flex items-start gap-1.5 text-blue-800 bg-blue-50/50 p-2 rounded-lg border border-blue-100">
-                                    <span className="text-sm mt-0.5">🌧️</span>
+                                    <CloudRain className="w-4 h-4 mt-0.5 shrink-0 text-blue-600" />
                                     <span>Rain expected today. Postpone scheduled irrigation.</span>
                                   </li>
                                 ) : (
                                   <li className="flex items-start gap-1.5 text-emerald-800 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">
-                                    <span className="text-sm mt-0.5">✅</span>
+                                    <CheckCircle className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
                                     <span>No rain expected. Irrigation can continue if required.</span>
                                   </li>
                                 )}
@@ -301,8 +314,8 @@ function FarmerDashboard() {
                         );
                       })()
                     ) : (
-                      <div className="mt-3 pt-3 border-t border-emerald-100/60 text-center py-2 text-xs text-red-500 font-semibold flex items-center justify-center gap-1">
-                        ⚠️ Weather unavailable for "{farm.location}"
+                      <div className="mt-3 pt-3 border-t border-emerald-100/60 text-center py-2 text-xs text-red-500 font-semibold flex items-center justify-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" /> Weather unavailable for "{farm.location.trim()}"
                       </div>
                     )}
                   </div>

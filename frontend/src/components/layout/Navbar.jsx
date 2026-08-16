@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { useNotifications } from "../../hooks/useNotifications";
 
-function Navbar() {
+function Navbar({ onMenuClick }) {
 
   // Get logged-in user from localStorage
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -26,21 +26,30 @@ function Navbar() {
   });
 
   return (
-    <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 px-8 py-5 flex items-center justify-between sticky top-0 z-40 transition-colors duration-300">
+    <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between sticky top-0 z-40 transition-colors duration-300">
 
       {/* Left */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800 ">
-          Welcome, {username}
-        </h1>
+      <div className="flex items-center gap-3 pr-2 min-w-0">
+        <button 
+          className="md:hidden text-gray-600 hover:text-green-600 shrink-0"
+          onClick={onMenuClick}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
 
-        <p className="text-gray-500 mt-1 font-medium">
-          {today}
-        </p>
+        <div className="min-w-0 hidden sm:block">
+          <h1 className="text-lg md:text-2xl font-bold text-gray-800 truncate">
+            Welcome, {username}
+          </h1>
+
+          <p className="text-xs md:text-sm text-gray-500 mt-1 font-medium">
+            {today}
+          </p>
+        </div>
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 md:gap-6 shrink-0">
 
         {/* Notification */}
         <div className="relative">
@@ -88,11 +97,11 @@ function Navbar() {
         </div>
 
         {/* User */}
-        <div className="flex items-center gap-3 pl-4 border-l ">
+        <div className="flex items-center gap-2 md:gap-3 pl-2 md:pl-4 border-l border-gray-200">
 
-          <FaUserCircle className="text-4xl text-green-600 " />
+          <FaUserCircle className="text-3xl md:text-4xl text-green-600 " />
 
-          <div>
+          <div className="hidden sm:block">
             <p className="font-semibold text-gray-800 ">
               {username}
             </p>

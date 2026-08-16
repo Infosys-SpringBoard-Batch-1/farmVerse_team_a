@@ -45,40 +45,40 @@ function Farm() {
   return (
     <DashboardLayout>
 
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 md:mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-800 ">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 ">
             Farm Management
           </h1>
-          <p className="text-gray-500 mt-2 text-lg">
+          <p className="text-gray-500 mt-1 md:mt-2 text-sm md:text-lg">
             Manage all your farms.
           </p>
         </div>
 
-        <button onClick={() => navigate("/farm/add")} className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center gap-3 shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1" >
+        <button onClick={() => navigate("/farm/add")} className="w-full sm:w-auto justify-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3.5 md:py-3 rounded-xl flex items-center gap-3 shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1" >
           <FaPlus />
           Add Farm
         </button>
       </div>
 
       {/* Summary */}
-      <div className="grid md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-          <p className="text-gray-500 font-medium">Total Farms</p>
-          <h1 className="text-4xl font-bold text-green-600 mt-3">
+      <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 p-5 md:p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+          <p className="text-gray-500 text-sm md:text-base font-medium">Total Farms</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-green-600 mt-2 md:mt-3">
             {farms.length}
           </h1>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-          <p className="text-gray-500 font-medium">Total Area</p>
-          <h1 className="text-4xl font-bold text-cyan-600 mt-3"> {farms.reduce((sum, farm) => sum + parseFloat(farm.areaSqMt || 0), 0)} sq.m
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 p-5 md:p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+          <p className="text-gray-500 text-sm md:text-base font-medium">Total Area</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-cyan-600 mt-2 md:mt-3"> {farms.reduce((sum, farm) => sum + parseFloat(farm.areaSqMt || 0), 0)} sq.m
           </h1>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-          <p className="text-gray-500 font-medium">Total Crops</p>
-          <h1 className="text-4xl font-bold text-amber-500 mt-3"> {farms.reduce((sum, farm) => sum + farm.cropCount, 0)}
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 p-5 md:p-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+          <p className="text-gray-500 text-sm md:text-base font-medium">Total Crops</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-amber-500 mt-2 md:mt-3"> {farms.reduce((sum, farm) => sum + farm.cropCount, 0)}
           </h1>
         </div>
       </div>
@@ -124,9 +124,18 @@ function Farm() {
                   <p className="flex items-center gap-3">
                     <Wheat className="w-4 h-4 text-emerald-600" /> {farm.cropCount} Crops
                   </p>
+                  {farm.cropNames && farm.cropNames.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-1 pl-7">
+                      {farm.cropNames.map((name, idx) => (
+                        <span key={idx} className="bg-emerald-100/50 text-emerald-800 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-emerald-200/50">
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mt-8">
+                <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 md:gap-4 mt-6 md:mt-8">
                   <button onClick={() => navigate(`/farm/${farm.farmId}`)} className="bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white py-3 rounded-xl flex justify-center items-center gap-2 font-semibold transition-colors" >
                     <FaEye /> View
                   </button>

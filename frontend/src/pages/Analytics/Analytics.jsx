@@ -128,46 +128,46 @@ import api from "../../services/api"; import { Chart as ChartJS, CategoryScale, 
 
   return (
     <DashboardLayout>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 md:mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-800 ">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 ">
             Analytics Dashboard
           </h1>
-          <p className="text-gray-500 mt-2 text-lg">
+          <p className="text-gray-500 mt-1 md:mt-2 text-sm md:text-lg">
             Monitor farm productivity and business insights.
           </p>
         </div>
         <button
           onClick={handleExportReport}
-          className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1"
+          className="w-full sm:w-auto justify-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3.5 md:py-3 rounded-xl shadow-lg shadow-green-600/30 transition-all hover:-translate-y-1"
         >
           Export Report
         </button>
       </div>
 
       {/* Statistics */}
-      <div className="grid md:grid-cols-4 gap-6 mb-10">
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Production</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-green-600 ">
+      <div className="grid md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-10">
+        <div className="bg-white h-32 md:h-40 rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-5 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
+          <p className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">Total Production</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold mt-2 text-green-600 ">
             {totalProduction || 0} Tons
           </h1>
         </div>
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Revenue</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-blue-600 ">
+        <div className="bg-white h-32 md:h-40 rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-5 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
+          <p className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">Total Revenue</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold mt-2 text-blue-600 ">
             ₹{totalRevenue ? (totalRevenue / 100000).toFixed(2) : 0}L
           </h1>
         </div>
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Active Farms</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-cyan-600 ">
+        <div className="bg-white h-32 md:h-40 rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-5 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
+          <p className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">Active Farms</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold mt-2 text-cyan-600 ">
             {activeFarms || 0}
           </h1>
         </div>
-        <div className="bg-white h-40 rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-wider">Total Crops</p>
-          <h1 className="text-4xl font-extrabold mt-2 text-purple-600 ">
+        <div className="bg-white h-32 md:h-40 rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-5 md:p-6 flex flex-col justify-center hover:-translate-y-1 transition-all duration-300">
+          <p className="text-xs md:text-sm font-bold text-gray-400 uppercase tracking-wider">Total Crops</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold mt-2 text-purple-600 ">
             {totalCrops || 0}
           </h1>
         </div>

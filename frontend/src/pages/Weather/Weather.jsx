@@ -4,20 +4,20 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
 
   return (
     <DashboardLayout>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4 md:mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-gray-800 ">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 ">
             🌦 Weather Dashboard
           </h1>
-          <p className="text-gray-500 mt-2 text-lg">
+          <p className="text-gray-500 mt-1 md:mt-2 text-sm md:text-lg">
             Real-time weather insights and 5-day forecast.
           </p>
         </div>
 
-        <div className="flex gap-3">
-          <input className="border border-gray-200 rounded-xl p-3 w-80 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Search City" />
+        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <input className="border border-gray-200 rounded-xl p-3 w-full sm:w-80 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Search City" />
 
-          <button onClick={() => fetchWeather(city)} className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-1" >
+          <button onClick={() => fetchWeather(city)} className="w-full sm:w-auto justify-center bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 py-3.5 md:py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-1" >
             Search
           </button>
         </div>
@@ -31,25 +31,25 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
 
       {weather && (
         <>
-          <div className="bg-white rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-10">
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 md:p-10">
 
-            <div className="flex justify-between items-center border-b border-gray-100 pb-8">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-6 md:pb-8">
 
               <div>
-                <h2 className="text-6xl font-bold text-gray-800 ">
+                <h2 className="text-5xl md:text-6xl font-bold text-gray-800 ">
                   {weather.main.temp}°C
                 </h2>
 
-                <p className="text-2xl capitalize text-gray-600 mt-2 font-medium">
+                <p className="text-xl md:text-2xl capitalize text-gray-600 mt-1 md:mt-2 font-medium">
                   {weather.weather[0].description}
                 </p>
 
-                <p className="text-gray-500 mt-3 text-lg font-medium flex items-center gap-2">
-                  <span className="text-red-500 text-xl">📍</span> {weather.name}
+                <p className="text-gray-500 mt-2 md:mt-3 text-sm md:text-lg font-medium flex items-center gap-2">
+                  <span className="text-red-500 text-lg md:text-xl">📍</span> {weather.name}
                 </p>
               </div>
 
-              <WiDaySunny className="text-yellow-500 text-9xl drop-shadow-lg" />
+              <WiDaySunny className="text-yellow-500 text-7xl md:text-9xl drop-shadow-lg" />
 
             </div>
 
@@ -89,7 +89,7 @@ import { useEffect, useState } from "react"; import axios from "axios"; import {
             5-Day Forecast
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6"> {forecast.map((day) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6"> {forecast.map((day) => (
               <div key={day.dt} className="bg-white h-52 flex flex-col justify-center rounded-3xl shadow-xl shadow-emerald-900/5 border border-emerald-50 p-6 text-center hover:-translate-y-1 transition-all duration-300" >
                 <h3 className="font-bold text-gray-800 text-lg">
                   {new Date(day.dt_txt).toLocaleDateString("en-IN", {

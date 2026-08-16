@@ -137,7 +137,16 @@ public class FarmService {
     public ListFarmsResponse listAllFarms(String username){
         User farmer = getCurrentFarmer(username);
         List<Farm> farms = farmRepository.findByFarmerId(farmer.getId());
-        List<FarmSummary> summaries = farms.stream().map(farm -> new FarmSummary(farm.getId(),farm.getFarmName(),farm.getFarmType(),farm.getAreaSqMt(),farm.getSoilType(),farm.getLocation(),farm.getCrops().size())).toList();
+        List<FarmSummary> summaries = farms.stream().map(farm -> new FarmSummary(
+            farm.getId(),
+            farm.getFarmName(),
+            farm.getFarmType(),
+            farm.getAreaSqMt(),
+            farm.getSoilType(),
+            farm.getLocation(),
+            farm.getCrops().size(),
+            farm.getCrops().stream().map(c -> c.getCropName()).toList()
+        )).toList();
         return new ListFarmsResponse("ok","200","Farms fetched successfully", summaries);
     }
 }

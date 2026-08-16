@@ -23,14 +23,14 @@ export default function ChatWindow({
   return (
     <div
       className="
-      fixed bottom-24 right-6
-      w-[390px] h-[620px]
+      fixed bottom-0 right-0 sm:bottom-24 sm:right-6
+      w-full h-[100dvh] sm:w-[390px] sm:h-[620px]
       bg-white
-      rounded-3xl
+      rounded-none sm:rounded-3xl
       shadow-2xl
       border border-gray-200
       overflow-hidden
-      z-50
+      z-[999]
       flex flex-col"
     >
       {/* Header */}

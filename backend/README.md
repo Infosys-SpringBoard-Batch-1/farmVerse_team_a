@@ -1,6 +1,6 @@
 # FarmVerse Backend
 
-Backend service for FarmVerse, a precision agriculture management platform built as part of the Infosys Springboard Virtual Internship 7.0, Java Developer Track.
+Backend service for FarmVerse, an Intelligent farm operations platform with smart Argo precision system built as part of the Infosys Springboard Virtual Internship 7.0, Java Developer Track.
 BACKEND DEVELOPERS: ARINDAM PAL, BHAGYESH PATIL.
 
 ---
