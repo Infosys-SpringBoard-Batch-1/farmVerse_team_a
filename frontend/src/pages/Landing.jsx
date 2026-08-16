@@ -16,25 +16,25 @@ export default function Landing() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100">
 
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-10 py-6">
-        <div className="flex items-center gap-3">
-          <Sprout className="text-green-600 w-8 h-8" />
-          <h1 className="text-3xl font-bold text-green-700">
+      <nav className="flex justify-between items-center px-4 md:px-10 py-4 md:py-6">
+        <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
+          <Sprout className="text-green-600 w-6 h-6 md:w-8 md:h-8" />
+          <h1 className="text-xl md:text-3xl font-bold text-green-700">
             FarmVerse
           </h1>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-2 md:gap-4 shrink-0">
           <button
             onClick={() => navigate("/login")}
-            className="px-6 py-2 rounded-lg border border-green-600 text-green-700 hover:bg-green-50 transition"
+            className="px-3 md:px-6 py-1.5 md:py-2 rounded-lg border border-green-600 text-green-700 hover:bg-green-50 transition text-sm md:text-base font-medium"
           >
             Login
           </button>
 
           <button
             onClick={() => navigate("/register")}
-            className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+            className="px-3 md:px-6 py-1.5 md:py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition text-sm md:text-base font-medium"
           >
             Register
           </button>
@@ -42,7 +42,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-10 py-24 grid lg:grid-cols-2 gap-16 items-center">
+      <section className="max-w-7xl mx-auto px-5 md:px-10 py-12 md:py-24 grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
 
         <div>
 
@@ -50,7 +50,7 @@ export default function Landing() {
             Smart Agriculture Platform
           </span>
 
-          <h1 className="mt-8 text-6xl font-extrabold leading-tight">
+          <h1 className="mt-6 md:mt-8 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
 
             Revolutionizing
 
@@ -60,7 +60,7 @@ export default function Landing() {
 
           </h1>
 
-          <p className="mt-8 text-xl text-gray-600 leading-9">
+          <p className="mt-6 md:mt-8 text-lg md:text-xl text-gray-600 leading-relaxed md:leading-9">
 
             FarmVerse helps farmers manage crops, monitor farms,
             receive AI recommendations, weather insights,
@@ -68,11 +68,11 @@ export default function Landing() {
 
           </p>
 
-          <div className="mt-10 flex gap-5">
+          <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-5">
 
             <button
               onClick={() => navigate("/register")}
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl flex items-center gap-3 text-lg shadow-lg"
+              className="w-full sm:w-auto justify-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl flex items-center gap-3 text-lg shadow-lg"
             >
               Get Started
 
@@ -81,7 +81,7 @@ export default function Landing() {
 
             <button
               onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-              className="border-2 border-green-600 text-green-700 px-8 py-4 rounded-xl hover:bg-green-50 transition-all font-semibold"
+              className="w-full sm:w-auto justify-center border-2 border-green-600 text-green-700 px-8 py-4 rounded-xl hover:bg-green-50 transition-all font-semibold"
             >
               Learn More
             </button>
@@ -103,8 +103,8 @@ export default function Landing() {
       </section>
 
       {/* Highlight Banner */}
-      <section className="bg-gradient-to-r from-green-800 to-emerald-950 text-white py-12 px-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section className="bg-gradient-to-r from-green-800 to-emerald-950 text-white py-12 px-5 md:px-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
           <div>
             <h3 className="text-2xl font-bold text-yellow-400">Advanced Tech</h3>
             <p className="mt-2 text-green-100 text-sm font-medium">Comprehensive Crop Health</p>
@@ -125,10 +125,9 @@ export default function Landing() {
       </section>
 
       {/* Features */}
+      <section id="features" className="max-w-7xl mx-auto py-16 md:py-24 px-5 md:px-10">
 
-      <section id="features" className="max-w-7xl mx-auto py-24 px-10">
-
-        <h2 className="text-5xl font-bold text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-center">
           Everything You Need
         </h2>
 
@@ -167,19 +166,19 @@ export default function Landing() {
       </section>
 
       {/* Mandi Preview Section */}
-      <section className="bg-green-50/50 border-t border-b border-green-100/50 py-24 px-10">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <section className="bg-green-50/50 border-t border-b border-green-100/50 py-16 md:py-24 px-5 md:px-10">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
           <div className="space-y-6">
             <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold text-sm">
               Live Market Tracking
             </span>
-            <h2 className="text-5xl font-extrabold text-gray-800 tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-800 tracking-tight">
               Dynamic Mandi Price Tracker
             </h2>
-            <p className="text-lg text-gray-600 leading-8">
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed md:leading-8">
               Maximize your farm's revenue with our keyless, client-side Mandi Price Tracker. Access real-time price ranges (Min/Max), average market rates (Modal prices), and weekly price fluctuations mapped directly to your local wholesale markets.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="bg-white p-4 rounded-2xl shadow-sm border flex-1">
                 <span className="text-xs text-gray-400 font-bold uppercase">Food Grains (Mandi Avg)</span>
                 <p className="text-2xl font-bold text-gray-800 mt-1">₹2,300 <span className="text-xs font-normal text-gray-500">/ Quintal</span></p>
@@ -233,7 +232,7 @@ export default function Landing() {
       </section>
 
       {/* Krishi AI Chatbot Section */}
-      <section className="max-w-7xl mx-auto py-24 px-10 grid lg:grid-cols-2 gap-16 items-center">
+      <section className="max-w-7xl mx-auto py-16 md:py-24 px-5 md:px-10 grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
         <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 order-2 lg:order-1">
           <div className="flex items-center justify-between pb-4 border-b border-gray-100">
             <div className="flex items-center gap-3">
@@ -270,13 +269,13 @@ export default function Landing() {
         </div>
 
         <div className="space-y-6 order-1 lg:order-2">
-          <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold text-sm">
-            AI Assistant
-          </span>
-          <h2 className="text-5xl font-extrabold text-gray-800 tracking-tight">
-            Meet Krishi AI
-          </h2>
-          <p className="text-lg text-gray-600 leading-8">
+            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold text-sm inline-block">
+              AI Assistant
+            </span>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-800 tracking-tight">
+              Meet Krishi AI
+            </h2>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed md:leading-8">
             Get instant solutions to your agricultural challenges with our built-in farming assistant. Krishi AI is customized to analyze your farm parameters and provide accurate recommendations for crop diseases, cultivation methods, and soil enrichment.
           </p>
           <div className="space-y-3">
@@ -303,7 +302,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-gray-400 py-16 px-10 border-t border-slate-900 mt-24">
+      <footer className="bg-slate-950 text-gray-400 py-16 px-5 md:px-10 border-t border-slate-900 mt-16 md:mt-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand Info */}
           <div>

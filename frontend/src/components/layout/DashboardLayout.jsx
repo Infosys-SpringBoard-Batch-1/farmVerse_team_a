@@ -8,6 +8,9 @@ import ChatWindow from "../chatbot/ChatWindow";
 import { sendMessage } from "../../services/chatbotService";
 
 function DashboardLayout({ children }) {
+    // Mobile Sidebar state
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     // Chatbot state
     const [chatOpen, setChatOpen] = useState(false);
 
@@ -96,17 +99,25 @@ function DashboardLayout({ children }) {
     return (
         <div className="h-screen overflow-hidden flex bg-slate-50 transition-colors duration-300">
 
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
+
             {/* Sidebar */}
-            <Sidebar />
+            <Sidebar isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
             {/* Main Section */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col min-w-0">
 
                 {/* Navbar */}
-                <Navbar />
+                <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
 
                 {/* Page Content */}
-                <main className="flex-1 p-8 overflow-auto relative">
+                <main className="flex-1 p-4 pb-24 md:p-8 md:pb-8 overflow-auto relative">
                     <div className="absolute inset-0 bg-[url('/leafy_bg.jpg')] bg-cover bg-center opacity-[0.03] pointer-events-none z-0"></div>
                     <div className="relative z-10">
                         {children}

@@ -2,7 +2,7 @@ package com.farmverse.backend;
 /*
 Application: FarmVerse Precision Agriculture Management System
 Tenant: Infosys SpringBoard
-Developers: Arindam Pal, Bhagyesh Paril
+Developers: Arindam Pal, Bhagyesh Patil
 Tech stack: SpringBoot 3.5.16
 Recent Updates: Endpoints updated for Admin user
 Production Copy: YES

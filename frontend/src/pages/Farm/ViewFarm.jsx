@@ -139,7 +139,7 @@ export default function ViewFarm() {
       {/* Back Button */}
       <button
         onClick={() => navigate("/farm")}
-        className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 transition-colors mb-6 font-semibold"
+        className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 transition-colors mb-4 md:mb-6 font-semibold text-sm md:text-base"
       >
         <FaArrowLeft />
         Back to Farms
@@ -148,7 +148,7 @@ export default function ViewFarm() {
       <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
 
         {/* Farm Details */}
-        <h1 className="text-4xl font-bold text-gray-800">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 break-words">
           {farm.farmName}
         </h1>
 
@@ -181,17 +181,17 @@ export default function ViewFarm() {
         </div>
 
         {/* Crop Header */}
-        <div className="flex justify-between items-center mt-12 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-10 md:mt-12 mb-6 md:mb-8 gap-4 md:gap-0">
 
-          <h2 className="text-3xl font-bold text-gray-800">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
             Crops
           </h2>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3 w-full md:w-auto">
 
             <button
               onClick={() => navigate("/crops")}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+              className="flex-1 md:flex-none justify-center bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-5 py-2.5 md:py-3 rounded-xl flex items-center gap-1.5 md:gap-2 text-sm md:text-base font-semibold"
             >
               <FaList />
               View All
@@ -201,7 +201,7 @@ export default function ViewFarm() {
               onClick={() =>
                 navigate(`/farm/${farm.farmId}/crop/add`)
               }
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-green-600/30 transition-all hover:scale-105"
+              className="flex-1 md:flex-none justify-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-3 md:px-6 py-2.5 md:py-3 rounded-xl flex items-center gap-1.5 md:gap-2 shadow-lg shadow-green-600/30 transition-all hover:scale-105 text-sm md:text-base"
             >
               <FaPlus />
               Add Crop
@@ -284,6 +284,64 @@ export default function ViewFarm() {
                     </p>
 
                   </div>
+
+                  {(() => {
+                    const calculateProgress = (sowingDateStr, harvestDateStr) => {
+                      if (!sowingDateStr || !harvestDateStr) return null;
+                      try {
+                        const sowing = new Date(sowingDateStr);
+                        const harvest = new Date(harvestDateStr);
+                        const now = new Date();
+
+                        if (isNaN(sowing.getTime()) || isNaN(harvest.getTime())) return null;
+
+                        sowing.setHours(0,0,0,0);
+                        harvest.setHours(0,0,0,0);
+                        now.setHours(0,0,0,0);
+
+                        const totalDuration = harvest.getTime() - sowing.getTime();
+                        if (totalDuration <= 0) return null;
+
+                        const elapsed = now.getTime() - sowing.getTime();
+                        let percent = Math.round((elapsed / totalDuration) * 100);
+                        percent = Math.max(0, Math.min(100, percent));
+
+                        const msPerDay = 1000 * 60 * 60 * 24;
+                        const daysLeft = Math.max(0, Math.ceil((harvest.getTime() - now.getTime()) / msPerDay));
+
+                        return { percent, daysLeft };
+                      } catch (e) {
+                        console.error(e);
+                        return null;
+                      }
+                    };
+
+                    const progress = calculateProgress(crop.sowingDate, crop.harvestDate);
+                    if (!progress) return null;
+
+                    return (
+                      <div className="mt-4 pt-3 border-t border-gray-100">
+                        <div className="flex justify-between items-center mb-1 text-xs">
+                          <span className="font-semibold text-gray-500 font-medium">Harvest Progress</span>
+                          <span className="font-bold text-emerald-600">{progress.percent}%</span>
+                        </div>
+                        <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-emerald-500 to-green-600"
+                            style={{ width: `${progress.percent}%` }}
+                          ></div>
+                        </div>
+                        <div className="flex justify-between items-center mt-1 text-[10px] text-gray-400 font-medium">
+                          <span>Sown: {new Date(crop.sowingDate).toLocaleDateString()}</span>
+                          <span>
+                            {progress.percent >= 100
+                              ? "Ready to Harvest!"
+                              : `${progress.daysLeft} days left`}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   <MandiPriceWidget cropName={crop.cropName} farmLocation={farm.location} />
 

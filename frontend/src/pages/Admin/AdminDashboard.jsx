@@ -86,17 +86,17 @@ function AdminDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="p-8 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-10">
+      <div className="w-full max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-10 gap-4 md:gap-0">
           <div>
-            <h1 className="text-4xl font-extrabold text-slate-800 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 tracking-tight">
               Admin Command Center
             </h1>
-            <p className="mt-2 text-gray-500 text-lg">
+            <p className="mt-1 md:mt-2 text-gray-500 text-base md:text-lg">
               Manage the entire FarmVerse ecosystem.
             </p>
           </div>
-          <button onClick={() => setShowAddModal(true)} className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center gap-2 font-semibold transition-all hover:-translate-y-1" >
+          <button onClick={() => setShowAddModal(true)} className="w-full md:w-auto justify-center bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/30 flex items-center gap-2 font-semibold transition-all hover:-translate-y-1" >
             <FaPlus /> Add User
           </button>
         </div>
@@ -139,28 +139,43 @@ function AdminDashboard() {
           <div className="p-8 border-b border-emerald-50 flex justify-between items-center bg-gradient-to-r from-emerald-50/50 to-transparent">
             <h2 className="text-2xl font-bold text-slate-800 ">Registered Farmers</h2>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-hidden">
             <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50/50 ">
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">Full Name</th>
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">Username</th>
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider">Farms Owned</th>
-                  <th className="py-5 px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+              <thead className="hidden md:table-header-group">
+                <tr className="bg-gray-50/50">
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Full Name</th>
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Username</th>
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Farms Owned</th>
+                  <th className="py-5 px-6 md:px-8 text-sm font-semibold text-gray-500 uppercase tracking-wider text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 "> {farmers.map((farmer, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-5 px-8">
-                      <div className="font-semibold text-slate-800 ">{farmer.fullName}</div>
+              <tbody className="divide-y divide-gray-100 flex flex-col md:table-row-group">
+                {farmers.map((farmer, idx) => (
+                  <tr key={idx} className="hover:bg-gray-50 transition-colors flex flex-col md:table-row p-4 md:p-0">
+                    <td className="py-4 md:py-5 px-3 md:px-8 flex justify-between items-center md:table-cell border-b border-gray-100 md:border-none bg-emerald-50/30 md:bg-transparent rounded-t-xl md:rounded-none">
+                      <div className="md:hidden flex items-center gap-2">
+                        <span className="bg-emerald-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">{idx + 1}</span>
+                        <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Full Name</span>
+                      </div>
+                      <div className="font-semibold text-slate-800 text-right md:text-left flex items-center gap-3">
+                        <div className="flex w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 items-center justify-center shrink-0">
+                          <FaUsers />
+                        </div>
+                        {farmer.fullName}
+                      </div>
                     </td>
-                    <td className="py-5 px-8 text-gray-500 ">@{farmer.username}</td>
-                    <td className="py-5 px-8">
-                      <span className="bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-sm font-bold">
+                    <td className="py-3 md:py-5 px-2 md:px-8 text-gray-500 flex justify-between items-center md:table-cell border-b border-gray-50 md:border-none">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Username</span>
+                      <span className="text-right md:text-left">@{farmer.username}</span>
+                    </td>
+                    <td className="py-3 md:py-5 px-2 md:px-8 flex justify-between items-center md:table-cell border-b border-gray-50 md:border-none">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Farms Owned</span>
+                      <span className="bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full text-sm font-bold text-right md:text-left">
                         {farmer.farmCount} Farms
                       </span>
                     </td>
-                    <td className="py-5 px-8 text-right">
+                    <td className="py-3 md:py-5 px-2 md:px-8 flex justify-between items-center md:table-cell text-right">
+                      <span className="md:hidden text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</span>
                       <button onClick={() => handleDelete(farmer.username)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete Farmer" >
                         <FaTrash />
                       </button>
