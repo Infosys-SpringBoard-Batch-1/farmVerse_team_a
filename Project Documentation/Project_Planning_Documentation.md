@@ -3,11 +3,13 @@
 
 **Team Name:** Team-A
 
+**Mentor Name:** Mr. Vinay Prashant
+
 **Prepared By:** Shaik Kousar Bee
 
 ## 1. Project Title:-
    
-FarmVerse-Precision Agriculture Management Platform
+FarmVerse-Intelligent Farm Operations Platform with Smart Agro Precision System
 
 ## 2. Problem Statement:-
 
